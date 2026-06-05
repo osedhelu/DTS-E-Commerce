@@ -57,7 +57,7 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 ### Bloque 1.7 API Global
 - [x] T1.7.1 Router v1
 - [x] T1.7.2 OpenAPI
-- [ ] T1.7.3 Paginación y throttle
+- [x] T1.7.3 Paginación y throttle
 
 ## Fase 2 — Celery + Signals
 - [ ] T2.1.1 Celery app
