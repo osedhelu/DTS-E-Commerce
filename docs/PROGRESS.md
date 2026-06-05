@@ -37,7 +37,7 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 > Diseño dual productos/servicios: [PRODUCTS_AND_SERVICES.md](PRODUCTS_AND_SERVICES.md)
 
 ### Bloque 1.5 Orders
-- [ ] T1.5.1 OrderStatus enum
+- [x] T1.5.1 OrderStatus enum
 - [ ] T1.5.2 OrderStateMachine (delivery)
 - [ ] T1.5.3 Order entities
 - [ ] T1.5.4 Order models
