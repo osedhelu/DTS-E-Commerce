@@ -52,10 +52,10 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [x] T1.6.1 Tracking entities
 - [x] T1.6.2 Tracking models
 - [x] T1.6.3 Record location use case
-- [ ] T1.6.4 Tracking API
+- [x] T1.6.4 Tracking API
 
 ### Bloque 1.7 API Global
-- [ ] T1.7.1 Router v1
+- [x] T1.7.1 Router v1
 - [ ] T1.7.2 OpenAPI
 - [ ] T1.7.3 Paginación y throttle
 
