@@ -85,7 +85,7 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 ## Fase 3 — Frontend Web (Next.js + Tailwind)
 - [x] T3.1.1 Merchant layout
 - [x] T3.1.2 CRUD productos y servicios vista
-- [ ] T3.1.3 Inventario vista (solo PHYSICAL)
+- [x] T3.1.3 Inventario vista (solo PHYSICAL)
 - [ ] T3.1.4 CRUD categorías/subcategorías
 - [ ] T3.1.5 Dashboard pedidos servicio
 - [ ] T3.2.1 Dashboard pedidos
