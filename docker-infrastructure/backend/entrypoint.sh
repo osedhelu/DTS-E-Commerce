@@ -33,6 +33,8 @@ wait_for_db
 if [[ "${RUN_MIGRATIONS:-true}" == "true" ]]; then
   echo "==> Aplicando migraciones..."
   uv run --no-dev python manage.py migrate --noinput
+  echo "==> Verificando tablas críticas (analytics, delivery)..."
+  uv run --no-dev python scripts/repair_migration_tables.py
   echo "==> Recolectando archivos estáticos (admin, Swagger)..."
   uv run --no-dev python manage.py collectstatic --noinput --clear
 fi

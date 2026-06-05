@@ -1,4 +1,4 @@
-.PHONY: help setup up down logs ps doctor restart-api backend-migrate-all backend-check-db \
+.PHONY: help setup up down logs ps doctor restart-api install-server backend-migrate-all backend-check-db \
 	docker-up docker-down docker-logs docker-up-full docker-down-full docker-logs-full docker-ps \
 	backend-shell backend-createsuperuser backend-migrate-docker \
 	backend-sync backend-test backend-migrate backend-run \
@@ -25,7 +25,8 @@ help:
 	@echo "  make doctor             Diagnóstico ALLOWED_HOSTS / API"
 	@echo "  make restart-api        Recrear API tras cambiar .env"
 	@echo "  make backend-migrate-all   Migraciones en contenedor API"
-	@echo "  make backend-check-db      Tablas analytics en PostGIS"
+	@echo "  make backend-check-db      Verificar tablas en PostGIS"
+	@echo "  make install-server        Alias: up + mensaje post-instalación"
 	@echo ""
 	@echo "── Desarrollo local (requiere uv, GDAL, Node, Flutter) ──"
 	@echo "  make setup              Deps locales + solo infra Docker"
@@ -56,6 +57,12 @@ up: $(DOCKER_ENV_FILE)
 	@echo "   Mailpit: http://localhost:8025"
 	@echo ""
 	@echo "   Crear admin: make backend-createsuperuser"
+	@echo "   Guía: docs/DEPLOY_DOCKER.md"
+
+install-server: up
+	@echo ""
+	@echo "📖 Documentación: docs/DEPLOY_DOCKER.md"
+	@echo "   Siguiente paso obligatorio (solo 1ª vez): make backend-createsuperuser"
 
 down: $(DOCKER_ENV_FILE)
 	$(DOCKER_COMPOSE_FULL) down

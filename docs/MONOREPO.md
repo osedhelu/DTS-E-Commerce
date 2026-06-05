@@ -39,11 +39,13 @@ Solo necesitas Docker instalado:
 ```bash
 git clone git@github.com:osedhelu/DTS-E-Commerce.git
 cd DTS-E-Commerce
-make up
+cp docker-infrastructure/.env.example docker-infrastructure/.env
+# Editar SECRET_KEY y ALLOWED_HOSTS
+make install-server
 make backend-createsuperuser
 ```
 
-Ver [docker-infrastructure/README.md](../docker-infrastructure/README.md).
+Ver [docs/DEPLOY_DOCKER.md](DEPLOY_DOCKER.md) (guía completa de servidor).
 
 ### Opción B — Desarrollo local (uv + Flutter + Node)
 
@@ -72,7 +74,7 @@ chmod +x scripts/*.sh
 | `celery-beat` | — | Programación (stats 02:00, etc.) |
 | + infra anterior | | |
 
-Ver [docker-infrastructure/README.md](../docker-infrastructure/README.md).
+Ver [docs/DEPLOY_DOCKER.md](DEPLOY_DOCKER.md).
 
 ### Mailpit — correo en desarrollo
 
