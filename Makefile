@@ -5,8 +5,12 @@
 	web-admin-sync web-admin-dev web-admin-build web-admin-lint \
 	flutter-sync flutter-test test lint
 
+export COMPOSE_PROJECT_NAME := dts
+
 DOCKER_ENV_FILE = docker-infrastructure/.env
-DOCKER_COMPOSE_FULL = docker compose --env-file $(DOCKER_ENV_FILE) -f docker-infrastructure/docker-compose.yml
+DOCKER_COMPOSE = docker compose -p dts --env-file $(DOCKER_ENV_FILE)
+DOCKER_COMPOSE_INFRA = $(DOCKER_COMPOSE) -f docker-compose.yml
+DOCKER_COMPOSE_FULL = $(DOCKER_COMPOSE) -f docker-infrastructure/docker-compose.yml
 
 help:
 	@echo "DTS E-Commerce Monorepo"
@@ -33,6 +37,12 @@ $(DOCKER_ENV_FILE):
 	cp docker-infrastructure/.env.example $(DOCKER_ENV_FILE)
 
 up: $(DOCKER_ENV_FILE)
+	@echo "==> Deteniendo stacks anteriores (evita conflicto de nombres)..."
+	-$(DOCKER_COMPOSE_INFRA) down
+	-$(DOCKER_COMPOSE_FULL) down
+	@for c in dts-postgis dts-redis dts-mailpit dts-api dts-celery-worker dts-celery-beat; do \
+		docker rm -f $$c 2>/dev/null || true; \
+	done
 	$(DOCKER_COMPOSE_FULL) up -d --build
 	@echo ""
 	@echo "✅ Stack levantado"
@@ -44,6 +54,7 @@ up: $(DOCKER_ENV_FILE)
 
 down: $(DOCKER_ENV_FILE)
 	$(DOCKER_COMPOSE_FULL) down
+	-$(DOCKER_COMPOSE_INFRA) down
 
 logs: $(DOCKER_ENV_FILE)
 	$(DOCKER_COMPOSE_FULL) logs -f
@@ -72,14 +83,14 @@ setup: docker-up backend-sync web-admin-sync flutter-sync
 	@echo "✅ Monorepo listo (modo desarrollo local)."
 	@echo "   Para solo Docker: make up"
 
-docker-up:
-	docker compose up -d
+docker-up: $(DOCKER_ENV_FILE)
+	$(DOCKER_COMPOSE_INFRA) up -d
 
-docker-down:
-	docker compose down
+docker-down: $(DOCKER_ENV_FILE)
+	$(DOCKER_COMPOSE_INFRA) down
 
-docker-logs:
-	docker compose logs -f
+docker-logs: $(DOCKER_ENV_FILE)
+	$(DOCKER_COMPOSE_INFRA) logs -f
 
 # ── Backend en host (requiere GDAL + uv) ─────────────────────────────────────
 

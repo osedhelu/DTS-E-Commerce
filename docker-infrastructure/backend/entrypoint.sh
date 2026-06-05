@@ -33,6 +33,8 @@ wait_for_db
 if [[ "${RUN_MIGRATIONS:-true}" == "true" ]]; then
   echo "==> Aplicando migraciones..."
   uv run python manage.py migrate --noinput
+  echo "==> Recolectando archivos estáticos (admin, Swagger)..."
+  uv run python manage.py collectstatic --noinput
 fi
 
 exec "$@"

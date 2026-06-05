@@ -13,7 +13,7 @@ include:
 x-backend-env: &backend-env
   SECRET_KEY: ${SECRET_KEY:-change-me-in-production}
   DEBUG: ${DEBUG:-False}
-  ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1,api}
+  ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1,api,extreme.local}
   DB_NAME: ${DB_NAME:-dts_delivery}
   DB_USER: ${DB_USER:-postgres}
   DB_PASSWORD: ${DB_PASSWORD:-postgres}
