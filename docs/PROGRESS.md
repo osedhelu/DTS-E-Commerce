@@ -66,7 +66,7 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [x] T2.2.1 Order signals
 - [x] T2.2.2 Signal assign driver
 - [x] T2.2.3 Signal notify customer
-- [ ] T2.2.4 Signal push order accepted
+- [x] T2.2.4 Signal push order accepted
 - [ ] T2.2.5 Signal push new order to drivers
 - [ ] T2.3.1 DriverMatcher
 - [ ] T2.3.2 assign_driver_task
