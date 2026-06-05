@@ -32,17 +32,25 @@ DTS-E-Commerce/
 
 ## Setup inicial (una vez)
 
+### Opción A — Solo Docker (recomendado en servidor)
+
+Solo necesitas Docker instalado:
+
 ```bash
 git clone git@github.com:osedhelu/DTS-E-Commerce.git
 cd DTS-E-Commerce
-chmod +x scripts/*.sh
-./scripts/setup.sh
+make up
+make backend-createsuperuser
 ```
 
-O con Make:
+Ver [docker-infrastructure/README.md](../docker-infrastructure/README.md).
+
+### Opción B — Desarrollo local (uv + Flutter + Node)
 
 ```bash
-make setup
+chmod +x scripts/*.sh
+./scripts/setup.sh
+# o: make setup
 ```
 
 ## Servicios Docker
@@ -55,7 +63,7 @@ make setup
 | Redis | 6379 | Celery broker + cache + Channels |
 | Mailpit | 8025 (UI), 1025 (SMTP) | Servidor de correo para desarrollo |
 
-### Stack completo en servidor local (`make docker-up-full`)
+### Stack completo en servidor local (`make up`)
 
 | Servicio | Puerto | Uso |
 |----------|--------|-----|
@@ -101,11 +109,20 @@ cp backend/.env.example backend/.env
 
 ## Comandos diarios
 
+**Docker (servidor):**
+
+```bash
+make up                       # API + workers + DB
+make logs
+make backend-createsuperuser
+```
+
+**Desarrollo local:**
+
 ```bash
 make backend-run      # Django :8000
 make web-admin-dev    # Next.js :3000
 make backend-test     # pytest
-make flutter-test     # tests Flutter
 make test             # todo
 ```
 

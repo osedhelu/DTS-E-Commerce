@@ -1,76 +1,91 @@
-# Docker — DTS Delivery Platform
+# Docker — 100% sin instalar GDAL ni Python en el host
 
-Stack para levantar el backend completo en un servidor local.
+Solo necesitas **Docker** y **Docker Compose** en tu máquina/servidor.
 
-## Servicios
-
-| Servicio | Contenedor | Puerto | Descripción |
-|----------|------------|--------|-------------|
-| `db` | dts-postgis | 5432 | PostgreSQL + PostGIS |
-| `redis` | dts-redis | 6379 | Broker Celery + cache |
-| `mailpit` | dts-mailpit | 8025 / 1025 | Correo capturado (UI / SMTP) |
-| `api` | dts-api | 8000 | Django + Gunicorn |
-| `celery-worker` | dts-celery-worker | — | Tareas asíncronas |
-| `celery-beat` | dts-celery-beat | — | Cron (stats 02:00, etc.) |
-
-## Inicio rápido
+## Levantar todo (un comando)
 
 ```bash
-# Desde la raíz del monorepo
-cp docker-infrastructure/.env.example docker-infrastructure/.env
-make docker-up-full
+cd DTS-E-Commerce   # raíz del monorepo
+make up
 ```
 
-- API: http://localhost:8000
-- OpenAPI: http://localhost:8000/api/schema/swagger-ui/
-- Mailpit: http://localhost:8025
+Eso construye y arranca:
 
-## Solo infraestructura (desarrollo sin contenedor de app)
+| Servicio | Puerto | URL |
+|----------|--------|-----|
+| API Django | 8000 | http://localhost:8000 |
+| Swagger | 8000 | http://localhost:8000/api/v1/docs/ |
+| Mailpit | 8025 | http://localhost:8025 |
+| PostGIS | 5432 | (interno) |
+| Redis | 6379 | (interno) |
 
-Si prefieres correr Django con `uv` en el host:
+Las **migraciones** se aplican solas al iniciar `api`.
+
+## Primera vez — crear usuario admin
 
 ```bash
-make docker-up          # PostGIS + Redis + Mailpit
-make backend-migrate
-make backend-run
+make backend-createsuperuser
 ```
 
-## Comandos útiles
+## Comandos del día a día
 
 ```bash
-make docker-up-full     # build + levantar stack completo
-make docker-down-full   # detener stack completo
-make docker-logs-full   # logs de todos los servicios
-
-# Migraciones manuales
-docker compose -f docker-infrastructure/docker-compose.yml exec api \
-  uv run python manage.py migrate
-
-# Shell Django
-docker compose -f docker-infrastructure/docker-compose.yml exec api \
-  uv run python manage.py shell
-
-# Crear superusuario
-docker compose -f docker-infrastructure/docker-compose.yml exec api \
-  uv run python manage.py createsuperuser
+make up                      # Levantar / reconstruir stack
+make down                    # Detener todo
+make logs                    # Ver logs en vivo
+make ps                      # Estado de contenedores
+make backend-shell           # Shell Django
+make backend-migrate-docker  # Re-ejecutar migraciones (opcional)
 ```
 
-## FCM (push notifications)
+## Configuración (opcional)
+
+Se crea automáticamente `docker-infrastructure/.env` desde `.env.example`.
+
+Edita solo si necesitas cambiar algo:
+
+```bash
+nano docker-infrastructure/.env
+```
+
+Lo más importante en servidor:
+
+```env
+SECRET_KEY=una-clave-larga-y-aleatoria
+ALLOWED_HOSTS=localhost,127.0.0.1,192.168.1.50,tu-dominio.com
+API_PORT=8000
+```
+
+## Si ya tenías solo infra levantada (`make docker-up`)
+
+No pasa nada. `make up` reutiliza los mismos contenedores de PostGIS/Redis y añade API + workers:
+
+```bash
+make down    # opcional: parar lo anterior
+make up      # stack completo
+```
+
+## FCM — push notifications (opcional)
 
 ```bash
 mkdir -p docker-infrastructure/volumes/fcm
-cp /ruta/a/firebase-service-account.json docker-infrastructure/volumes/fcm/service-account.json
+cp /ruta/firebase.json docker-infrastructure/volumes/fcm/service-account.json
 ```
 
 En `docker-infrastructure/.env`:
 
-```
+```env
 FCM_CREDENTIALS_PATH=/secrets/fcm/service-account.json
 FCM_CREDENTIALS_HOST_PATH=./volumes/fcm
 ```
 
-## Notas
+Luego: `make up`
 
-- Las migraciones se ejecutan automáticamente al iniciar `api` (no en workers).
-- `celery-beat` persiste su schedule en el volumen `celery_beat_data`.
-- Ajusta `ALLOWED_HOSTS` con la IP o dominio de tu servidor.
+## Qué NO necesitas instalar en el host
+
+- ❌ GDAL / GEOS
+- ❌ Python / uv
+- ❌ PostgreSQL
+- ❌ Redis
+
+Todo eso va **dentro de los contenedores**.
