@@ -14,7 +14,7 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [x] T1.2.1 UserRole enum
 - [x] T1.2.2 Email, Phone value objects
 - [x] T1.2.3 CustomUser model
-- [ ] T1.2.4 Perfiles por rol
+- [x] T1.2.4 Perfiles por rol
 - [ ] T1.2.5 Register use case
 - [ ] T1.2.6 Auth API JWT
 - [ ] T1.2.7 Permisos por rol
