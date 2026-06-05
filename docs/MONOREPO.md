@@ -13,7 +13,8 @@ DTS-E-Commerce/
 ├── docs/                 # Roadmap, tareas, arquitectura
 ├── scripts/              # setup.sh, dev.sh
 ├── .cursor/              # Reglas, comandos y skills Cursor
-├── docker-compose.yml    # PostGIS + Redis + Mailpit
+├── docker-compose.yml           # Infra dev (PostGIS + Redis + Mailpit)
+├── docker-infrastructure/       # Stack completo Docker (API + workers)
 ├── Makefile              # Comandos unificados
 └── .github/workflows/    # CI
 ```
@@ -46,11 +47,24 @@ make setup
 
 ## Servicios Docker
 
+### Solo infraestructura (`make docker-up`)
+
 | Servicio | Puerto | Uso |
 |----------|--------|-----|
 | PostGIS | 5432 | Base de datos geoespacial |
 | Redis | 6379 | Celery broker + cache + Channels |
 | Mailpit | 8025 (UI), 1025 (SMTP) | Servidor de correo para desarrollo |
+
+### Stack completo en servidor local (`make docker-up-full`)
+
+| Servicio | Puerto | Uso |
+|----------|--------|-----|
+| `api` | 8000 | Django + Gunicorn |
+| `celery-worker` | — | Tareas asíncronas |
+| `celery-beat` | — | Programación (stats 02:00, etc.) |
+| + infra anterior | | |
+
+Ver [docker-infrastructure/README.md](../docker-infrastructure/README.md).
 
 ### Mailpit — correo en desarrollo
 

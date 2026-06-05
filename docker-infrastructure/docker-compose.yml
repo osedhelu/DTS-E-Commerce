@@ -1,0 +1,117 @@
+# Stack completo para servidor local: infra + API Django + Celery worker + Celery beat.
+#
+# Uso:
+#   cp docker-infrastructure/.env.example docker-infrastructure/.env
+#   make docker-up-full
+#
+# API:     http://localhost:8000
+# Mailpit: http://localhost:8025
+
+include:
+  - path: docker-compose.infra.yml
+
+x-backend-env: &backend-env
+  SECRET_KEY: ${SECRET_KEY:-change-me-in-production}
+  DEBUG: ${DEBUG:-False}
+  ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1,api}
+  DB_NAME: ${DB_NAME:-dts_delivery}
+  DB_USER: ${DB_USER:-postgres}
+  DB_PASSWORD: ${DB_PASSWORD:-postgres}
+  DB_HOST: db
+  DB_PORT: "5432"
+  REDIS_URL: redis://redis:6379/0
+  EMAIL_BACKEND: django.core.mail.backends.smtp.EmailBackend
+  EMAIL_HOST: mailpit
+  EMAIL_PORT: "1025"
+  EMAIL_USE_TLS: "False"
+  EMAIL_USE_SSL: "False"
+  DEFAULT_FROM_EMAIL: ${DEFAULT_FROM_EMAIL:-noreply@dts.local}
+  FCM_CREDENTIALS_PATH: ${FCM_CREDENTIALS_PATH:-}
+  RUN_MIGRATIONS: "false"
+
+x-backend-build: &backend-build
+  context: ..
+  dockerfile: docker-infrastructure/backend/Dockerfile
+
+services:
+  api:
+    build: *backend-build
+    container_name: dts-api
+    command: >
+      uv run gunicorn core.wsgi:application
+      --bind 0.0.0.0:8000
+      --workers ${GUNICORN_WORKERS:-2}
+      --timeout ${GUNICORN_TIMEOUT:-120}
+      --access-logfile -
+      --error-logfile -
+    environment:
+      <<: *backend-env
+      RUN_MIGRATIONS: "true"
+    ports:
+      - "${API_PORT:-8000}:8000"
+    volumes:
+      - ${FCM_CREDENTIALS_HOST_PATH:-./volumes/fcm}:/secrets/fcm:ro
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      mailpit:
+        condition: service_started
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8000/api/v1/docs/ > /dev/null || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 8
+      start_period: 40s
+    networks:
+      - dts-backend
+    restart: unless-stopped
+
+  celery-worker:
+    build: *backend-build
+    container_name: dts-celery-worker
+    command: >
+      uv run celery -A core worker
+      --loglevel=${CELERY_LOG_LEVEL:-info}
+      --concurrency=${CELERY_CONCURRENCY:-2}
+    environment:
+      <<: *backend-env
+    volumes:
+      - ${FCM_CREDENTIALS_HOST_PATH:-./volumes/fcm}:/secrets/fcm:ro
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      api:
+        condition: service_started
+    networks:
+      - dts-backend
+    restart: unless-stopped
+
+  celery-beat:
+    build: *backend-build
+    container_name: dts-celery-beat
+    command: >
+      uv run celery -A core beat
+      --loglevel=${CELERY_LOG_LEVEL:-info}
+      --schedule /tmp/celerybeat-schedule
+    environment:
+      <<: *backend-env
+    volumes:
+      - celery_beat_data:/tmp
+      - ${FCM_CREDENTIALS_HOST_PATH:-./volumes/fcm}:/secrets/fcm:ro
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      api:
+        condition: service_started
+    networks:
+      - dts-backend
+    restart: unless-stopped
+
+volumes:
+  celery_beat_data:

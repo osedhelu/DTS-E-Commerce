@@ -80,7 +80,7 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [x] T2.4.7 Email notifications
 - [x] T2.5.1 DailyReport entity
 - [x] T2.5.2 Report models
-- [ ] T2.5.3 Nightly stats task
+- [x] T2.5.3 Nightly stats task
 
 ## Fase 3 — Frontend Web (Next.js + Tailwind)
 - [ ] T3.1.1 Merchant layout
