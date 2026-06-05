@@ -43,8 +43,8 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [x] T1.5.4 Order models
 - [x] T1.5.5 Create order use case
 - [x] T1.5.6 Transition status use case
-- [ ] T1.5.7 Orders API
-- [ ] T1.5.8 OrderType + ServiceOrderDetails
+- [x] T1.5.7 Orders API
+- [x] T1.5.8 OrderType + ServiceOrderDetails
 - [ ] T1.5.9 ServiceOrderStateMachine
 - [ ] T1.5.10 API checkout servicio
 
