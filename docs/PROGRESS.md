@@ -30,8 +30,8 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 ### Bloque 1.4 Products
 - [x] T1.4.1 Product entity (+ categorías/subcategorías, ProductType PHYSICAL/SERVICE)
 - [x] T1.4.2 StockValidator (solo PHYSICAL)
-- [ ] T1.4.3 Product models (+ Category parent, product_type)
-- [ ] T1.4.4 Use cases product/servicio/categorías
+- [x] T1.4.3 Product models (+ Category parent, product_type)
+- [x] T1.4.4 Use cases product/servicio/categorías
 - [ ] T1.4.5 API catálogo (+ árbol categorías, filtros)
 
 > Diseño dual productos/servicios: [PRODUCTS_AND_SERVICES.md](PRODUCTS_AND_SERVICES.md)
