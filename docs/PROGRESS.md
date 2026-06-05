@@ -39,7 +39,7 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 ### Bloque 1.5 Orders
 - [x] T1.5.1 OrderStatus enum
 - [x] T1.5.2 OrderStateMachine (delivery)
-- [ ] T1.5.3 Order entities
+- [x] T1.5.3 Order entities
 - [ ] T1.5.4 Order models
 - [ ] T1.5.5 Create order use case
 - [ ] T1.5.6 Transition status use case
