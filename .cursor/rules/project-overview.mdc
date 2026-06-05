@@ -5,8 +5,9 @@ alwaysApply: true
 
 # DTS Delivery Platform
 
-Monorepo con 3 proyectos:
-- `backend/` — Django + DRF + Portales + Celery + Channels
+Monorepo con 4 proyectos:
+- `backend/` — Django + DRF + Celery + Channels (solo API)
+- `web-admin/` — Next.js + Tailwind (merchant + super admin)
 - `flutter-customer/` — App cliente
 - `flutter-driver/` — App conductor
 
@@ -39,3 +40,10 @@ features/<modulo>/
 
 - Riverpod para estado
 - Tests: `cd flutter-customer && flutter test`
+
+## web-admin (Next.js)
+
+- App Router, Server Components por defecto
+- Consumir `/api/v1/` — ver `docs/WEB_ADMIN.md`
+- Tests E2E: Playwright en `web-admin/e2e/`
+- Skill: `implement-nextjs-feature`

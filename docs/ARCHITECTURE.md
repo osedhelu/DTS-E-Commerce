@@ -11,7 +11,8 @@
 
 ```
 dts-app-ecommerce/
-├── backend/                 # Django + DRF + Portales + Celery + Channels
+├── backend/                 # Django + DRF + Celery + Channels (solo API)
+├── web-admin/               # Next.js + Tailwind (merchant + super admin)
 ├── flutter-customer/        # App móvil cliente
 ├── flutter-driver/          # App móvil conductor
 ├── docs/                    # Roadmap, tareas, arquitectura
@@ -54,7 +55,7 @@ features/orders/
 |------|-----------------|--------|
 | `domain` | Reglas puras, sin framework | Sin imports de Django |
 | `application` | Casos de uso | Llama domain + repos |
-| `infrastructure` | Persistencia, HTTP, tareas | Models, DRF, Celery, Templates |
+| `infrastructure` | Persistencia, HTTP, tareas | Models, DRF, Celery |
 
 ### Catálogo: productos y servicios
 
@@ -68,14 +69,14 @@ Documento completo: [PRODUCTS_AND_SERVICES.md](PRODUCTS_AND_SERVICES.md)
 
 Los pedidos de servicio (Fase 1.5, T1.5.8–1.5.10) usan un flujo de estados distinto al delivery con conductor.
 
-### Portales web
+### Frontend web administrativo
 
-Los portales viven en `backend/portals/`:
+La consola web vive fuera de Django en `web-admin/` (Next.js + Tailwind):
 
-- `portals/merchant/` — CRUD productos, dashboard pedidos
-- `portals/admin/` — métricas, comisiones, marketing
+- `merchant` — CRUD productos/servicios, inventario, pedidos
+- `super admin` — métricas, comisiones, marketing
 
-Cada portal consume los mismos use cases de `features/`.
+El frontend consume exclusivamente la API REST versionada del backend (`/api/v1/`).
 
 ## Flutter (Cliente y Conductor)
 
@@ -134,6 +135,6 @@ sequenceDiagram
 |------|---------|------------------|----------------|
 | 1 | accounts, stores, products, orders, delivery | — | — |
 | 2 | notifications, analytics + Celery | — | — |
-| 3 | portals (merchant, admin), marketing | — | — |
+| 3 | marketing API + endpoints dashboard/admin | web-admin (merchant, admin) | — |
 | 4 | — | auth, stores, catalog, cart, checkout, tracking | auth, availability, orders, navigation, location |
 | 5 | channels (websockets) | tracking realtime | location streaming |

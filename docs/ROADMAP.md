@@ -42,15 +42,15 @@ Cada tarea tiene ID único en [TASKS.md](TASKS.md). Formato: `T<fase>.<bloque>.<
 
 ---
 
-## Fase 3 — Portales Web (Comercios y Super Admin)
+## Fase 3 — Frontend Web (Merchant + Super Admin)
 
-**Proyecto:** `backend/portals/`  
-**Criterio de salida:** Merchant y SuperAdmin operativos con tests de vistas.
+**Proyecto:** `web-admin/` (Next.js + Tailwind)  
+**Criterio de salida:** Merchant y SuperAdmin operativos consumiendo API `/api/v1/` del backend.
 
 | Bloque | Portal | Entregable |
 |--------|--------|------------|
 | 3.1 | merchant | CRUD productos/servicios, categorías, inventario (solo físicos) |
-| 3.2 | merchant | Dashboard pedidos en tiempo real (HTMX/polling) |
+| 3.2 | merchant | Dashboard pedidos en tiempo real (polling/SSE/WebSocket) |
 | 3.3 | admin | Métricas globales y KPIs |
 | 3.4 | admin | Gestión pagos y comisiones |
 | 3.5 | marketing | Cupones y banners promocionales |

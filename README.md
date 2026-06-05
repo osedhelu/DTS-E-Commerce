@@ -1,13 +1,14 @@
 # DTS E-Commerce / Delivery Platform
 
-Monorepo de la plataforma de delivery: backend Django, apps Flutter (cliente y conductor) y portales web.
+Monorepo de la plataforma de delivery: backend Django (solo API), frontend web admin y apps Flutter (cliente y conductor).
 
 **Repositorio:** `git@github.com:osedhelu/DTS-E-Commerce.git`
 
 ## Estructura del monorepo
 
 ```
-├── backend/              # Django + DRF + Celery + Channels + Portales
+├── backend/              # Django + DRF + Celery + Channels (solo API)
+├── web-admin/            # Frontend web (Next.js + Tailwind) para merchant/admin
 ├── flutter-customer/     # App móvil cliente
 ├── flutter-driver/       # App móvil conductor
 ├── docs/                 # Roadmap, tareas, arquitectura
@@ -35,6 +36,7 @@ chmod +x scripts/*.sh
 | `make setup` | Instalar dependencias + Docker |
 | `make docker-up` | PostGIS (5432) + Redis (6379) |
 | `make backend-run` | API en http://localhost:8000 |
+| `make web-admin-dev` | Frontend admin en http://localhost:3000 |
 | `make backend-test` | Tests pytest |
 | `make flutter-test` | Tests ambas apps |
 | `make test` | Todos los tests |
@@ -43,7 +45,8 @@ chmod +x scripts/*.sh
 
 | Proyecto | Carpeta | Stack |
 |----------|---------|-------|
-| Backend + Portales | `backend/` | Django, DRF, Celery, Channels, PostGIS |
+| Backend API | `backend/` | Django, DRF, Celery, Channels, PostGIS |
+| Web Admin (Merchant + Super Admin) | `web-admin/` | Next.js, Tailwind |
 | App Cliente | `flutter-customer/` | Flutter, Riverpod, Clean Architecture |
 | App Conductor | `flutter-driver/` | Flutter, Riverpod, Clean Architecture |
 
@@ -60,11 +63,13 @@ Vertical Slice + Clean Architecture por módulo. Ver [docs/ARCHITECTURE.md](docs
 | [PROGRESS.md](docs/PROGRESS.md) | Progreso actual |
 | [PUSH_NOTIFICATIONS.md](docs/PUSH_NOTIFICATIONS.md) | Plan push por estado de pedido |
 | [MONOREPO.md](docs/MONOREPO.md) | Guía completa del monorepo |
+| [WEB_ADMIN.md](docs/WEB_ADMIN.md) | Frontend Next.js merchant/admin |
 
 ### Cursor AI
 
 ```
 /fase-1          # Backend fundamentos
+/fase-3          # Frontend web-admin (Next.js)
 /tarea T1.2.3    # Tarea específica
 /progreso        # Ver avance
 ```
@@ -74,6 +79,7 @@ Vertical Slice + Clean Architecture por módulo. Ver [docs/ARCHITECTURE.md](docs
 | Servicio | URL |
 |----------|-----|
 | API Django | http://localhost:8000 |
+| Web Admin (dev) | http://localhost:3000 |
 | API Docs (Swagger) | http://localhost:8000/api/v1/docs/ |
 | PostGIS | localhost:5432 |
 | Redis | localhost:6379 |

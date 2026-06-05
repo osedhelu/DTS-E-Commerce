@@ -10,13 +10,15 @@
 
 | Carpeta | Descripción |
 |---------|-------------|
-| `backend/` | Django API + portales + Celery + Channels |
+| `backend/` | Django API + Celery + Channels (sin portales web) |
+| `web-admin/` | Frontend web merchant + super admin (Next.js) |
 | `flutter-customer/` | App móvil cliente |
 | `flutter-driver/` | App móvil conductor |
 
 ## Skills del proyecto
 
 - `implement-django-feature` — módulos backend
+- `implement-nextjs-feature` — pantallas y flujos `web-admin/`
 - `implement-flutter-feature` — módulos Flutter
 - `execute-phase-task` — workflow por ID de tarea
 - `django-celery-signals` — Fase 2 async
@@ -25,6 +27,7 @@
 ## Documentación clave
 
 - [PUSH_NOTIFICATIONS.md](docs/PUSH_NOTIFICATIONS.md) — plan push FCM
+- [WEB_ADMIN.md](docs/WEB_ADMIN.md) — arquitectura frontend Next.js
 
 ## Reglas
 

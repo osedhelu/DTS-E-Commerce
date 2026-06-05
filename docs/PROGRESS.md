@@ -68,7 +68,7 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [x] T2.2.3 Signal notify customer
 - [x] T2.2.4 Signal push order accepted
 - [x] T2.2.5 Signal push new order to drivers
-- [ ] T2.3.1 DriverMatcher
+- [x] T2.3.1 DriverMatcher
 - [ ] T2.3.2 assign_driver_task
 - [ ] T2.3.3 Status after assign
 - [ ] T2.4.1 Notification types + templates
@@ -82,14 +82,14 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [ ] T2.5.2 Report models
 - [ ] T2.5.3 Nightly stats task
 
-## Fase 3 — Portales Web
+## Fase 3 — Frontend Web (Next.js + Tailwind)
 - [ ] T3.1.1 Merchant layout
 - [ ] T3.1.2 CRUD productos y servicios vista
 - [ ] T3.1.3 Inventario vista (solo PHYSICAL)
 - [ ] T3.1.4 CRUD categorías/subcategorías
 - [ ] T3.1.5 Dashboard pedidos servicio
 - [ ] T3.2.1 Dashboard pedidos
-- [ ] T3.2.2 HTMX aceptar/preparar
+- [ ] T3.2.2 Acciones aceptar/preparar (mutate API)
 - [ ] T3.2.3 Polling pedidos
 - [ ] T3.3.1 Admin dashboard
 - [ ] T3.3.2 KPIs métricas

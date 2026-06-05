@@ -19,10 +19,12 @@ disable-model-invocation: true
 2. FIND en TASKS.md → descripción + tests obligatorios
 3. CHECK PROGRESS.md → prerequisitos del bloque
 4. DETERMINE proyecto:
-   - T1.x, T2.x, T3.x, T5.1, T5.2 → backend/
+   - T1.x, T2.x, T5.1, T5.2 → backend/
+   - T3.1–T3.4 → web-admin/ (Next.js)
+   - T3.5.x → backend/ (marketing API) + web-admin/ (UI cupones)
    - T4.1-T4.5, T5.3 → flutter-customer/
    - T4.6-T4.9, T5.4 → flutter-driver/
-5. IMPLEMENT (usar skill implement-django-feature o implement-flutter-feature)
+5. IMPLEMENT (skill: implement-django-feature | implement-nextjs-feature | implement-flutter-feature)
 6. RUN tests listados en TASKS.md
 7. IF green → mark [x] en PROGRESS.md
 8. REPORT resultado + siguiente tarea
@@ -44,4 +46,9 @@ cd backend && uv sync && make test
 # Flutter
 cd flutter-customer && flutter pub get && flutter test
 cd flutter-driver && flutter pub get && flutter test
+
+# web-admin
+make web-admin-dev
+make web-admin-build
+make web-admin-lint
 ```

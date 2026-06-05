@@ -158,46 +158,46 @@ CREATED → ACCEPTED_BY_MERCHANT → SCHEDULED → PROVIDER_EN_ROUTE
 
 ---
 
-## FASE 3 — Portales Web
+## FASE 3 — Frontend Web (Next.js + Tailwind)
 
-### Bloque 3.1 — Portal Merchant: productos
-
-| ID | Tarea | Tests |
-|----|-------|-------|
-| T3.1.1 | `portals/merchant/`: layout base Bootstrap/Tailwind | `test_merchant_login_page` |
-| T3.1.2 | Vista CRUD productos **y servicios** (formulario condicional por `product_type`) | `test_merchant_create_product_view`, `test_merchant_create_service_view` |
-| T3.1.3 | Gestión inventario / stock (solo PHYSICAL) | `test_merchant_update_stock_view`, `test_merchant_cannot_set_stock_on_service` |
-| T3.1.4 | CRUD categorías y subcategorías por tienda | `test_merchant_create_category`, `test_merchant_create_subcategory` |
-| T3.1.5 | Dashboard pedidos de servicio (aceptar, agendar, en curso, completado) | `test_merchant_service_order_flow_view` |
-
-### Bloque 3.2 — Portal Merchant: pedidos
+### Bloque 3.1 — Web Merchant: productos
 
 | ID | Tarea | Tests |
 |----|-------|-------|
-| T3.2.1 | Dashboard pedidos entrantes | `test_merchant_orders_list` |
-| T3.2.2 | Botones Aceptar / Preparado (HTMX) | `test_merchant_accept_order_htmx` |
-| T3.2.3 | Polling/HTMX actualización cada 10s | `test_orders_partial_refresh` |
+| T3.1.1 | `web-admin/`: layout base Next.js App Router + Tailwind + auth guard por rol | `merchant_layout_renders_test` |
+| T3.1.2 | UI CRUD productos **y servicios** (formulario condicional por `product_type`) consumiendo API backend | `merchant_create_product_flow_test`, `merchant_create_service_flow_test` |
+| T3.1.3 | UI gestión inventario / stock (solo PHYSICAL) | `merchant_update_stock_flow_test`, `merchant_cannot_set_stock_on_service_test` |
+| T3.1.4 | UI CRUD categorías y subcategorías por tienda | `merchant_create_category_flow_test`, `merchant_create_subcategory_flow_test` |
+| T3.1.5 | Dashboard pedidos de servicio (aceptar, agendar, en curso, completado) | `merchant_service_order_dashboard_test` |
 
-### Bloque 3.3 — Portal Super Admin: métricas
-
-| ID | Tarea | Tests |
-|----|-------|-------|
-| T3.3.1 | `portals/admin/`: dashboard KPIs | `test_admin_dashboard_requires_superadmin` |
-| T3.3.2 | Gráficos ventas, comercios activos, tiempo entrega | `test_admin_metrics_data` |
-
-### Bloque 3.4 — Portal Super Admin: pagos
+### Bloque 3.2 — Web Merchant: pedidos
 
 | ID | Tarea | Tests |
 |----|-------|-------|
-| T3.4.1 | Vista comisiones por comercio y conductor | `test_commission_list_view` |
-| T3.4.2 | Export CSV reportes | `test_export_commissions_csv` |
+| T3.2.1 | Dashboard pedidos entrantes (tabla + filtros por estado) | `merchant_orders_list_test` |
+| T3.2.2 | Acciones Aceptar / Preparado con mutate API y feedback UI | `merchant_accept_order_action_test` |
+| T3.2.3 | Actualización periódica cada 10s (polling) o suscripción realtime | `merchant_orders_auto_refresh_test` |
+
+### Bloque 3.3 — Web Super Admin: métricas
+
+| ID | Tarea | Tests |
+|----|-------|-------|
+| T3.3.1 | Dashboard KPIs super admin (solo rol SUPER_ADMIN) | `admin_dashboard_role_guard_test` |
+| T3.3.2 | Gráficos ventas, comercios activos, tiempo entrega | `admin_metrics_widgets_test` |
+
+### Bloque 3.4 — Web Super Admin: pagos
+
+| ID | Tarea | Tests |
+|----|-------|-------|
+| T3.4.1 | Vista comisiones por comercio y conductor | `commission_list_page_test` |
+| T3.4.2 | Export CSV reportes | `export_commissions_csv_test` |
 
 ### Bloque 3.5 — Marketing
 
 | ID | Tarea | Tests |
 |----|-------|-------|
 | T3.5.1 | `features/marketing/domain`: Coupon, Banner entities | `test_coupon_discount_calculation` |
-| T3.5.2 | CRUD cupones en portal admin | `test_admin_create_coupon` |
+| T3.5.2 | CRUD cupones en web admin | `admin_create_coupon_flow_test` |
 | T3.5.3 | API pública banners activos para app cliente | `test_active_banners_api` |
 
 ---

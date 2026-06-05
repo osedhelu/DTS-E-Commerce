@@ -9,7 +9,8 @@ Repo: `git@github.com:osedhelu/DTS-E-Commerce.git`
 
 ## Estructura
 
-- `backend/` — Django (uv, no pip)
+- `backend/` — Django API (uv, no pip)
+- `web-admin/` — Next.js + Tailwind (merchant/admin)
 - `flutter-customer/` — App cliente
 - `flutter-driver/` — App conductor
 - Raíz: `Makefile`, `docker-compose.yml`, `scripts/`
@@ -17,9 +18,10 @@ Repo: `git@github.com:osedhelu/DTS-E-Commerce.git`
 ## Comandos raíz
 
 ```bash
-make setup          # Docker + deps
-make backend-test   # pytest
-make flutter-test   # flutter test x2
+make setup            # Docker + deps
+make backend-test     # pytest
+make web-admin-dev    # Next.js :3000
+make flutter-test     # flutter test x2
 ```
 
 ## Docker obligatorio para dev backend

@@ -1,6 +1,6 @@
 # Catálogo: Productos físicos y Servicios a domicilio
 
-Documento de referencia para el módulo `products` y su impacto en pedidos, portales y apps móviles.
+Documento de referencia para el módulo `products` y su impacto en pedidos, web-admin y apps móviles.
 
 **Estado:** decisión de diseño adoptada en Fase 1.4  
 **Relacionado:** [TASKS.md](TASKS.md) bloques 1.4–1.5, [PROGRESS.md](PROGRESS.md)
@@ -125,7 +125,7 @@ Campos adicionales en pedido de servicio (`ServiceOrderDetails`, T1.5.8):
 | T4.4.4 | Checkout servicio: dirección del cliente + notas + ventana horaria preferida |
 | T4.4.5 | Seguimiento pedido servicio (estados sin mapa de conductor, opcional mapa proveedor) |
 
-La app **conductor** sigue siendo para delivery de productos físicos. Servicios a domicilio los gestiona el merchant desde portal o app merchant futura (fuera de alcance Fase 4 inicial).
+La app **conductor** sigue siendo para delivery de productos físicos. Servicios a domicilio los gestiona el merchant desde `web-admin/` (fuera de alcance Fase 4 inicial en apps móviles).
 
 ---
 

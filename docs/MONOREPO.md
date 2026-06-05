@@ -6,7 +6,8 @@
 
 ```
 DTS-E-Commerce/
-├── backend/              # Django API + portales + Celery
+├── backend/              # Django API + Celery (sin portales web)
+├── web-admin/            # Next.js + Tailwind (merchant + super admin)
 ├── flutter-customer/     # App móvil cliente
 ├── flutter-driver/       # App móvil conductor
 ├── docs/                 # Roadmap, tareas, arquitectura
@@ -25,6 +26,7 @@ DTS-E-Commerce/
 | uv | 0.4+ |
 | Python | 3.12+ |
 | Flutter | 3.24+ |
+| Node.js | 20+ (web-admin) |
 | GDAL/GEOS | Solo para PostGIS local sin Docker |
 
 ## Setup inicial (una vez)
@@ -87,6 +89,7 @@ cp backend/.env.example backend/.env
 
 ```bash
 make backend-run      # Django :8000
+make web-admin-dev    # Next.js :3000
 make backend-test     # pytest
 make flutter-test     # tests Flutter
 make test             # todo
