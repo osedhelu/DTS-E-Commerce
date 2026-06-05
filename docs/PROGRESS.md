@@ -60,8 +60,8 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [x] T1.7.3 Paginación y throttle
 
 ## Fase 2 — Celery + Signals
-- [ ] T2.1.1 Celery app
-- [ ] T2.1.2 Celery Beat
+- [x] T2.1.1 Celery app
+- [x] T2.1.2 Celery Beat
 - [ ] T2.1.3 Eager tests
 - [ ] T2.2.1 Order signals
 - [ ] T2.2.2 Signal assign driver
