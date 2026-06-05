@@ -70,8 +70,8 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [x] T2.2.5 Signal push new order to drivers
 - [x] T2.3.1 DriverMatcher
 - [x] T2.3.2 assign_driver_task
-- [ ] T2.3.3 Status after assign
-- [ ] T2.4.1 Notification types + templates
+- [x] T2.3.3 Status after assign
+- [x] T2.4.1 Notification types + templates
 - [ ] T2.4.2 FCM client
 - [ ] T2.4.3 SendPushUseCase + Celery task
 - [ ] T2.4.4 OrderStatusNotificationMapper
