@@ -1,4 +1,4 @@
-.PHONY: help setup up down logs ps doctor restart-api \
+.PHONY: help setup up down logs ps doctor restart-api backend-migrate-all backend-check-db \
 	docker-up docker-down docker-logs docker-up-full docker-down-full docker-logs-full docker-ps \
 	backend-shell backend-createsuperuser backend-migrate-docker \
 	backend-sync backend-test backend-migrate backend-run \
@@ -24,6 +24,8 @@ help:
 	@echo "  make backend-shell      Shell Django en contenedor"
 	@echo "  make doctor             Diagnóstico ALLOWED_HOSTS / API"
 	@echo "  make restart-api        Recrear API tras cambiar .env"
+	@echo "  make backend-migrate-all   Migraciones en contenedor API"
+	@echo "  make backend-check-db      Tablas analytics en PostGIS"
 	@echo ""
 	@echo "── Desarrollo local (requiere uv, GDAL, Node, Flutter) ──"
 	@echo "  make setup              Deps locales + solo infra Docker"
@@ -73,6 +75,15 @@ backend-shell: $(DOCKER_ENV_FILE)
 
 backend-migrate-docker: $(DOCKER_ENV_FILE)
 	$(DOCKER_COMPOSE_FULL) --profile tools run --rm backend-migrate
+
+backend-migrate-all: $(DOCKER_ENV_FILE)
+	docker exec dts-api uv run --no-dev python manage.py migrate --noinput
+
+backend-check-db: $(DOCKER_ENV_FILE)
+	@echo "── Tablas analytics ──"
+	@docker exec dts-postgis psql -U postgres -d dts_delivery -c "\dt analytics*"
+	@echo "── Migraciones analytics ──"
+	@docker exec dts-api uv run --no-dev python manage.py showmigrations analytics
 
 restart-api: $(DOCKER_ENV_FILE)
 	$(DOCKER_COMPOSE_FULL) up -d --build --force-recreate api celery-worker celery-beat
