@@ -78,7 +78,7 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [x] T2.4.5 Signal dispatch push on status change
 - [x] T2.4.6 Push ON_THE_WAY al cliente
 - [x] T2.4.7 Email notifications
-- [ ] T2.5.1 DailyReport entity
+- [x] T2.5.1 DailyReport entity
 - [ ] T2.5.2 Report models
 - [ ] T2.5.3 Nightly stats task
 
