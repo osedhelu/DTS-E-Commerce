@@ -20,7 +20,7 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [x] T1.2.7 Permisos por rol
 
 ### Bloque 1.3 Stores
-- [ ] T1.3.1 Store entity
+- [x] T1.3.1 Store entity
 - [ ] T1.3.2 GeoLocation
 - [ ] T1.3.3 Store model PostGIS
 - [ ] T1.3.4 Use cases store
