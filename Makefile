@@ -4,7 +4,7 @@ help:
 	@echo "DTS E-Commerce Monorepo"
 	@echo ""
 	@echo "  make setup          Instalar dependencias de todos los proyectos"
-	@echo "  make docker-up      Levantar PostGIS + Redis"
+	@echo "  make docker-up      Levantar PostGIS + Redis + Mailpit"
 	@echo "  make docker-down    Detener servicios Docker"
 	@echo "  make backend-test   Tests del backend"
 	@echo "  make backend-run    Servidor Django en :8000"

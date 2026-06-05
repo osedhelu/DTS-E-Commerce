@@ -12,7 +12,7 @@ DTS-E-Commerce/
 ├── docs/                 # Roadmap, tareas, arquitectura
 ├── scripts/              # setup.sh, dev.sh
 ├── .cursor/              # Reglas, comandos y skills Cursor
-├── docker-compose.yml    # PostGIS + Redis
+├── docker-compose.yml    # PostGIS + Redis + Mailpit
 ├── Makefile              # Comandos unificados
 └── .github/workflows/    # CI
 ```
@@ -47,7 +47,27 @@ make setup
 | Servicio | Puerto | Uso |
 |----------|--------|-----|
 | PostGIS | 5432 | Base de datos geoespacial |
-| Redis | 6379 | Celery broker + cache |
+| Redis | 6379 | Celery broker + cache + Channels |
+| Mailpit | 8025 (UI), 1025 (SMTP) | Servidor de correo para desarrollo |
+
+### Mailpit — correo en desarrollo
+
+**Sí**, puedes (y conviene) usar un servidor de correo en Docker para desarrollo. Usamos [Mailpit](https://github.com/axllent/mailpit): captura todos los emails que envía Django/Celery y los muestra en una interfaz web. No llegan a internet.
+
+```bash
+make docker-up
+# Abre http://localhost:8025 para ver los correos capturados
+```
+
+En `backend/.env`:
+
+```
+EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
+EMAIL_HOST=localhost
+EMAIL_PORT=1025
+```
+
+Alternativas equivalentes: **Mailhog** (menos mantenido) o **Maildev**.
 
 ```bash
 make docker-up      # iniciar

@@ -76,3 +76,5 @@ Vertical Slice + Clean Architecture por módulo. Ver [docs/ARCHITECTURE.md](docs
 | API Docs (Swagger) | http://localhost:8000/api/v1/docs/ |
 | PostGIS | localhost:5432 |
 | Redis | localhost:6379 |
+| Mailpit (correos dev) | http://localhost:8025 |
+| Mailpit SMTP | localhost:1025 |
