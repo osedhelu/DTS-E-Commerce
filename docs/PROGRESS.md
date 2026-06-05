@@ -32,7 +32,7 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [x] T1.4.2 StockValidator (solo PHYSICAL)
 - [x] T1.4.3 Product models (+ Category parent, product_type)
 - [x] T1.4.4 Use cases product/servicio/categorías
-- [ ] T1.4.5 API catálogo (+ árbol categorías, filtros)
+- [x] T1.4.5 API catálogo (+ árbol categorías, filtros)
 
 > Diseño dual productos/servicios: [PRODUCTS_AND_SERVICES.md](PRODUCTS_AND_SERVICES.md)
 

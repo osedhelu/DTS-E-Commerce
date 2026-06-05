@@ -137,7 +137,7 @@ La app **conductor** sigue siendo para delivery de productos físicos. Servicios
 | `StockValidator` (solo PHYSICAL) | ✅ Hecho | T1.4.2 |
 | Modelos ORM Category parent + Product type | ✅ Hecho | T1.4.3 |
 | Use cases CRUD producto/servicio/categorías | ✅ Hecho | T1.4.4 |
-| API catálogo con árbol categorías | ⬜ Pendiente | T1.4.5 |
+| API catálogo con árbol categorías | ✅ Hecho | T1.4.5 |
 | `OrderType` + detalles servicio | ⬜ Pendiente | T1.5.8 |
 | State machine pedido servicio | ⬜ Pendiente | T1.5.9 |
 | API checkout servicio | ⬜ Pendiente | T1.5.10 |
