@@ -51,7 +51,7 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 ### Bloque 1.6 Delivery
 - [x] T1.6.1 Tracking entities
 - [x] T1.6.2 Tracking models
-- [ ] T1.6.3 Record location use case
+- [x] T1.6.3 Record location use case
 - [ ] T1.6.4 Tracking API
 
 ### Bloque 1.7 API Global
