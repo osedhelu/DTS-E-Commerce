@@ -17,7 +17,7 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [x] T1.2.4 Perfiles por rol
 - [x] T1.2.5 Register use case
 - [x] T1.2.6 Auth API JWT
-- [ ] T1.2.7 Permisos por rol
+- [x] T1.2.7 Permisos por rol
 
 ### Bloque 1.3 Stores
 - [ ] T1.3.1 Store entity
