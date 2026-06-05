@@ -23,6 +23,15 @@ RUN uv sync --frozen --no-dev
 
 COPY backend/ ./
 
+# Estáticos (admin, Swagger) embebidos en la imagen — no requiere DB
+ENV DJANGO_SETTINGS_MODULE=core.settings \
+    SECRET_KEY=collectstatic-build-only \
+    DB_HOST=localhost \
+    DB_NAME=dts_delivery \
+    DB_USER=postgres \
+    DB_PASSWORD=postgres
+RUN uv run --no-dev python manage.py collectstatic --noinput
+
 COPY docker-infrastructure/backend/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 

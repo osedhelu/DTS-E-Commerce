@@ -3,7 +3,7 @@ set -euo pipefail
 
 wait_for_db() {
   echo "==> Esperando PostgreSQL (${DB_HOST:-db}:${DB_PORT:-5432})..."
-  until uv run python - <<'PY'
+  until uv run --no-dev python - <<'PY'
 import os
 import sys
 
@@ -32,9 +32,9 @@ wait_for_db
 
 if [[ "${RUN_MIGRATIONS:-true}" == "true" ]]; then
   echo "==> Aplicando migraciones..."
-  uv run python manage.py migrate --noinput
+  uv run --no-dev python manage.py migrate --noinput
   echo "==> Recolectando archivos estáticos (admin, Swagger)..."
-  uv run python manage.py collectstatic --noinput
+  uv run --no-dev python manage.py collectstatic --noinput --clear
 fi
 
 exec "$@"
