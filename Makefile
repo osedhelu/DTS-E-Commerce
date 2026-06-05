@@ -1,4 +1,4 @@
-.PHONY: help setup up down logs ps \
+.PHONY: help setup up down logs ps doctor restart-api \
 	docker-up docker-down docker-logs docker-up-full docker-down-full docker-logs-full docker-ps \
 	backend-shell backend-createsuperuser backend-migrate-docker \
 	backend-sync backend-test backend-migrate backend-run \
@@ -22,6 +22,8 @@ help:
 	@echo "  make ps                 Estado de contenedores"
 	@echo "  make backend-createsuperuser   Crear admin Django"
 	@echo "  make backend-shell      Shell Django en contenedor"
+	@echo "  make doctor             Diagnóstico ALLOWED_HOSTS / API"
+	@echo "  make restart-api        Recrear API tras cambiar .env"
 	@echo ""
 	@echo "── Desarrollo local (requiere uv, GDAL, Node, Flutter) ──"
 	@echo "  make setup              Deps locales + solo infra Docker"
@@ -43,11 +45,12 @@ up: $(DOCKER_ENV_FILE)
 	@for c in dts-postgis dts-redis dts-mailpit dts-api dts-celery-worker dts-celery-beat; do \
 		docker rm -f $$c 2>/dev/null || true; \
 	done
-	$(DOCKER_COMPOSE_FULL) up -d --build
+	$(DOCKER_COMPOSE_FULL) up -d --build --force-recreate
 	@echo ""
 	@echo "✅ Stack levantado"
 	@echo "   API:     http://localhost:8000"
 	@echo "   Docs:    http://localhost:8000/api/v1/docs/"
+	@echo "   Red:     http://extreme.local:8000/api/v1/docs/"
 	@echo "   Mailpit: http://localhost:8025"
 	@echo ""
 	@echo "   Crear admin: make backend-createsuperuser"
@@ -70,6 +73,24 @@ backend-shell: $(DOCKER_ENV_FILE)
 
 backend-migrate-docker: $(DOCKER_ENV_FILE)
 	$(DOCKER_COMPOSE_FULL) --profile tools run --rm backend-migrate
+
+restart-api: $(DOCKER_ENV_FILE)
+	$(DOCKER_COMPOSE_FULL) up -d --force-recreate api celery-worker celery-beat
+
+doctor: $(DOCKER_ENV_FILE)
+	@echo "── docker-infrastructure/.env ──"
+	@grep -E '^(ALLOWED_HOSTS|CSRF_TRUSTED_ORIGINS|API_PORT)=' $(DOCKER_ENV_FILE) 2>/dev/null || echo "(sin .env)"
+	@echo ""
+	@echo "── Contenedor dts-api ──"
+	@docker exec dts-api printenv ALLOWED_HOSTS 2>/dev/null || echo "dts-api no está corriendo"
+	@echo ""
+	@echo "── Prueba localhost ──"
+	@curl -s -o /dev/null -w "HTTP %{http_code}\n" http://localhost:8000/api/v1/docs/ || true
+	@echo "── Prueba extreme.local (header Host) ──"
+	@curl -s -o /dev/null -w "HTTP %{http_code}\n" -H "Host: extreme.local" http://localhost:8000/api/v1/docs/ || true
+	@echo ""
+	@echo "Si extreme.local da 400 → edita ALLOWED_HOSTS en docker-infrastructure/.env"
+	@echo "Luego: make restart-api"
 
 # Alias legacy
 docker-up-full: up
