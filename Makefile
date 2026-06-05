@@ -82,8 +82,10 @@ backend-migrate-all: $(DOCKER_ENV_FILE)
 backend-check-db: $(DOCKER_ENV_FILE)
 	@echo "── Tablas analytics ──"
 	@docker exec dts-postgis psql -U postgres -d dts_delivery -c "\dt analytics*"
-	@echo "── Migraciones analytics ──"
-	@docker exec dts-api uv run --no-dev python manage.py showmigrations analytics
+	@echo "── Tablas delivery ──"
+	@docker exec dts-postgis psql -U postgres -d dts_delivery -c "\dt delivery*"
+	@echo "── Migraciones analytics / delivery ──"
+	@docker exec dts-api uv run --no-dev python manage.py showmigrations analytics delivery
 
 restart-api: $(DOCKER_ENV_FILE)
 	$(DOCKER_COMPOSE_FULL) up -d --build --force-recreate api celery-worker celery-beat
