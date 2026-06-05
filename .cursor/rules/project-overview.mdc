@@ -24,10 +24,11 @@ features/<modulo>/
 ## Flujo de trabajo
 
 1. Consultar `docs/TASKS.md` para la tarea (ID tipo T1.2.1)
-2. Implementar solo el alcance de esa tarea
-3. Escribir y ejecutar tests listados en TASKS.md
-4. Marcar `[x]` en `docs/PROGRESS.md`
-5. Commit: `feat(scope): descripción` o `fix(scope): descripción`
+2. Si la tarea toca productos/servicios o pedidos de servicio → leer `docs/PRODUCTS_AND_SERVICES.md`
+3. Implementar solo el alcance de esa tarea
+4. Escribir y ejecutar tests listados en TASKS.md
+5. Marcar `[x]` en `docs/PROGRESS.md`
+6. Commit: `feat(scope): descripción` o `fix(scope): descripción`
 
 ## Python
 

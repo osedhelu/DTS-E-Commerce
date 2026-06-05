@@ -45,13 +45,16 @@ Cada tarea incluye: **ID**, **proyecto**, **descripción**, **archivos clave** y
 
 ### Bloque 1.4 — Módulo `products`
 
+> **Catálogo dual:** productos físicos (comida, artículos) **y servicios a domicilio** (limpieza, reparaciones).  
+> Ver [PRODUCTS_AND_SERVICES.md](PRODUCTS_AND_SERVICES.md) para diseño completo, flujos y matriz de avance.
+
 | ID | Tarea | Tests |
 |----|-------|-------|
-| T1.4.1 | `domain/entities.py`: Product, Category | `test_product_price_positive` |
-| T1.4.2 | `domain/services.py`: StockValidator (no vender sin stock) | `test_insufficient_stock_raises` |
-| T1.4.3 | `infrastructure/models.py`: Product, Category FK a Store | `test_product_belongs_to_store` |
-| T1.4.4 | `application/use_cases/manage_product.py`: crear, actualizar, desactivar | `test_create_product`, `test_deactivate_product` |
-| T1.4.5 | API: listar por store, CRUD merchant | `test_list_products_by_store`, `test_unauthorized_crud` |
+| T1.4.1 | `domain/entities.py`: `Product`, `Category` (jerarquía 2 niveles), `ProductType` (PHYSICAL/SERVICE), campos servicio (`duration_minutes`, `requires_on_site_visit`) | `test_product_price_positive`, `test_category_hierarchy`, `test_service_product_on_site_visit` |
+| T1.4.2 | `domain/services.py`: StockValidator — solo aplica a `ProductType.PHYSICAL` | `test_insufficient_stock_raises`, `test_service_skips_stock_validation` |
+| T1.4.3 | `infrastructure/models.py`: Category (FK self `parent`), Product (`product_type`, `duration_minutes`) FK Store | `test_product_belongs_to_store`, `test_category_subcategory_hierarchy` |
+| T1.4.4 | `application/use_cases/manage_product.py`: CRUD producto/servicio; `manage_category.py`: CRUD categoría/subcategoría | `test_create_product`, `test_create_service`, `test_deactivate_product`, `test_create_subcategory` |
+| T1.4.5 | API: árbol categorías + listar/filtrar por store, tipo y categoría; CRUD merchant | `test_list_products_by_store`, `test_list_categories_tree`, `test_unauthorized_crud` |
 
 ### Bloque 1.5 — Módulo `orders` (corazón del sistema)
 
@@ -64,13 +67,25 @@ Cada tarea incluye: **ID**, **proyecto**, **descripción**, **archivos clave** y
 | T1.5.5 | `application/use_cases/create_order.py` | `test_create_order_with_items`, `test_empty_cart_fails` |
 | T1.5.6 | `application/use_cases/transition_order_status.py` | `test_merchant_accepts_order`, `test_customer_cannot_accept` |
 | T1.5.7 | API: crear pedido, listar por rol, cambiar estado | `test_order_api_flow` |
+| T1.5.8 | `domain/value_objects.py`: `OrderType` (DELIVERY/SERVICE), `ServiceOrderDetails` (address, scheduled_at, notes) | `test_service_order_details_validation` |
+| T1.5.9 | `domain/services.py`: ServiceOrderStateMachine (sin conductor; estados SCHEDULED → COMPLETED) | `test_service_order_valid_transitions`, `test_service_order_skips_driver_states` |
+| T1.5.10 | API: checkout servicio con dirección cliente y notas; crear pedido tipo SERVICE | `test_create_service_order_api`, `test_service_order_requires_address` |
 
-**Estados OrderStatus:**
+**Estados OrderStatus (productos físicos — delivery):**
 ```
 CREATED → ACCEPTED_BY_MERCHANT → IN_PREPARATION → READY_FOR_PICKUP
 → SEARCHING_DRIVER → DRIVER_ASSIGNED → PICKED_UP → ON_THE_WAY → DELIVERED
 (CANCELLED en cualquier punto previo a PICKED_UP)
 ```
+
+**Estados pedido servicio (sin conductor de plataforma):**
+```
+CREATED → ACCEPTED_BY_MERCHANT → SCHEDULED → PROVIDER_EN_ROUTE
+→ IN_PROGRESS → COMPLETED
+(CANCELLED en cualquier punto previo a IN_PROGRESS)
+```
+
+> Detalle de campos y reglas: [PRODUCTS_AND_SERVICES.md](PRODUCTS_AND_SERVICES.md)
 
 ### Bloque 1.6 — Módulo `delivery`
 
@@ -150,8 +165,10 @@ CREATED → ACCEPTED_BY_MERCHANT → IN_PREPARATION → READY_FOR_PICKUP
 | ID | Tarea | Tests |
 |----|-------|-------|
 | T3.1.1 | `portals/merchant/`: layout base Bootstrap/Tailwind | `test_merchant_login_page` |
-| T3.1.2 | Vista CRUD productos (reusa use cases) | `test_merchant_create_product_view` |
-| T3.1.3 | Gestión inventario / stock | `test_merchant_update_stock_view` |
+| T3.1.2 | Vista CRUD productos **y servicios** (formulario condicional por `product_type`) | `test_merchant_create_product_view`, `test_merchant_create_service_view` |
+| T3.1.3 | Gestión inventario / stock (solo PHYSICAL) | `test_merchant_update_stock_view`, `test_merchant_cannot_set_stock_on_service` |
+| T3.1.4 | CRUD categorías y subcategorías por tienda | `test_merchant_create_category`, `test_merchant_create_subcategory` |
+| T3.1.5 | Dashboard pedidos de servicio (aceptar, agendar, en curso, completado) | `test_merchant_service_order_flow_view` |
 
 ### Bloque 3.2 — Portal Merchant: pedidos
 
@@ -209,8 +226,10 @@ CREATED → ACCEPTED_BY_MERCHANT → IN_PREPARATION → READY_FOR_PICKUP
 
 | ID | Tarea | Tests |
 |----|-------|-------|
-| T4.3.1 | `features/catalog/domain`: GetProductsByStoreUseCase | `get_products_usecase_test` |
+| T4.3.1 | `features/catalog/domain`: GetProductsByStoreUseCase (filtro tipo/categoría) | `get_products_usecase_test` |
 | T4.3.2 | ProductDetailScreen + agregar al carrito | `add_to_cart_from_catalog_test` |
+| T4.3.3 | Filtros categoría/subcategoría y badge Physical/Service en catálogo | `catalog_filter_by_category_test` |
+| T4.3.4 | ServiceDetailScreen: duración, descripción, botón solicitar | `service_detail_screen_test` |
 
 ### Bloque 4.4 — Cliente: cart + checkout
 
@@ -219,6 +238,8 @@ CREATED → ACCEPTED_BY_MERCHANT → IN_PREPARATION → READY_FOR_PICKUP
 | T4.4.1 | `features/cart/domain`: Cart entity, AddItemUseCase | `cart_add_item_test`, `cart_total_test` |
 | T4.4.2 | `features/checkout/domain`: CreateOrderUseCase | `create_order_usecase_test` |
 | T4.4.3 | CheckoutScreen confirma pedido | `checkout_flow_widget_test` |
+| T4.4.4 | Checkout servicio: dirección cliente + notas + horario preferido | `service_checkout_flow_test` |
+| T4.4.5 | Seguimiento pedido servicio (estados sin conductor) | `service_order_tracking_test` |
 
 ### Bloque 4.5 — Cliente: tracking
 

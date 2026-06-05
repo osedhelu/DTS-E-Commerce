@@ -56,6 +56,18 @@ features/orders/
 | `application` | Casos de uso | Llama domain + repos |
 | `infrastructure` | Persistencia, HTTP, tareas | Models, DRF, Celery, Templates |
 
+### Catálogo: productos y servicios
+
+El módulo `features/products/` soporta **dos tipos de ítem**:
+
+- **PHYSICAL** — comida, artículos; control de stock
+- **SERVICE** — limpieza, reparaciones; visita a domicilio, sin stock
+
+Categorías con jerarquía de 2 niveles (raíz → subcategoría).  
+Documento completo: [PRODUCTS_AND_SERVICES.md](PRODUCTS_AND_SERVICES.md)
+
+Los pedidos de servicio (Fase 1.5, T1.5.8–1.5.10) usan un flujo de estados distinto al delivery con conductor.
+
 ### Portales web
 
 Los portales viven en `backend/portals/`:

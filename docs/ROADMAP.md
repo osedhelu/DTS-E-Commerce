@@ -16,8 +16,8 @@ Cada tarea tiene ID único en [TASKS.md](TASKS.md). Formato: `T<fase>.<bloque>.<
 | 1.1 | Setup | Proyecto Django + DRF + PostGIS + uv |
 | 1.2 | accounts | Custom User + perfiles + **DeviceToken FCM (T1.2.8)** |
 | 1.3 | stores | Store/Merchant, ubicación, estado abierto/cerrado |
-| 1.4 | products | Producto, categoría, stock, precio |
-| 1.5 | orders | Order + OrderStatus state machine |
+| 1.4 | products | Catálogo dual: productos físicos + servicios a domicilio, categorías/subcategorías ([PRODUCTS_AND_SERVICES.md](PRODUCTS_AND_SERVICES.md)) |
+| 1.5 | orders | Order delivery + **pedidos servicio** (T1.5.8–1.5.10), state machines |
 | 1.6 | delivery | DeliveryTracking (historial GPS) |
 | 1.7 | api | Endpoints DRF + permisos por rol + OpenAPI |
 
@@ -49,7 +49,7 @@ Cada tarea tiene ID único en [TASKS.md](TASKS.md). Formato: `T<fase>.<bloque>.<
 
 | Bloque | Portal | Entregable |
 |--------|--------|------------|
-| 3.1 | merchant | CRUD productos e inventario |
+| 3.1 | merchant | CRUD productos/servicios, categorías, inventario (solo físicos) |
 | 3.2 | merchant | Dashboard pedidos en tiempo real (HTMX/polling) |
 | 3.3 | admin | Métricas globales y KPIs |
 | 3.4 | admin | Gestión pagos y comisiones |
@@ -70,8 +70,8 @@ Cada tarea tiene ID único en [TASKS.md](TASKS.md). Formato: `T<fase>.<bloque>.<
 |--------|---------|------------|
 | 4.1 | core + auth | Login, tokens, DI, **Firebase (T4.1.5)** |
 | 4.2 | stores | Lista de comercios |
-| 4.3 | catalog | Catálogo por comercio |
-| 4.4 | cart + checkout | Carrito y pago |
+| 4.3 | catalog | Catálogo por comercio (filtros categoría, productos y servicios) |
+| 4.4 | cart + checkout | Carrito, pago delivery y **checkout servicio a domicilio** |
 | 4.5 | tracking + push | Mapa + **recibir push pedido en camino (T4.5.3–4.5.5)** |
 
 ### App Conductor

@@ -25,23 +25,28 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [x] T1.3.2 GeoLocation
 - [x] T1.3.3 Store model PostGIS
 - [x] T1.3.4 Use cases store
-- [ ] T1.3.5 API stores
+- [x] T1.3.5 API stores
 
 ### Bloque 1.4 Products
-- [ ] T1.4.1 Product entity
-- [ ] T1.4.2 StockValidator
-- [ ] T1.4.3 Product models
-- [ ] T1.4.4 Use cases product
-- [ ] T1.4.5 API products
+- [x] T1.4.1 Product entity (+ categorías/subcategorías, ProductType PHYSICAL/SERVICE)
+- [x] T1.4.2 StockValidator (solo PHYSICAL)
+- [ ] T1.4.3 Product models (+ Category parent, product_type)
+- [ ] T1.4.4 Use cases product/servicio/categorías
+- [ ] T1.4.5 API catálogo (+ árbol categorías, filtros)
+
+> Diseño dual productos/servicios: [PRODUCTS_AND_SERVICES.md](PRODUCTS_AND_SERVICES.md)
 
 ### Bloque 1.5 Orders
 - [ ] T1.5.1 OrderStatus enum
-- [ ] T1.5.2 OrderStateMachine
+- [ ] T1.5.2 OrderStateMachine (delivery)
 - [ ] T1.5.3 Order entities
 - [ ] T1.5.4 Order models
 - [ ] T1.5.5 Create order use case
 - [ ] T1.5.6 Transition status use case
 - [ ] T1.5.7 Orders API
+- [ ] T1.5.8 OrderType + ServiceOrderDetails
+- [ ] T1.5.9 ServiceOrderStateMachine
+- [ ] T1.5.10 API checkout servicio
 
 ### Bloque 1.6 Delivery
 - [ ] T1.6.1 Tracking entities
@@ -79,8 +84,10 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 
 ## Fase 3 — Portales Web
 - [ ] T3.1.1 Merchant layout
-- [ ] T3.1.2 CRUD productos vista
-- [ ] T3.1.3 Inventario vista
+- [ ] T3.1.2 CRUD productos y servicios vista
+- [ ] T3.1.3 Inventario vista (solo PHYSICAL)
+- [ ] T3.1.4 CRUD categorías/subcategorías
+- [ ] T3.1.5 Dashboard pedidos servicio
 - [ ] T3.2.1 Dashboard pedidos
 - [ ] T3.2.2 HTMX aceptar/preparar
 - [ ] T3.2.3 Polling pedidos
@@ -103,9 +110,13 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [ ] T4.2.3 StoreListScreen
 - [ ] T4.3.1 GetProductsUseCase
 - [ ] T4.3.2 Catalog + cart
+- [ ] T4.3.3 Filtros categoría/tipo catálogo
+- [ ] T4.3.4 ServiceDetailScreen
 - [ ] T4.4.1 Cart domain
 - [ ] T4.4.2 CreateOrderUseCase
 - [ ] T4.4.3 CheckoutScreen
+- [ ] T4.4.4 Checkout servicio (dirección + notas)
+- [ ] T4.4.5 Seguimiento pedido servicio
 - [ ] T4.5.1 GetTrackingUseCase
 - [ ] T4.5.2 TrackingMapScreen
 - [ ] T4.5.3 Registrar token FCM
