@@ -90,6 +90,20 @@ services:
       - dts-backend
     restart: unless-stopped
 
+  # Uso: make backend-migrate-docker (no requiere GDAL en el host)
+  backend-migrate:
+    build: *backend-build
+    profiles: [tools]
+    command: uv run python manage.py migrate --noinput
+    environment:
+      <<: *backend-env
+      RUN_MIGRATIONS: "false"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - dts-backend
+
   celery-beat:
     build: *backend-build
     container_name: dts-celery-beat

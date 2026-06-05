@@ -1,4 +1,4 @@
-.PHONY: help setup docker-up docker-down docker-logs docker-up-full docker-down-full docker-logs-full backend-sync backend-test backend-migrate backend-run web-admin-sync web-admin-dev web-admin-build web-admin-lint flutter-sync flutter-test test lint
+.PHONY: help setup docker-up docker-down docker-logs docker-up-full docker-down-full docker-logs-full backend-sync backend-test backend-migrate backend-migrate-docker backend-run web-admin-sync web-admin-dev web-admin-build web-admin-lint flutter-sync flutter-test test lint
 
 DOCKER_COMPOSE_FULL = docker compose --env-file docker-infrastructure/.env -f docker-infrastructure/docker-compose.yml
 
@@ -10,7 +10,9 @@ help:
 	@echo "  make docker-up-full   Stack completo: API + Celery worker + beat"
 	@echo "  make docker-down      Detener infraestructura Docker"
 	@echo "  make docker-down-full Detener stack completo"
-	@echo "  make backend-test     Tests del backend"
+	@echo "  make backend-test           Tests del backend"
+	@echo "  make backend-migrate        Migraciones (requiere GDAL en el host)"
+	@echo "  make backend-migrate-docker Migraciones vía Docker (sin GDAL local)"
 	@echo "  make backend-run      Servidor Django en :8000"
 	@echo "  make web-admin-dev    Next.js en :3000"
 	@echo "  make web-admin-build  Build producción web-admin"
@@ -52,6 +54,10 @@ backend-test:
 
 backend-migrate:
 	cd backend && uv run python manage.py migrate
+
+backend-migrate-docker:
+	test -f docker-infrastructure/.env || cp docker-infrastructure/.env.example docker-infrastructure/.env
+	$(DOCKER_COMPOSE_FULL) --profile tools run --rm backend-migrate
 
 backend-run:
 	cd backend && uv run python manage.py runserver 0.0.0.0:8000
