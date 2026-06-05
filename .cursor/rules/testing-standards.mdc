@@ -1,0 +1,40 @@
+---
+description: Estándares de pruebas unitarias por tarea
+globs: "**/test*/**/*,**/tests/**/*"
+alwaysApply: false
+---
+
+# Testing Standards
+
+## Regla principal
+
+**Ninguna tarea se considera completa sin tests verdes.**
+
+Consulta `docs/TASKS.md` para los tests obligatorios de cada ID.
+
+## Backend (pytest)
+
+```bash
+cd backend && uv run pytest features/orders/tests/ -v
+cd backend && make test-cov
+```
+
+- Domain: sin DB, sin Django
+- Application: mocks con `unittest.mock` o `pytest-mock`
+- Infrastructure: `@pytest.mark.django_db`, `APIClient`, `factory_boy`
+
+## Flutter
+
+```bash
+cd flutter-customer && flutter test test/features/auth/
+```
+
+- Use cases: `mocktail` para repos
+- Widgets: `testWidgets` + `pumpWidget`
+- No tests triviales que solo verifican `true == true`
+
+## Al completar tarea
+
+1. Ejecutar tests del módulo
+2. Confirmar verde en terminal
+3. Actualizar `docs/PROGRESS.md`

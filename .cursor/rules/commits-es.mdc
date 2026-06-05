@@ -1,0 +1,17 @@
+---
+description: Formato de commits en español
+alwaysApply: true
+---
+
+# Commits
+
+Formato: `tipo(scope): descripción concisa`
+
+Tipos: `feat`, `fix`, `refactor`, `test`, `docs`, `chore`
+
+Ejemplos:
+- `feat(orders): implementar OrderStateMachine en domain`
+- `test(accounts): agregar tests de registro por rol`
+- `feat(flutter-customer): pantalla lista de comercios`
+
+Un commit por tarea cuando sea posible (ej. T1.5.2).

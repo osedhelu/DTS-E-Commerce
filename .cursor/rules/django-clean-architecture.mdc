@@ -1,0 +1,51 @@
+---
+description: Clean Architecture en módulos Django del backend
+globs: backend/**/*.py
+alwaysApply: false
+---
+
+# Django Clean Architecture
+
+## Reglas de capas
+
+| Capa | Puede importar | No puede importar |
+|------|----------------|-------------------|
+| `domain/` | stdlib, typing | django, rest_framework, celery |
+| `application/` | domain | django ORM directo |
+| `infrastructure/` | domain, application, django, drf | — |
+
+## Patrón por feature
+
+```python
+# domain/services.py — lógica pura
+class OrderStateMachine:
+    def transition(self, current: OrderStatus, target: OrderStatus) -> OrderStatus:
+        if target not in VALID_TRANSITIONS[current]:
+            raise InvalidTransitionError(...)
+        return target
+
+# application/use_cases/create_order.py
+class CreateOrderUseCase:
+    def __init__(self, repo: OrderRepository): ...
+    def execute(self, dto: CreateOrderDTO) -> Order: ...
+
+# infrastructure/repositories.py
+class DjangoOrderRepository(OrderRepository):
+    def save(self, order: Order) -> Order:
+        model = OrderModel.from_entity(order)
+        model.save()
+        return model.to_entity()
+```
+
+## Django apps
+
+Cada feature = Django app en `features/<name>/` con `apps.py` y label único.
+
+## Tests obligatorios
+
+```
+features/<modulo>/tests/
+├── domain/           # Sin DB
+├── application/      # Mocks de repos
+└── infrastructure/   # pytest-django + APIClient
+```

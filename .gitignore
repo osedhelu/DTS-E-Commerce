@@ -1,0 +1,44 @@
+# Python
+backend/.venv/
+backend/__pycache__/
+backend/.pytest_cache/
+backend/.coverage
+backend/htmlcov/
+backend/.env
+backend/*.pyc
+backend/.ruff_cache/
+
+# Django
+backend/staticfiles/
+backend/media/
+backend/db.sqlite3
+
+# Docker
+.docker/
+
+# Env
+.env
+.env.local
+
+# Flutter
+flutter-customer/.dart_tool/
+flutter-customer/build/
+flutter-customer/.flutter-plugins
+flutter-customer/.flutter-plugins-dependencies
+flutter-customer/.packages
+flutter-customer/.idea/
+flutter-customer/*.iml
+
+flutter-driver/.dart_tool/
+flutter-driver/build/
+flutter-driver/.flutter-plugins
+flutter-driver/.flutter-plugins-dependencies
+flutter-driver/.packages
+flutter-driver/.idea/
+flutter-driver/*.iml
+
+# IDE
+.idea/
+.vscode/
+*.swp
+.DS_Store

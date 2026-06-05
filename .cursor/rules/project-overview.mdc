@@ -1,0 +1,40 @@
+---
+description: Contexto general del monorepo DTS Delivery Platform
+alwaysApply: true
+---
+
+# DTS Delivery Platform
+
+Monorepo con 3 proyectos:
+- `backend/` — Django + DRF + Portales + Celery + Channels
+- `flutter-customer/` — App cliente
+- `flutter-driver/` — App conductor
+
+## Arquitectura obligatoria
+
+Vertical Slice + Clean Architecture por módulo:
+
+```
+features/<modulo>/
+├── domain/          # Sin imports de framework
+├── application/     # Casos de uso
+└── infrastructure/  # ORM, API, UI, tasks
+```
+
+## Flujo de trabajo
+
+1. Consultar `docs/TASKS.md` para la tarea (ID tipo T1.2.1)
+2. Implementar solo el alcance de esa tarea
+3. Escribir y ejecutar tests listados en TASKS.md
+4. Marcar `[x]` en `docs/PROGRESS.md`
+5. Commit: `feat(scope): descripción` o `fix(scope): descripción`
+
+## Python
+
+- Usar **uv** (nunca pip): `uv add`, `uv sync`, `uv run`
+- Tests: `cd backend && make test`
+
+## Flutter
+
+- Riverpod para estado
+- Tests: `cd flutter-customer && flutter test`

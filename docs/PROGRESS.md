@@ -1,0 +1,120 @@
+# Progreso del Desarrollo
+
+Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para implementar.
+
+## Fase 1 — Backend Fundamentos
+
+### Bloque 1.1 Setup
+- [x] T1.1.1 Proyecto Django + uv
+- [x] T1.1.2 PostGIS + Redis config
+- [x] T1.1.3 Estructura features/
+- [x] T1.1.4 pytest + coverage
+
+### Bloque 1.2 Accounts
+- [ ] T1.2.1 UserRole enum
+- [ ] T1.2.2 Email, Phone value objects
+- [ ] T1.2.3 CustomUser model
+- [ ] T1.2.4 Perfiles por rol
+- [ ] T1.2.5 Register use case
+- [ ] T1.2.6 Auth API JWT
+- [ ] T1.2.7 Permisos por rol
+
+### Bloque 1.3 Stores
+- [ ] T1.3.1 Store entity
+- [ ] T1.3.2 GeoLocation
+- [ ] T1.3.3 Store model PostGIS
+- [ ] T1.3.4 Use cases store
+- [ ] T1.3.5 API stores
+
+### Bloque 1.4 Products
+- [ ] T1.4.1 Product entity
+- [ ] T1.4.2 StockValidator
+- [ ] T1.4.3 Product models
+- [ ] T1.4.4 Use cases product
+- [ ] T1.4.5 API products
+
+### Bloque 1.5 Orders
+- [ ] T1.5.1 OrderStatus enum
+- [ ] T1.5.2 OrderStateMachine
+- [ ] T1.5.3 Order entities
+- [ ] T1.5.4 Order models
+- [ ] T1.5.5 Create order use case
+- [ ] T1.5.6 Transition status use case
+- [ ] T1.5.7 Orders API
+
+### Bloque 1.6 Delivery
+- [ ] T1.6.1 Tracking entities
+- [ ] T1.6.2 Tracking models
+- [ ] T1.6.3 Record location use case
+- [ ] T1.6.4 Tracking API
+
+### Bloque 1.7 API Global
+- [ ] T1.7.1 Router v1
+- [ ] T1.7.2 OpenAPI
+- [ ] T1.7.3 Paginación y throttle
+
+## Fase 2 — Celery + Signals
+- [ ] T2.1.1 Celery app
+- [ ] T2.1.2 Celery Beat
+- [ ] T2.1.3 Eager tests
+- [ ] T2.2.1 Order signals
+- [ ] T2.2.2 Signal assign driver
+- [ ] T2.2.3 Signal notify customer
+- [ ] T2.3.1 DriverMatcher
+- [ ] T2.3.2 assign_driver_task
+- [ ] T2.3.3 Status after assign
+- [ ] T2.4.1 Notification types
+- [ ] T2.4.2 Push FCM
+- [ ] T2.4.3 Email notifications
+- [ ] T2.5.1 DailyReport entity
+- [ ] T2.5.2 Report models
+- [ ] T2.5.3 Nightly stats task
+
+## Fase 3 — Portales Web
+- [ ] T3.1.1 Merchant layout
+- [ ] T3.1.2 CRUD productos vista
+- [ ] T3.1.3 Inventario vista
+- [ ] T3.2.1 Dashboard pedidos
+- [ ] T3.2.2 HTMX aceptar/preparar
+- [ ] T3.2.3 Polling pedidos
+- [ ] T3.3.1 Admin dashboard
+- [ ] T3.3.2 KPIs métricas
+- [ ] T3.4.1 Comisiones vista
+- [ ] T3.4.2 Export CSV
+- [ ] T3.5.1 Coupon/Banner domain
+- [ ] T3.5.2 CRUD cupones
+- [ ] T3.5.3 API banners
+
+## Fase 4 — Flutter
+- [ ] T4.1.1 Customer setup
+- [ ] T4.1.2 ApiClient
+- [ ] T4.1.3 LoginUseCase
+- [ ] T4.1.4 LoginScreen
+- [ ] T4.2.1 GetStoresUseCase
+- [ ] T4.2.2 StoresRepository
+- [ ] T4.2.3 StoreListScreen
+- [ ] T4.3.1 GetProductsUseCase
+- [ ] T4.3.2 Catalog + cart
+- [ ] T4.4.1 Cart domain
+- [ ] T4.4.2 CreateOrderUseCase
+- [ ] T4.4.3 CheckoutScreen
+- [ ] T4.5.1 GetTrackingUseCase
+- [ ] T4.5.2 TrackingMapScreen
+- [ ] T4.6.1 Driver setup
+- [ ] T4.6.2 Driver login
+- [ ] T4.7.1 ToggleOnlineUseCase
+- [ ] T4.7.2 Availability switch
+- [ ] T4.8.1 Order use cases
+- [ ] T4.8.2 FCM handler
+- [ ] T4.8.3 Driver order flow
+- [ ] T4.9.1 SendLocationUseCase
+- [ ] T4.9.2 Background location
+- [ ] T4.9.3 Location permissions
+
+## Fase 5 — Tiempo Real
+- [ ] T5.1.1 Channels setup
+- [ ] T5.1.2 TrackingConsumer
+- [ ] T5.2.1 WS broadcast
+- [ ] T5.3.1 Customer WS datasource
+- [ ] T5.4.1 Driver WS emit
+- [ ] T5.5.1 Firebase doc alternativa

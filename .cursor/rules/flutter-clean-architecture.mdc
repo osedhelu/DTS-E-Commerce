@@ -1,0 +1,51 @@
+---
+description: Clean Architecture en features Flutter
+globs: flutter-*/**/*.dart
+alwaysApply: false
+---
+
+# Flutter Clean Architecture
+
+## Estructura por feature
+
+```
+lib/features/<modulo>/
+├── domain/entities/
+├── domain/repositories/     # abstract class
+├── domain/usecases/
+├── application/providers/
+├── infrastructure/datasources/
+├── infrastructure/models/
+├── infrastructure/repositories/
+└── presentation/screens/
+```
+
+## Reglas
+
+- `domain/` no importa flutter, dio, ni infrastructure
+- `presentation/` no importa `infrastructure/` directamente
+- DI en `core/di/` conecta interfaces → implementaciones
+- DTOs en `infrastructure/models/` con métodos `toEntity()` / `fromEntity()`
+- Estado con Riverpod (`AsyncNotifier` o `StateNotifier`)
+
+## Tests
+
+```
+test/features/<modulo>/
+├── domain/           # Use cases con mocktail
+├── infrastructure/   # Mappers y repos
+└── presentation/     # widget tests
+```
+
+## Ejemplo use case
+
+```dart
+class LoginUseCase {
+  final AuthRepository _repository;
+  LoginUseCase(this._repository);
+
+  Future<Either<Failure, User>> call(LoginParams params) {
+    return _repository.login(params.email, params.password);
+  }
+}
+```
