@@ -40,9 +40,9 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [x] T1.5.1 OrderStatus enum
 - [x] T1.5.2 OrderStateMachine (delivery)
 - [x] T1.5.3 Order entities
-- [ ] T1.5.4 Order models
-- [ ] T1.5.5 Create order use case
-- [ ] T1.5.6 Transition status use case
+- [x] T1.5.4 Order models
+- [x] T1.5.5 Create order use case
+- [x] T1.5.6 Transition status use case
 - [ ] T1.5.7 Orders API
 - [ ] T1.5.8 OrderType + ServiceOrderDetails
 - [ ] T1.5.9 ServiceOrderStateMachine
