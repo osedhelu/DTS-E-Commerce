@@ -18,11 +18,12 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [x] T1.2.5 Register use case
 - [x] T1.2.6 Auth API JWT
 - [x] T1.2.7 Permisos por rol
+- [ ] T1.2.8 DeviceToken FCM (antes de Fase 2 push)
 
 ### Bloque 1.3 Stores
 - [x] T1.3.1 Store entity
 - [x] T1.3.2 GeoLocation
-- [ ] T1.3.3 Store model PostGIS
+- [x] T1.3.3 Store model PostGIS
 - [ ] T1.3.4 Use cases store
 - [ ] T1.3.5 API stores
 
@@ -60,12 +61,18 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [ ] T2.2.1 Order signals
 - [ ] T2.2.2 Signal assign driver
 - [ ] T2.2.3 Signal notify customer
+- [ ] T2.2.4 Signal push order accepted
+- [ ] T2.2.5 Signal push new order to drivers
 - [ ] T2.3.1 DriverMatcher
 - [ ] T2.3.2 assign_driver_task
 - [ ] T2.3.3 Status after assign
-- [ ] T2.4.1 Notification types
-- [ ] T2.4.2 Push FCM
-- [ ] T2.4.3 Email notifications
+- [ ] T2.4.1 Notification types + templates
+- [ ] T2.4.2 FCM client
+- [ ] T2.4.3 SendPushUseCase + Celery task
+- [ ] T2.4.4 OrderStatusNotificationMapper
+- [ ] T2.4.5 Signal dispatch push on status change
+- [ ] T2.4.6 Push ON_THE_WAY al cliente
+- [ ] T2.4.7 Email notifications
 - [ ] T2.5.1 DailyReport entity
 - [ ] T2.5.2 Report models
 - [ ] T2.5.3 Nightly stats task
@@ -90,6 +97,7 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [ ] T4.1.2 ApiClient
 - [ ] T4.1.3 LoginUseCase
 - [ ] T4.1.4 LoginScreen
+- [ ] T4.1.5 Firebase setup cliente
 - [ ] T4.2.1 GetStoresUseCase
 - [ ] T4.2.2 StoresRepository
 - [ ] T4.2.3 StoreListScreen
@@ -100,6 +108,9 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [ ] T4.4.3 CheckoutScreen
 - [ ] T4.5.1 GetTrackingUseCase
 - [ ] T4.5.2 TrackingMapScreen
+- [ ] T4.5.3 Registrar token FCM
+- [ ] T4.5.4 Push handler
+- [ ] T4.5.5 Deep link push → tracking
 - [ ] T4.6.1 Driver setup
 - [ ] T4.6.2 Driver login
 - [ ] T4.7.1 ToggleOnlineUseCase

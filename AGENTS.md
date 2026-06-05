@@ -20,6 +20,11 @@
 - `implement-flutter-feature` — módulos Flutter
 - `execute-phase-task` — workflow por ID de tarea
 - `django-celery-signals` — Fase 2 async
+- `push-notifications` — FCM push por estado de pedido
+
+## Documentación clave
+
+- [PUSH_NOTIFICATIONS.md](docs/PUSH_NOTIFICATIONS.md) — plan push FCM
 
 ## Reglas
 

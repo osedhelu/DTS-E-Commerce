@@ -35,8 +35,16 @@ Riverpod para estado. Ver `.cursor/rules/flutter-clean-architecture.mdc`.
 
 ## Orden cliente
 
-auth → stores → catalog → cart/checkout → tracking
+auth → stores → catalog → cart/checkout → tracking → **push (T4.1.5, T4.5.3–4.5.5)**
+
+Consulta `docs/PUSH_NOTIFICATIONS.md` para integrar FCM sin romper el flujo.
+
+## Push notifications (cliente)
+
+- T4.1.5: Firebase init
+- T4.5.3: Registrar token en backend (`T1.2.8` debe existir)
+- T4.5.4–4.5.5: Recibir push "pedido en camino" → abrir tracking
 
 ## Orden conductor
 
-auth → availability → orders → location
+auth → availability → orders (+ T4.8.2 FCM alerta) → location

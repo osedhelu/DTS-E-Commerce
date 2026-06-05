@@ -14,7 +14,7 @@ Cada tarea tiene ID único en [TASKS.md](TASKS.md). Formato: `T<fase>.<bloque>.<
 | Bloque | Módulo | Entregable |
 |--------|--------|------------|
 | 1.1 | Setup | Proyecto Django + DRF + PostGIS + uv |
-| 1.2 | accounts | Custom User + perfiles (SuperAdmin, Merchant, Driver, Customer) |
+| 1.2 | accounts | Custom User + perfiles + **DeviceToken FCM (T1.2.8)** |
 | 1.3 | stores | Store/Merchant, ubicación, estado abierto/cerrado |
 | 1.4 | products | Producto, categoría, stock, precio |
 | 1.5 | orders | Order + OrderStatus state machine |
@@ -33,9 +33,9 @@ Cada tarea tiene ID único en [TASKS.md](TASKS.md). Formato: `T<fase>.<bloque>.<
 | Bloque | Módulo | Entregable |
 |--------|--------|------------|
 | 2.1 | infra | Redis + Celery + Celery Beat |
-| 2.2 | orders/signals | Signals post_save en cambios de estado |
+| 2.2 | orders/signals | Signals post_save + push por cambio de estado |
 | 2.3 | delivery/tasks | Asignación de conductores (geo) |
-| 2.4 | notifications | Push FCM + email |
+| 2.4 | notifications | Push FCM por OrderStatus + email (ver [PUSH_NOTIFICATIONS.md](PUSH_NOTIFICATIONS.md)) |
 | 2.5 | analytics | Reportes nocturnos (ingresos, comisiones) |
 
 **Comando:** `/fase-2`
@@ -68,11 +68,11 @@ Cada tarea tiene ID único en [TASKS.md](TASKS.md). Formato: `T<fase>.<bloque>.<
 
 | Bloque | Feature | Entregable |
 |--------|---------|------------|
-| 4.1 | core + auth | Login, tokens, DI |
+| 4.1 | core + auth | Login, tokens, DI, **Firebase (T4.1.5)** |
 | 4.2 | stores | Lista de comercios |
 | 4.3 | catalog | Catálogo por comercio |
 | 4.4 | cart + checkout | Carrito y pago |
-| 4.5 | tracking | Mapa con ubicación del conductor |
+| 4.5 | tracking + push | Mapa + **recibir push pedido en camino (T4.5.3–4.5.5)** |
 
 ### App Conductor
 

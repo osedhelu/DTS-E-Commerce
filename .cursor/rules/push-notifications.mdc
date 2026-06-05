@@ -1,0 +1,36 @@
+---
+description: Push notifications FCM — cuándo implementar y mapeo OrderStatus
+alwaysApply: false
+---
+
+# Push Notifications (FCM)
+
+Consulta `docs/PUSH_NOTIFICATIONS.md` antes de implementar push.
+
+## Orden obligatorio
+
+1. `T1.5.x` Orders (disparadores de estado)
+2. `T1.2.8` DeviceToken (registrar token FCM del móvil)
+3. `T2.4.x` Backend: Celery + FCM + signals
+4. `T4.1.5`, `T4.5.3–4.5.5` Cliente recibe push
+5. `T4.8.2` Conductor recibe alerta
+
+## Regla de arquitectura
+
+- **Signal** detecta cambio de `Order.status` → encola Celery (no enviar FCM en el request HTTP)
+- **Celery task** llama `SendPushUseCase` → `FCMClient`
+- Mensajes definidos en `features/notifications/domain/` (PushTemplate)
+
+## Ejemplo: comercio marca pedido en camino
+
+```
+Merchant PATCH status=ON_THE_WAY
+  → post_save signal
+  → dispatch_order_push_task.delay(order_id)
+  → push al cliente: "¡Tu pedido ya salió!"
+```
+
+## No mezclar
+
+- Push (Fase 2/4) = avisar eventos
+- WebSocket (Fase 5) = ubicación GPS en vivo en mapa

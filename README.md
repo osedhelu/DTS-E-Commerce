@@ -56,8 +56,9 @@ Vertical Slice + Clean Architecture por módulo. Ver [docs/ARCHITECTURE.md](docs
 | Documento | Contenido |
 |-----------|-----------|
 | [ROADMAP.md](docs/ROADMAP.md) | 5 fases del proyecto |
-| [TASKS.md](docs/TASKS.md) | 77 tareas con tests |
+| [TASKS.md](docs/TASKS.md) | Tareas con tests (incluye push FCM) |
 | [PROGRESS.md](docs/PROGRESS.md) | Progreso actual |
+| [PUSH_NOTIFICATIONS.md](docs/PUSH_NOTIFICATIONS.md) | Plan push por estado de pedido |
 | [MONOREPO.md](docs/MONOREPO.md) | Guía completa del monorepo |
 
 ### Cursor AI

@@ -29,6 +29,9 @@ Cada tarea incluye: **ID**, **proyecto**, **descripción**, **archivos clave** y
 | T1.2.5 | `application/use_cases/register_user.py` | `test_register_merchant`, `test_register_duplicate_email` |
 | T1.2.6 | `infrastructure/serializers.py` + `views.py`: registro y login JWT | `test_login_returns_token`, `test_register_201` |
 | T1.2.7 | Permisos DRF por rol (`IsMerchant`, `IsDriver`, etc.) | `test_merchant_cannot_access_admin` |
+| T1.2.8 | `DeviceToken` model + API registrar token FCM (`POST /accounts/device-token/`) | `test_register_device_token`, `test_unregister_device_token` |
+
+> **T1.2.8** es prerequisito de push (Fase 2). Ejecutar antes de `T2.4.x`. Ver [PUSH_NOTIFICATIONS.md](PUSH_NOTIFICATIONS.md).
 
 ### Bloque 1.3 — Módulo `stores`
 
@@ -105,6 +108,8 @@ CREATED → ACCEPTED_BY_MERCHANT → IN_PREPARATION → READY_FOR_PICKUP
 | T2.2.1 | `infrastructure/signals.py`: detectar cambio de status en post_save | `test_signal_fires_on_status_change` |
 | T2.2.2 | Signal READY_FOR_PICKUP → encola `assign_driver_task` | `test_signal_enqueues_assign_driver` |
 | T2.2.3 | Signal ON_THE_WAY → encola `notify_customer_task` | `test_signal_enqueues_notification` |
+| T2.2.4 | Signal ACCEPTED_BY_MERCHANT → push al cliente | `test_signal_push_order_accepted` |
+| T2.2.5 | Signal READY_FOR_PICKUP → push a conductores online | `test_signal_push_new_order_to_drivers` |
 
 ### Bloque 2.3 — Asignación de conductores
 
@@ -114,13 +119,19 @@ CREATED → ACCEPTED_BY_MERCHANT → IN_PREPARATION → READY_FOR_PICKUP
 | T2.3.2 | `infrastructure/tasks.py`: `assign_driver_task` | `test_task_assigns_nearest`, `test_task_retries` |
 | T2.3.3 | Actualizar OrderStatus a SEARCHING_DRIVER → DRIVER_ASSIGNED | `test_status_after_assignment` |
 
-### Bloque 2.4 — Notificaciones
+### Bloque 2.4 — Notificaciones Push + Email
+
+> Flujo completo: [PUSH_NOTIFICATIONS.md](PUSH_NOTIFICATIONS.md)
 
 | ID | Tarea | Tests |
 |----|-------|-------|
-| T2.4.1 | `features/notifications/domain`: NotificationType enum | `test_notification_types` |
-| T2.4.2 | `infrastructure/tasks.py`: send_push_fcm (mock FCM) | `test_push_sent_on_the_way` |
-| T2.4.3 | `infrastructure/tasks.py`: send_email_notification | `test_email_template_rendered` |
+| T2.4.1 | `features/notifications/domain`: NotificationType enum + PushTemplate | `test_notification_types`, `test_push_template_for_status` |
+| T2.4.2 | `infrastructure/fcm_client.py`: cliente FCM (firebase-admin, mock en tests) | `test_fcm_client_send_mock` |
+| T2.4.3 | `application/use_cases/send_push.py` + Celery `send_push_task` | `test_send_push_task_calls_fcm` |
+| T2.4.4 | `domain/services.py`: OrderStatusNotificationMapper (status → destinatario) | `test_mapper_on_the_way_notifies_customer` |
+| T2.4.5 | Signal genérico post_save Order → `dispatch_order_push_task` | `test_any_status_change_dispatches_push` |
+| T2.4.6 | Caso `ON_THE_WAY`: push "¡Tu pedido ya salió!" al cliente | `test_push_sent_on_the_way` |
+| T2.4.7 | `infrastructure/tasks.py`: send_email_notification (Mailpit dev) | `test_email_template_rendered` |
 
 ### Bloque 2.5 — Analytics (Celery Beat)
 
@@ -184,6 +195,7 @@ CREATED → ACCEPTED_BY_MERCHANT → IN_PREPARATION → READY_FOR_PICKUP
 | T4.1.2 | `core/network`: ApiClient, interceptors JWT | `api_client_adds_auth_header_test` |
 | T4.1.3 | `features/auth/domain`: LoginUseCase | `login_usecase_success_test`, `login_usecase_failure_test` |
 | T4.1.4 | `features/auth/presentation`: LoginScreen | `login_screen_widget_test` |
+| T4.1.5 | Firebase setup cliente (`firebase_core`, `firebase_messaging`) | `firebase_init_test` |
 
 ### Bloque 4.2 — Cliente: stores
 
@@ -214,6 +226,9 @@ CREATED → ACCEPTED_BY_MERCHANT → IN_PREPARATION → READY_FOR_PICKUP
 |----|-------|-------|
 | T4.5.1 | `features/tracking/domain`: GetTrackingUseCase | `get_tracking_usecase_test` |
 | T4.5.2 | TrackingMapScreen con Google Maps | `tracking_map_widget_test` |
+| T4.5.3 | Registrar token FCM en backend tras login | `register_fcm_token_usecase_test` |
+| T4.5.4 | Push handler foreground/background/tap | `push_notification_handler_test` |
+| T4.5.5 | Deep link: push `ON_THE_WAY` → TrackingMapScreen | `push_opens_tracking_screen_test` |
 
 ### Bloque 4.6 — Conductor: core + auth
 

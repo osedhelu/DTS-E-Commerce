@@ -12,7 +12,9 @@ Fase 1 al 100% en `docs/PROGRESS.md`. Si no, avisa y ofrece completar Fase 1 pri
 
 Proyecto: `backend/`
 
-Bloques: 2.1 Infra Celery → 2.2 Signals → 2.3 Asignación conductores → 2.4 Notificaciones → 2.5 Analytics
+Bloques: 2.1 Infra Celery → 2.2 Signals (+ push T2.2.4–2.2.5) → 2.3 Conductores → 2.4 **Push FCM** → 2.5 Analytics
+
+Consulta `docs/PUSH_NOTIFICATIONS.md` para el mapa OrderStatus → push.
 
 ## Por cada tarea T2.x.x
 
@@ -25,4 +27,6 @@ Bloques: 2.1 Infra Celery → 2.2 Signals → 2.3 Asignación conductores → 2.
 
 ## Orden sugerido
 
-T2.1.1 → T2.1.2 → T2.1.3 → T2.2.1 → T2.2.2 → T2.2.3 → T2.3.x → T2.4.x → T2.5.x
+T2.1.1 → T2.1.2 → T2.1.3 → T2.2.1 → T2.2.2 → T2.2.3 → T2.2.4 → T2.2.5 → T2.3.x → T2.4.1 → … → T2.4.7 → T2.5.x
+
+**Prerequisito push:** T1.2.8 DeviceToken debe estar hecho antes de T2.4.x.
