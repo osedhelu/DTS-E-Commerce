@@ -72,7 +72,7 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [x] T2.3.2 assign_driver_task
 - [x] T2.3.3 Status after assign
 - [x] T2.4.1 Notification types + templates
-- [ ] T2.4.2 FCM client
+- [x] T2.4.2 FCM client
 - [ ] T2.4.3 SendPushUseCase + Celery task
 - [ ] T2.4.4 OrderStatusNotificationMapper
 - [ ] T2.4.5 Signal dispatch push on status change
