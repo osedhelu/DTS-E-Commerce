@@ -24,7 +24,7 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [x] T1.3.1 Store entity
 - [x] T1.3.2 GeoLocation
 - [x] T1.3.3 Store model PostGIS
-- [ ] T1.3.4 Use cases store
+- [x] T1.3.4 Use cases store
 - [ ] T1.3.5 API stores
 
 ### Bloque 1.4 Products
