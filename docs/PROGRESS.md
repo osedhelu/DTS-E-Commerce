@@ -11,8 +11,8 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [x] T1.1.4 pytest + coverage
 
 ### Bloque 1.2 Accounts
-- [ ] T1.2.1 UserRole enum
-- [ ] T1.2.2 Email, Phone value objects
+- [x] T1.2.1 UserRole enum
+- [x] T1.2.2 Email, Phone value objects
 - [ ] T1.2.3 CustomUser model
 - [ ] T1.2.4 Perfiles por rol
 - [ ] T1.2.5 Register use case
