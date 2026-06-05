@@ -140,7 +140,7 @@ La app **conductor** sigue siendo para delivery de productos físicos. Servicios
 | API catálogo con árbol categorías | ✅ Hecho | T1.4.5 |
 | `OrderType` + detalles servicio | ✅ Hecho | T1.5.8 |
 | State machine pedido servicio | ✅ Hecho | T1.5.9 |
-| API checkout servicio | ⬜ Pendiente | T1.5.10 |
+| API checkout servicio | ✅ Hecho | T1.5.10 |
 | Portal CRUD categorías | ⬜ Pendiente | T3.1.4 |
 | Flutter catálogo/filtros servicio | ⬜ Pendiente | T4.3.3–T4.3.4 |
 | Flutter checkout servicio | ⬜ Pendiente | T4.4.4 |

@@ -18,7 +18,7 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [x] T1.2.5 Register use case
 - [x] T1.2.6 Auth API JWT
 - [x] T1.2.7 Permisos por rol
-- [ ] T1.2.8 DeviceToken FCM (antes de Fase 2 push)
+- [x] T1.2.8 DeviceToken FCM (antes de Fase 2 push)
 
 ### Bloque 1.3 Stores
 - [x] T1.3.1 Store entity
@@ -46,11 +46,11 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [x] T1.5.7 Orders API
 - [x] T1.5.8 OrderType + ServiceOrderDetails
 - [x] T1.5.9 ServiceOrderStateMachine
-- [ ] T1.5.10 API checkout servicio
+- [x] T1.5.10 API checkout servicio
 
 ### Bloque 1.6 Delivery
-- [ ] T1.6.1 Tracking entities
-- [ ] T1.6.2 Tracking models
+- [x] T1.6.1 Tracking entities
+- [x] T1.6.2 Tracking models
 - [ ] T1.6.3 Record location use case
 - [ ] T1.6.4 Tracking API
 
