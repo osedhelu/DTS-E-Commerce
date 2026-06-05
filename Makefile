@@ -75,7 +75,20 @@ backend-migrate-docker: $(DOCKER_ENV_FILE)
 	$(DOCKER_COMPOSE_FULL) --profile tools run --rm backend-migrate
 
 restart-api: $(DOCKER_ENV_FILE)
-	$(DOCKER_COMPOSE_FULL) up -d --force-recreate api celery-worker celery-beat
+	$(DOCKER_COMPOSE_FULL) up -d --build --force-recreate api celery-worker celery-beat
+
+backend-admin-check: $(DOCKER_ENV_FILE)
+	@docker exec dts-api uv run --no-dev python -c "\
+from django.contrib import admin; \
+import django; django.setup(); \
+from features.accounts.infrastructure.models import CustomUser; \
+from features.stores.infrastructure.models import Store; \
+from features.orders.infrastructure.models import Order; \
+regs = admin.site._registry; \
+print('CustomUser:', CustomUser in regs); \
+print('Store:', Store in regs); \
+print('Order:', Order in regs); \
+print('Total modelos admin:', len(regs))"
 
 doctor: $(DOCKER_ENV_FILE)
 	@echo "── docker-infrastructure/.env ──"
