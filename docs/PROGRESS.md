@@ -158,18 +158,18 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [x] T6.4.9 E2E upload foto
 
 ### Bloque 6.5 — Dashboard merchant
-- [ ] T6.5.1 GetMerchantDashboardUseCase
-- [ ] T6.5.2 API merchant-dashboard
-- [ ] T6.5.3 dashboard-store + widgets
-- [ ] T6.5.4 Reemplazar /merchant placeholder
-- [ ] T6.5.5 E2E métricas merchant
+- [x] T6.5.1 GetMerchantDashboardUseCase
+- [x] T6.5.2 API merchant-dashboard
+- [x] T6.5.3 dashboard-store + widgets
+- [x] T6.5.4 Reemplazar /merchant placeholder
+- [x] T6.5.5 E2E métricas merchant
 
 ### Bloque 6.6 — Promociones merchant
-- [ ] T6.6.1 StorePromotion entity
-- [ ] T6.6.2 API promotions CRUD
-- [ ] T6.6.3 UI /merchant/promotions
-- [ ] T6.6.4 promotions-store
-- [ ] T6.6.5 E2E crear promoción
+- [x] T6.6.1 StorePromotion entity
+- [x] T6.6.2 API promotions CRUD
+- [x] T6.6.3 UI /merchant/promotions
+- [x] T6.6.4 promotions-store
+- [x] T6.6.5 E2E crear promoción
 
 ### Bloque 6.7 — Configuración tienda
 - [ ] T6.7.1 Campos perfil Store
