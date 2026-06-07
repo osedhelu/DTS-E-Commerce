@@ -114,15 +114,15 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 > Guía: [MERCHANT_ONBOARDING.md](MERCHANT_ONBOARDING.md) · **Prioridad antes de Flutter**
 
 ### Bloque 6.1 — Backend registro + email
-- [ ] T6.1.1 EmailVerificationToken entity
-- [ ] T6.1.2 Token model + migración
-- [ ] T6.1.3 StoreVertical enum
-- [ ] T6.1.4 RegisterMerchantWithStoreUseCase
-- [ ] T6.1.5 VerifyEmailUseCase
-- [ ] T6.1.6 API merchant/register
-- [ ] T6.1.7 API verify-email
-- [ ] T6.1.8 Celery email verificación
-- [ ] T6.1.9 API resend verification
+- [x] T6.1.1 EmailVerificationToken entity
+- [x] T6.1.2 Token model + migración
+- [x] T6.1.3 StoreVertical enum
+- [x] T6.1.4 RegisterMerchantWithStoreUseCase
+- [x] T6.1.5 VerifyEmailUseCase
+- [x] T6.1.6 API merchant/register
+- [x] T6.1.7 API verify-email
+- [x] T6.1.8 Celery email verificación
+- [x] T6.1.9 API resend verification
 
 ### Bloque 6.2 — Frontend landing + wizard
 - [ ] T6.2.1 Landing /vender
