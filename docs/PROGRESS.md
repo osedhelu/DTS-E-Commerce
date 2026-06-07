@@ -183,11 +183,11 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [x] T6.8.3 Doc MEDIA_STORAGE
 
 ### Bloque 6.9 — UX gaps Fase 3
-- [ ] T6.9.1 Editar/eliminar categorías
-- [ ] T6.9.2 Búsqueda productos
-- [ ] T6.9.3 Toasts globales
-- [ ] T6.9.4 Admin CRUD banners UI
-- [ ] T6.9.5 Admin editar cupones
+- [x] T6.9.1 Editar/eliminar categorías
+- [x] T6.9.2 Búsqueda productos
+- [x] T6.9.3 Toasts globales
+- [x] T6.9.4 Admin CRUD banners UI
+- [x] T6.9.5 Admin editar cupones
 
 ### Bloque 6.10 — Admin moderación
 - [ ] T6.10.1 API list merchants
