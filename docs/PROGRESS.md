@@ -147,15 +147,15 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [x] T6.3.7 Plantillas categorías por vertical
 
 ### Bloque 6.4 — Frontend catálogo enriquecido
-- [ ] T6.4.1 products-store update/upload
-- [ ] T6.4.2 Página editar producto
-- [ ] T6.4.3 Formulario comida variantes/ingredientes
-- [ ] T6.4.4 Formulario servicio
-- [ ] T6.4.5 Upload fotos + galería
-- [ ] T6.4.6 Selector categoría en form
-- [ ] T6.4.7 ProductList thumbnails + editar
-- [ ] T6.4.8 E2E variantes comida
-- [ ] T6.4.9 E2E upload foto
+- [x] T6.4.1 products-store update/upload
+- [x] T6.4.2 Página editar producto
+- [x] T6.4.3 Formulario comida variantes/ingredientes
+- [x] T6.4.4 Formulario servicio
+- [x] T6.4.5 Upload fotos + galería
+- [x] T6.4.6 Selector categoría en form
+- [x] T6.4.7 ProductList thumbnails + editar
+- [x] T6.4.8 E2E variantes comida
+- [x] T6.4.9 E2E upload foto
 
 ### Bloque 6.5 — Dashboard merchant
 - [ ] T6.5.1 GetMerchantDashboardUseCase
