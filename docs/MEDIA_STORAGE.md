@@ -19,6 +19,17 @@ MEDIA_URL=/media/
 
 Los `ImageField` de Django guardan vía `core.storage.DjangoMediaStorage`, que delega en `LocalStorageBackend`.
 
+### Servir archivos en desarrollo
+
+Con Gunicorn/Docker, Django no expone `/media/` por defecto. Activa:
+
+```bash
+SERVE_MEDIA=True
+MEDIA_PUBLIC_BASE_URL=http://extreme.local:8000   # URL que usa el navegador
+```
+
+En Docker (`docker-infrastructure/.env`), el volumen `backend_media` persiste los archivos entre reinicios del contenedor `api`.
+
 ## Producción (S3)
 
 ```bash
