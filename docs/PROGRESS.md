@@ -90,9 +90,9 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [x] T3.1.5 Dashboard pedidos servicio
 - [x] T3.2.1 Dashboard pedidos
 - [x] T3.2.2 Acciones aceptar/preparar (mutate API)
-- [ ] T3.2.3 Polling pedidos
-- [ ] T3.3.1 Admin dashboard
-- [ ] T3.3.2 KPIs métricas
+- [x] T3.2.3 Polling pedidos
+- [x] T3.3.1 Admin dashboard
+- [x] T3.3.2 KPIs métricas
 - [ ] T3.4.1 Comisiones vista
 - [ ] T3.4.2 Export CSV
 - [ ] T3.5.1 Coupon/Banner domain
