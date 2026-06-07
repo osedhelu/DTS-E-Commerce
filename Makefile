@@ -3,7 +3,8 @@
 	backend-shell backend-createsuperuser backend-migrate-docker \
 	backend-sync backend-test backend-migrate backend-run \
 	web-admin-sync web-admin-dev web-admin-build web-admin-lint \
-	flutter-sync flutter-test test lint
+	flutter-sync flutter-test test lint \
+	fase6-test fase6-test-task fase6-test-all
 
 export COMPOSE_PROJECT_NAME := dts
 
@@ -35,6 +36,12 @@ help:
 	@echo "  make web-admin-dev      Next.js :3000"
 	@echo "  make backend-test       pytest en host"
 	@echo "  make test               Todos los tests locales"
+	@echo ""
+	@echo "── Fase 6 — Portal comercio (por bloques) ──"
+	@echo "  make fase6-test BLOCK=6.1   Tests unificados bloque 6.1"
+	@echo "  make fase6-test BLOCK=all   Todos los bloques 6.1–6.10"
+	@echo "  make fase6-test-task TASK=T6.1.4   Test de una tarea"
+	@echo "  Ver docs/FASE6_BLOCKS.md · Cursor: /bloque-6-1"
 
 # ── Flujo Docker (recomendado en servidor) ────────────────────────────────────
 
@@ -187,6 +194,20 @@ flutter-test:
 	cd flutter-driver && flutter test
 
 test: backend-test flutter-test
+
+# ── Fase 6 — tests por bloque ────────────────────────────────────────────────
+
+fase6-test:
+	@chmod +x scripts/fase6-block-test.sh
+	@./scripts/fase6-block-test.sh $(or $(BLOCK),6.1)
+
+fase6-test-all:
+	@chmod +x scripts/fase6-block-test.sh
+	@./scripts/fase6-block-test.sh all
+
+fase6-test-task:
+	@chmod +x scripts/fase6-task-test.sh
+	@./scripts/fase6-task-test.sh $(TASK)
 
 lint: web-admin-lint
 	cd backend && uv run ruff check .

@@ -215,9 +215,135 @@ CREATED → ACCEPTED_BY_MERCHANT → SCHEDULED → PROVIDER_EN_ROUTE
 | T3.6.7 | Migrar `AdminDashboardPanel` + métricas admin | E2E admin dashboard + metrics |
 | T3.6.8 | `ui-store` global (toasts, feedback) y limpieza de `useState` legacy | suite E2E Fase 3 completa |
 
+> **Nota:** La Fase 3 cubre un **MVP operativo**. El portal comercio completo (registro público, verificación email, catálogo enriquecido, métricas seller) está en **Fase 6**. Ver [MERCHANT_ONBOARDING.md](MERCHANT_ONBOARDING.md).
+
 ---
 
-## FASE 4 — Flutter
+## FASE 6 — Portal Comercio (Onboarding + Seller completo)
+
+**Proyectos:** `backend/` + `web-admin/`  
+**Documento guía:** [MERCHANT_ONBOARDING.md](MERCHANT_ONBOARDING.md)  
+**Prerequisito:** Fases 1–3 completas  
+**Prioridad:** ejecutar **antes** de Fase 4 (Flutter cliente) si el go-to-market es web seller primero
+
+**Ejecutar por bloques:** `/bloque-6-1` … `/bloque-6-10` · Tests unificados: `make fase6-test BLOCK=6.1` · Guía: [FASE6_BLOCKS.md](FASE6_BLOCKS.md)
+
+### Bloque 6.1 — Backend: registro público y verificación email
+
+| ID | Tarea | Tests |
+|----|-------|-------|
+| T6.1.1 | `accounts/domain`: `EmailVerificationToken` entity + excepciones token expirado/usado | `test_verification_token_expired_raises` |
+| T6.1.2 | `accounts/infrastructure/models.py`: `EmailVerificationToken` (user FK, uuid, expires_at, used_at) + migración | `test_verification_token_persistence` |
+| T6.1.3 | `stores/domain`: enum `StoreVertical` (`FOOD`, `SERVICES`, `RETAIL`) en `Store` + migración | `test_store_vertical_values` |
+| T6.1.4 | `accounts/application`: `RegisterMerchantWithStoreUseCase` — atómico User (email_verified=False) + MerchantProfile + Store + categorías semilla según vertical | `test_merchant_register_creates_store_and_categories` |
+| T6.1.5 | `accounts/application`: `VerifyEmailUseCase` — activa usuario, marca token usado | `test_verify_email_activates_merchant` |
+| T6.1.6 | API `POST /accounts/merchant/register/` (AllowAny) — payload wizard pasos 1–2 | `test_merchant_public_register_201`, `test_merchant_register_duplicate_email_400` |
+| T6.1.7 | API `POST /accounts/verify-email/` body `{token}` | `test_verify_email_api_200`, `test_verify_email_invalid_token_400` |
+| T6.1.8 | Celery task `send_merchant_verification_email` + plantilla HTML (reutiliza infra T2.4.7) | `test_send_verification_email_task` |
+| T6.1.9 | API `POST /accounts/resend-verification/` (email) rate-limited | `test_resend_verification_email` |
+
+**Archivos clave:** `features/accounts/`, `features/stores/domain/entities.py`, `features/products/application/category_templates.py` (semillas por vertical)
+
+### Bloque 6.2 — Frontend: landing `/vender` y wizard registro
+
+| ID | Tarea | Tests |
+|----|-------|-------|
+| T6.2.1 | Landing pública `/vender` — hero, beneficios, CTA “Registrar mi comercio” (sin auth) | `merchant_landing_renders_test` |
+| T6.2.2 | `features/onboarding/stores/onboarding-store.ts` (Zustand) — estado wizard 3 pasos | `npm run build` |
+| T6.2.3 | Wizard paso 1: cuenta (nombre, email, contraseña, confirmación) | — |
+| T6.2.4 | Wizard paso 2: negocio (nombre tienda, vertical FOOD/SERVICES/RETAIL, categoría plantilla, teléfono) | — |
+| T6.2.5 | Wizard paso 3: resumen + términos + submit | — |
+| T6.2.6 | BFF `POST /api/public/merchant/register` → backend T6.1.6 | — |
+| T6.2.7 | Página `/registro-comercio` (wizard) + `/registro-comercio/exito` (“revisa tu correo”) | — |
+| T6.2.8 | Página `/confirmar-email` — lee `?token=`, llama BFF verify, redirect login o auto-login | — |
+| T6.2.9 | Middleware: rutas públicas `/vender`, `/registro-comercio`, `/confirmar-email` sin JWT | — |
+| T6.2.10 | E2E flujo registro completo (mock email API) | `merchant_public_registration_flow_test` |
+| T6.2.11 | E2E confirmación email | `merchant_email_confirmation_flow_test` |
+
+### Bloque 6.3 — Backend: catálogo enriquecido (variantes, ingredientes, fotos)
+
+| ID | Tarea | Tests |
+|----|-------|-------|
+| T6.3.1 | `products/domain`: `ProductVariant` (name, price, sort_order) — ej. S/M/L/XL | `test_product_variant_price` |
+| T6.3.2 | `products/domain`: `ProductIngredient` (name, optional allergen flag) | `test_product_ingredients_validation` |
+| T6.3.3 | `products/infrastructure/models.py`: `ProductVariant`, `ProductIngredient`, `ProductImage` (FileField, is_primary) + migraciones | `test_product_image_model` |
+| T6.3.4 | `UpdateProductUseCase` — edición completa + nested variants/ingredients | `test_update_product_with_variants` |
+| T6.3.5 | API PATCH producto + endpoints nested `/products/{id}/variants/`, `/ingredients/`, `POST .../images/` (multipart) | `test_product_image_upload_api` |
+| T6.3.6 | Validación: variantes solo si `product_type=PHYSICAL` y vertical FOOD/RETAIL; servicios usan duration | `test_service_product_rejects_variants` |
+| T6.3.7 | Semillas categorías por `StoreVertical` en registro (Comida rápida→Hamburguesas, etc.) | `test_category_templates_by_vertical` |
+
+### Bloque 6.4 — Frontend: catálogo enriquecido merchant
+
+| ID | Tarea | Tests |
+|----|-------|-------|
+| T6.4.1 | `products-store`: acciones `updateProduct`, `uploadProductImage` | — |
+| T6.4.2 | Página editar `/merchant/products/[productId]` | — |
+| T6.4.3 | Formulario **comida**: ingredientes dinámicos (add/remove) + variantes porción S/M/L/XL con precio | — |
+| T6.4.4 | Formulario **servicio**: duración, descripción incluye, sin variantes | — |
+| T6.4.5 | Upload fotos (BFF multipart → backend media local `MEDIA_ROOT`) + preview galería | — |
+| T6.4.6 | Selector categoría padre + subcategoría en create/edit producto | — |
+| T6.4.7 | `ProductList`: thumbnail, botón Editar, paginación básica | — |
+| T6.4.8 | E2E producto comida con variantes e ingredientes | `food_product_with_variants_test` |
+| T6.4.9 | E2E upload foto producto (mock multipart) | `product_photo_upload_test` |
+
+### Bloque 6.5 — Dashboard merchant (métricas reales)
+
+| ID | Tarea | Tests |
+|----|-------|-------|
+| T6.5.1 | `stores/application`: `GetMerchantDashboardUseCase` — ventas, pedidos, ticket prom., comisión plataforma, neto | `test_merchant_dashboard_aggregation` |
+| T6.5.2 | API `GET /stores/{id}/merchant-dashboard/?days=30` (IsMerchant owner) | `test_merchant_dashboard_api` |
+| T6.5.3 | `features/merchant-dashboard/stores/dashboard-store.ts` + widgets KPI | — |
+| T6.5.4 | Reemplazar placeholder `/merchant` con dashboard real (gráfico ventas, top productos) | — |
+| T6.5.5 | E2E merchant ve KPIs tras mock ventas | `merchant_dashboard_metrics_test` |
+
+### Bloque 6.6 — Promociones y descuentos por tienda (merchant)
+
+| ID | Tarea | Tests |
+|----|-------|-------|
+| T6.6.1 | `marketing/domain`: `StorePromotion` entity (store_id, type, value, product_id optional, valid_from/until) | `test_store_promotion_discount_calculation` |
+| T6.6.2 | Modelo + API CRUD `/stores/{id}/promotions/` (IsMerchant) | `test_merchant_promotions_crud_api` |
+| T6.6.3 | Frontend `/merchant/promotions` — listado + formulario crear/editar/desactivar | — |
+| T6.6.4 | `promotions-store` Zustand | — |
+| T6.6.5 | E2E merchant crea descuento 10% en tienda | `merchant_create_promotion_test` |
+
+### Bloque 6.7 — Configuración de tienda
+
+| ID | Tarea | Tests |
+|----|-------|-------|
+| T6.7.1 | Extender `Store`: `description`, `logo` (ImageField), `phone` | `test_store_profile_fields` |
+| T6.7.2 | `UpdateStoreProfileUseCase` + API PATCH `/stores/{id}/profile/` | `test_update_store_profile_api` |
+| T6.7.3 | Frontend `/merchant/settings` — datos tienda, logo, vertical (read-only), toggle abierto/cerrado | — |
+| T6.7.4 | E2E merchant actualiza nombre y descripción tienda | `merchant_update_store_profile_test` |
+
+### Bloque 6.8 — Almacenamiento de imágenes (evolución)
+
+| ID | Tarea | Tests |
+|----|-------|-------|
+| T6.8.1 | `core/storage.py`: `StorageBackend` protocol — local (dev) / S3 (prod) vía env | `test_local_storage_save` |
+| T6.8.2 | Config `AWS_S3_*` o Cloudinary; migrar `ProductImage` y `Store.logo` | `test_s3_storage_upload_mock` |
+| T6.8.3 | Documentar en `docs/MEDIA_STORAGE.md` | — |
+
+### Bloque 6.9 — Completar gaps Fase 3 (UX merchant)
+
+| ID | Tarea | Tests |
+|----|-------|-------|
+| T6.9.1 | CRUD categorías: editar y eliminar (backend + frontend) | `merchant_edit_category_test` |
+| T6.9.2 | Búsqueda y filtros en listado productos | `merchant_products_search_test` |
+| T6.9.3 | Toasts globales (Sonner o similar) integrado con `ui-store` | E2E Fase 3 regression |
+| T6.9.4 | UI banners admin CRUD (complemento T3.5.3 backend) | `admin_banners_crud_test` |
+| T6.9.5 | Cupones admin: editar/eliminar (complemento T3.5.2) | `admin_edit_coupon_test` |
+
+### Bloque 6.10 — Admin: moderación de comercios
+
+| ID | Tarea | Tests |
+|----|-------|-------|
+| T6.10.1 | API admin list merchants (filtro email_verified, is_active) | `test_admin_list_merchants_api` |
+| T6.10.2 | API admin suspender/reactivar tienda | `test_admin_suspend_store_api` |
+| T6.10.3 | Frontend `/admin/merchants` — tabla comercios, estado verificación | — |
+| T6.10.4 | E2E admin ve comercio recién registrado | `admin_merchant_moderation_test` |
+
+---
+
 
 ### Bloque 4.1 — Cliente: core + auth
 

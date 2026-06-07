@@ -11,7 +11,7 @@ Consola web para **merchant** y **super admin**. Vive en `web-admin/`, separada 
 | TypeScript | Tipado |
 | Tailwind CSS v4 | Estilos |
 | Zustand 5 | Estado cliente (stores por feature) |
-| Playwright (Fase 3) | Tests E2E de flujos |
+| Playwright | Tests E2E de flujos |
 
 ## URLs locales
 
@@ -33,73 +33,87 @@ NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
 
 ## Áreas de la aplicación
 
-### Merchant (`/merchant/*`)
+### Público (Fase 6 — sin login)
 
-- CRUD productos y servicios (formulario condicional por `product_type`)
-- Inventario (solo `PHYSICAL`)
-- Categorías y subcategorías
-- Dashboard pedidos (aceptar, preparar, polling)
+| Ruta | Descripción |
+|------|-------------|
+| `/vender` | Landing “Registra tu comercio” |
+| `/registro-comercio` | Wizard registro merchant (3 pasos) |
+| `/registro-comercio/exito` | “Revisa tu correo” |
+| `/confirmar-email` | Validación token verificación |
+
+Ver [MERCHANT_ONBOARDING.md](MERCHANT_ONBOARDING.md).
+
+### Merchant (`/merchant/*`) — requiere rol `merchant` + email verificado
+
+| Ruta | Fase | Descripción |
+|------|------|-------------|
+| `/merchant` | 6.5 | Dashboard KPIs tienda (ventas, ganancias) |
+| `/merchant/products` | 3 + 6.4 | Catálogo; Fase 6 añade editar, fotos, variantes |
+| `/merchant/inventory` | 3 | Stock productos físicos |
+| `/merchant/categories` | 3 + 6.9 | Árbol categorías; Fase 6 añade editar/eliminar |
+| `/merchant/orders` | 3 | Pedidos delivery |
+| `/merchant/service-orders` | 3 | Pedidos servicio |
+| `/merchant/promotions` | 6.6 | Descuentos por tienda |
+| `/merchant/settings` | 6.7 | Perfil tienda, logo, horario |
 
 ### Super Admin (`/admin/*`)
 
-- KPIs y métricas
-- Comisiones y export CSV
-- Marketing (cupones, banners)
+| Ruta | Descripción |
+|------|-------------|
+| `/admin` | KPIs globales |
+| `/admin/commissions` | Comisiones y export CSV |
+| `/admin/coupons` | Cupones plataforma |
+| `/admin/merchants` | Moderación comercios (Fase 6.10) |
 
 ## Autenticación
 
 1. Login contra API (`/api/v1/accounts/…`)
-2. JWT en header `Authorization: Bearer <token>`
-3. Middleware/layout valida rol antes de renderizar rutas protegidas
+2. JWT en cookie httpOnly (`dts_access_token`)
+3. Middleware/layout valida rol antes de rutas protegidas
+4. **Fase 6:** registro público crea cuenta; login bloqueado hasta verificar email
 
 ## Arquitectura de carpetas
 
 ```
 web-admin/
-├── app/                 # Rutas App Router
-├── components/ui/       # Primitivos UI
-├── features/            # Slices por dominio
-│   └── <modulo>/
-│       ├── components/
-│       ├── stores/      # Zustand stores (estado cliente)
-│       └── types.ts
-├── lib/
-│   ├── api/             # Cliente HTTP
-│   └── stores/          # Utilidades Zustand compartidas
-└── e2e/                 # Playwright (tareas T3.x)
+├── app/
+│   ├── (public)/vender/          # Fase 6 landing
+│   ├── (public)/registro-comercio/
+│   ├── (auth)/login/
+│   ├── merchant/
+│   └── admin/
+├── features/
+│   ├── onboarding/               # Fase 6 wizard registro
+│   ├── merchant-dashboard/       # Fase 6 KPIs seller
+│   └── <modulo>/stores/          # Zustand
+├── lib/api/ + lib/stores/
+└── e2e/
 ```
 
 ## Estado con Zustand
 
-Migración progresiva (bloque **T3.6** en [TASKS.md](TASKS.md)):
+Ver bloque T3.6 y stores Fase 6 (`onboarding-store`, `dashboard-store`, `promotions-store`) en [TASKS.md](TASKS.md).
 
-| Store | Ubicación | Responsabilidad |
-|-------|-----------|-----------------|
-| `merchant-session-store` | `features/stores/stores/` | Tienda activa del merchant (persist `sessionStorage`) |
-| `products-store` | T3.6.3 | Catálogo, loading, mutaciones CRUD |
-| `orders-store` | T3.6.5 | Pedidos delivery, filtros, polling |
-| `ui-store` | T3.6.8 | Toasts y feedback global |
+## Fases del frontend
 
-**Reglas:**
-
-- Selectores finos: `useStore((s) => s.campo)` para evitar re-renders.
-- Datos remotos: acciones async en el store (`loadX`, `updateY`), no `useEffect` + `setState` en componentes.
-- Persistir solo IDs de sesión; listas se recargan al montar o tras mutación.
-- Nuevas pantallas T3.4+ deben usar Zustand desde el inicio.
-
-Ver reglas Cursor: `.cursor/rules/nextjs-web-admin.mdc`  
-Skill agente: `.cursor/skills/implement-nextjs-feature/SKILL.md`
+| Fase | Alcance |
+|------|---------|
+| **3** | MVP operativo (CRUD básico, pedidos, admin KPIs) — ✅ |
+| **6** | Portal seller completo (registro, catálogo rico, métricas) — pendiente |
 
 ## Desarrollo
 
 ```bash
-make docker-up          # PostGIS + Redis (backend)
-make backend-run        # API :8000
-make web-admin-dev      # Next :3000
+make docker-up
+make backend-run
+make web-admin-dev
 ```
 
 ## Relación con backend
 
 - Django **no** sirve HTML administrativo
-- Toda mutación pasa por use cases existentes en `backend/features/`
-- Nuevos endpoints solo cuando `docs/TASKS.md` lo indique (ej. banners públicos T3.5.3)
+- Registro público: `POST /api/v1/accounts/merchant/register/`
+- Catálogo enriquecido: variantes, ingredientes, imágenes en `features/products/`
+
+Ver reglas: `.cursor/rules/nextjs-web-admin.mdc`

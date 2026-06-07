@@ -17,4 +17,5 @@ Siguiente: T1.2.2 — Email, Phone value objects
 Comando: /tarea T1.2.2
 ```
 
-5. Si una fase está al 100%, sugiere `/fase-N` de la siguiente.
+5. Si Fase 3 está al 100%, sugiere **`/fase-6`** (onboarding comercio) antes de Fase 4 Flutter.
+6. Referencia [MERCHANT_ONBOARDING.md](../docs/MERCHANT_ONBOARDING.md) para contexto Fase 6.

@@ -26,9 +26,21 @@
 
 ## Documentación clave
 
+- [MERCHANT_ONBOARDING.md](docs/MERCHANT_ONBOARDING.md) — **flujo registro comercio + portal seller (Fase 6)**
+- [FASE6_BLOCKS.md](docs/FASE6_BLOCKS.md) — **comandos y tests por bloque 6.1–6.10**
 - [DEPLOY_DOCKER.md](docs/DEPLOY_DOCKER.md) — despliegue servidor con Docker (`make install-server`)
 - [PUSH_NOTIFICATIONS.md](docs/PUSH_NOTIFICATIONS.md) — plan push FCM
 - [WEB_ADMIN.md](docs/WEB_ADMIN.md) — arquitectura frontend Next.js + Zustand
+
+## Orden de fases recomendado
+
+1. Fase 1–2 — Backend ✅
+2. Fase 3 — Web MVP ✅
+3. **Fase 6 — Onboarding comercio** ← prioridad actual
+4. Fase 4 — Flutter cliente
+5. Fase 5 — Tiempo real
+
+Comando: `/fase-6` o `/bloque-6-1` … `/bloque-6-10` · Tests: `make fase6-test BLOCK=6.1`
 
 ## Reglas
 

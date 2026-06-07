@@ -74,4 +74,4 @@ make web-admin-dev               # desde raíz
 
 ## Tareas
 
-Fase 3 → `docs/TASKS.md` (T3.x). Migración Zustand → T3.6.x. Skill: `implement-nextjs-feature`.
+Fase 3 → T3.x (MVP). **Fase 6 → T6.x (portal seller).** Skill: `implement-nextjs-feature`. Guía: `docs/MERCHANT_ONBOARDING.md`.

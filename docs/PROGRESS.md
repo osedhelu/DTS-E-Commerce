@@ -109,6 +109,92 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [x] T3.6.7 Migrar admin dashboard
 - [x] T3.6.8 ui-store global + limpieza
 
+## Fase 6 — Portal Comercio (Onboarding Seller)
+
+> Guía: [MERCHANT_ONBOARDING.md](MERCHANT_ONBOARDING.md) · **Prioridad antes de Flutter**
+
+### Bloque 6.1 — Backend registro + email
+- [ ] T6.1.1 EmailVerificationToken entity
+- [ ] T6.1.2 Token model + migración
+- [ ] T6.1.3 StoreVertical enum
+- [ ] T6.1.4 RegisterMerchantWithStoreUseCase
+- [ ] T6.1.5 VerifyEmailUseCase
+- [ ] T6.1.6 API merchant/register
+- [ ] T6.1.7 API verify-email
+- [ ] T6.1.8 Celery email verificación
+- [ ] T6.1.9 API resend verification
+
+### Bloque 6.2 — Frontend landing + wizard
+- [ ] T6.2.1 Landing /vender
+- [ ] T6.2.2 onboarding-store Zustand
+- [ ] T6.2.3 Wizard paso cuenta
+- [ ] T6.2.4 Wizard paso negocio
+- [ ] T6.2.5 Wizard paso resumen
+- [ ] T6.2.6 BFF public register
+- [ ] T6.2.7 Páginas registro + éxito
+- [ ] T6.2.8 Página confirmar-email
+- [ ] T6.2.9 Middleware rutas públicas
+- [ ] T6.2.10 E2E registro público
+- [ ] T6.2.11 E2E confirmación email
+
+### Bloque 6.3 — Backend catálogo enriquecido
+- [ ] T6.3.1 ProductVariant entity
+- [ ] T6.3.2 ProductIngredient entity
+- [ ] T6.3.3 Models variantes/ingredientes/imagen
+- [ ] T6.3.4 UpdateProductUseCase
+- [ ] T6.3.5 API nested + upload imagen
+- [ ] T6.3.6 Validación vertical/tipo
+- [ ] T6.3.7 Plantillas categorías por vertical
+
+### Bloque 6.4 — Frontend catálogo enriquecido
+- [ ] T6.4.1 products-store update/upload
+- [ ] T6.4.2 Página editar producto
+- [ ] T6.4.3 Formulario comida variantes/ingredientes
+- [ ] T6.4.4 Formulario servicio
+- [ ] T6.4.5 Upload fotos + galería
+- [ ] T6.4.6 Selector categoría en form
+- [ ] T6.4.7 ProductList thumbnails + editar
+- [ ] T6.4.8 E2E variantes comida
+- [ ] T6.4.9 E2E upload foto
+
+### Bloque 6.5 — Dashboard merchant
+- [ ] T6.5.1 GetMerchantDashboardUseCase
+- [ ] T6.5.2 API merchant-dashboard
+- [ ] T6.5.3 dashboard-store + widgets
+- [ ] T6.5.4 Reemplazar /merchant placeholder
+- [ ] T6.5.5 E2E métricas merchant
+
+### Bloque 6.6 — Promociones merchant
+- [ ] T6.6.1 StorePromotion entity
+- [ ] T6.6.2 API promotions CRUD
+- [ ] T6.6.3 UI /merchant/promotions
+- [ ] T6.6.4 promotions-store
+- [ ] T6.6.5 E2E crear promoción
+
+### Bloque 6.7 — Configuración tienda
+- [ ] T6.7.1 Campos perfil Store
+- [ ] T6.7.2 UpdateStoreProfileUseCase + API
+- [ ] T6.7.3 UI /merchant/settings
+- [ ] T6.7.4 E2E actualizar perfil
+
+### Bloque 6.8 — Storage imágenes
+- [ ] T6.8.1 StorageBackend abstraction
+- [ ] T6.8.2 S3/Cloudinary prod
+- [ ] T6.8.3 Doc MEDIA_STORAGE
+
+### Bloque 6.9 — UX gaps Fase 3
+- [ ] T6.9.1 Editar/eliminar categorías
+- [ ] T6.9.2 Búsqueda productos
+- [ ] T6.9.3 Toasts globales
+- [ ] T6.9.4 Admin CRUD banners UI
+- [ ] T6.9.5 Admin editar cupones
+
+### Bloque 6.10 — Admin moderación
+- [ ] T6.10.1 API list merchants
+- [ ] T6.10.2 API suspender tienda
+- [ ] T6.10.3 UI /admin/merchants
+- [ ] T6.10.4 E2E moderación
+
 ## Fase 4 — Flutter
 - [ ] T4.1.1 Customer setup
 - [ ] T4.1.2 ApiClient

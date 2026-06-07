@@ -24,12 +24,22 @@ features/<modulo>/
 
 ## Flujo de trabajo
 
-1. Consultar `docs/TASKS.md` para la tarea (ID tipo T1.2.1)
-2. Si la tarea toca productos/servicios o pedidos de servicio → leer `docs/PRODUCTS_AND_SERVICES.md`
-3. Implementar solo el alcance de esa tarea
-4. Escribir y ejecutar tests listados en TASKS.md
-5. Marcar `[x]` en `docs/PROGRESS.md`
-6. Commit: `feat(scope): descripción` o `fix(scope): descripción`
+1. Consultar `docs/TASKS.md` para la tarea (ID tipo T1.2.1 o T6.x.x)
+2. Registro/onboarding comercio → leer `docs/MERCHANT_ONBOARDING.md` (Fase 6)
+3. Productos/servicios o pedidos servicio → leer `docs/PRODUCTS_AND_SERVICES.md`
+4. Implementar solo el alcance de esa tarea
+5. Escribir y ejecutar tests listados en TASKS.md
+6. Marcar `[x]` en `docs/PROGRESS.md`
+7. Commit: `feat(scope): descripción` o `fix(scope): descripción`
+
+## Fases
+
+| Fase | Estado | Enfoque |
+|------|--------|---------|
+| 1–2 | ✅ | Backend API |
+| 3 | ✅ | Web MVP |
+| **6** | ⬜ | **Onboarding comercio + portal seller** ← prioridad |
+| 4–5 | ⬜ | Flutter + realtime |
 
 ## Python
 
@@ -45,5 +55,7 @@ features/<modulo>/
 
 - App Router, Server Components por defecto
 - Consumir `/api/v1/` — ver `docs/WEB_ADMIN.md`
+- **Fase 6:** rutas públicas `/vender`, wizard registro — ver `docs/MERCHANT_ONBOARDING.md`
+- Estado: Zustand (`features/*/stores/`)
 - Tests E2E: Playwright en `web-admin/e2e/`
 - Skill: `implement-nextjs-feature`

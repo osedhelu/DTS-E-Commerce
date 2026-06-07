@@ -30,4 +30,5 @@ PostGIS + Redis: `make docker-up`
 
 ## Tareas de desarrollo
 
-Seguir `docs/TASKS.md` y marcar `docs/PROGRESS.md`.
+Seguir `docs/TASKS.md` y marcar `docs/PROGRESS.md`.  
+**Prioridad actual:** Fase 6 onboarding comercio → [MERCHANT_ONBOARDING.md](../../docs/MERCHANT_ONBOARDING.md)

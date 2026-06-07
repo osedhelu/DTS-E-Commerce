@@ -1,6 +1,6 @@
 # Roadmap — DTS Delivery Platform
 
-**Objetivo:** llegar al 100% del desarrollo en 5 fases incrementales.
+**Objetivo:** llegar al 100% del desarrollo en **6 fases** incrementales (+ Fase 3 MVP vs Fase 6 portal seller completo).
 
 Cada tarea tiene ID único en [TASKS.md](TASKS.md). Formato: `T<fase>.<bloque>.<tarea>`.
 
@@ -60,6 +60,33 @@ Cada tarea tiene ID único en [TASKS.md](TASKS.md). Formato: `T<fase>.<bloque>.<
 
 **Comando:** `/fase-3`
 
+> El MVP de Fase 3 **no incluye** registro público ni catálogo enriquecido. Ver **Fase 6**.
+
+---
+
+## Fase 6 — Portal Comercio (Onboarding Seller)
+
+**Proyectos:** `backend/` + `web-admin/`  
+**Documento:** [MERCHANT_ONBOARDING.md](MERCHANT_ONBOARDING.md)  
+**Criterio de salida:** Un emprendedor se registra en `/vender`, confirma email, configura tienda y publica productos con fotos/variantes; ve métricas y promociones.
+
+| Bloque | Área | Entregable |
+|--------|------|------------|
+| 6.1 | backend | Registro atómico merchant+tienda, verificación email, vertical FOOD/SERVICES/RETAIL |
+| 6.2 | web público | Landing `/vender`, wizard registro, confirmar email |
+| 6.3 | backend | Variantes porción, ingredientes, fotos producto |
+| 6.4 | web merchant | CRUD catálogo enriquecido (comida, servicios, retail) |
+| 6.5 | backend+web | Dashboard métricas seller (ventas, ganancia neta) |
+| 6.6 | backend+web | Promociones/descuentos por tienda |
+| 6.7 | backend+web | Configuración perfil tienda |
+| 6.8 | infra | Storage imágenes local → S3/Cloudinary |
+| 6.9 | web | Completar gaps UX Fase 3 (edit categorías, toasts, banners admin) |
+| 6.10 | admin | Moderación comercios registrados |
+
+**Orden recomendado:** Fase 6 **antes** de Fase 4 (Flutter).
+
+**Comando:** `/fase-6`
+
 ---
 
 ## Fase 4 — Desarrollo Móvil (Flutter)
@@ -112,7 +139,8 @@ Cada tarea tiene ID único en [TASKS.md](TASKS.md). Formato: `T<fase>.<bloque>.<
 ```
 Fase 1 ████████████████████ 100%
 Fase 2 ████████████████████ 100%
-Fase 3 ████████████████████ 100%
+Fase 3 ████████████████████ 100%  (MVP — ver Fase 6 para portal completo)
+Fase 6 ░░░░░░░░░░░░░░░░░░░░   0%  ← Prioridad: onboarding comercio
 Fase 4 ░░░░░░░░░░░░░░░░░░░░   0%
 Fase 5 ░░░░░░░░░░░░░░░░░░░░   0%
 ```
