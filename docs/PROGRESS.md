@@ -87,9 +87,9 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [x] T3.1.2 CRUD productos y servicios vista
 - [x] T3.1.3 Inventario vista (solo PHYSICAL)
 - [x] T3.1.4 CRUD categorías/subcategorías
-- [ ] T3.1.5 Dashboard pedidos servicio
-- [ ] T3.2.1 Dashboard pedidos
-- [ ] T3.2.2 Acciones aceptar/preparar (mutate API)
+- [x] T3.1.5 Dashboard pedidos servicio
+- [x] T3.2.1 Dashboard pedidos
+- [x] T3.2.2 Acciones aceptar/preparar (mutate API)
 - [ ] T3.2.3 Polling pedidos
 - [ ] T3.3.1 Admin dashboard
 - [ ] T3.3.2 KPIs métricas
