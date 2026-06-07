@@ -172,10 +172,10 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [x] T6.6.5 E2E crear promoción
 
 ### Bloque 6.7 — Configuración tienda
-- [ ] T6.7.1 Campos perfil Store
-- [ ] T6.7.2 UpdateStoreProfileUseCase + API
-- [ ] T6.7.3 UI /merchant/settings
-- [ ] T6.7.4 E2E actualizar perfil
+- [x] T6.7.1 Campos perfil Store
+- [x] T6.7.2 UpdateStoreProfileUseCase + API
+- [x] T6.7.3 UI /merchant/settings
+- [x] T6.7.4 E2E actualizar perfil
 
 ### Bloque 6.8 — Storage imágenes
 - [ ] T6.8.1 StorageBackend abstraction
