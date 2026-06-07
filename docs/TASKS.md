@@ -200,6 +200,21 @@ CREATED → ACCEPTED_BY_MERCHANT → SCHEDULED → PROVIDER_EN_ROUTE
 | T3.5.2 | CRUD cupones en web admin | `admin_create_coupon_flow_test` |
 | T3.5.3 | API pública banners activos para app cliente | `test_active_banners_api` |
 
+### Bloque 3.6 — Zustand (migración estado cliente)
+
+> **Convención:** a partir de T3.6.1 el estado interactivo del cliente usa **Zustand** (no `useState` + `useEffect` para datos remotos). Las tareas T3.4+ deben implementarse directamente con stores. Ver `docs/WEB_ADMIN.md` § Estado con Zustand.
+
+| ID | Tarea | Tests |
+|----|-------|-------|
+| T3.6.1 | Instalar `zustand`, crear `lib/stores/` y convenciones en docs/reglas Cursor | `npm run build`, `npm run lint` |
+| T3.6.2 | `merchant-session-store`: tienda activa compartida + bootstrap + selector en layout merchant | `merchant_store_zustand_persist_test` |
+| T3.6.3 | Migrar `ProductsManager` + `ProductForm` a Zustand (eliminar selector duplicado) | E2E productos existentes |
+| T3.6.4 | Migrar `InventoryManager` + `CategoriesManager` a Zustand | E2E inventario + categorías |
+| T3.6.5 | Migrar `OrdersDashboard` (filtros, mutaciones, polling 10s) | E2E orders + polling |
+| T3.6.6 | Migrar `ServiceOrdersDashboard` | `merchant_service_order_dashboard_test` |
+| T3.6.7 | Migrar `AdminDashboardPanel` + métricas admin | E2E admin dashboard + metrics |
+| T3.6.8 | `ui-store` global (toasts, feedback) y limpieza de `useState` legacy | suite E2E Fase 3 completa |
+
 ---
 
 ## FASE 4 — Flutter

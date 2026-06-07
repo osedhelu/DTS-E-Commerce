@@ -10,6 +10,7 @@ Consola web para **merchant** y **super admin**. Vive en `web-admin/`, separada 
 | React 19 | UI |
 | TypeScript | Tipado |
 | Tailwind CSS v4 | Estilos |
+| Zustand 5 | Estado cliente (stores por feature) |
 | Playwright (Fase 3) | Tests E2E de flujos |
 
 ## URLs locales
@@ -58,9 +59,33 @@ web-admin/
 ├── app/                 # Rutas App Router
 ├── components/ui/       # Primitivos UI
 ├── features/            # Slices por dominio
-├── lib/api/             # Cliente HTTP
+│   └── <modulo>/
+│       ├── components/
+│       ├── stores/      # Zustand stores (estado cliente)
+│       └── types.ts
+├── lib/
+│   ├── api/             # Cliente HTTP
+│   └── stores/          # Utilidades Zustand compartidas
 └── e2e/                 # Playwright (tareas T3.x)
 ```
+
+## Estado con Zustand
+
+Migración progresiva (bloque **T3.6** en [TASKS.md](TASKS.md)):
+
+| Store | Ubicación | Responsabilidad |
+|-------|-----------|-----------------|
+| `merchant-session-store` | `features/stores/stores/` | Tienda activa del merchant (persist `sessionStorage`) |
+| `products-store` | T3.6.3 | Catálogo, loading, mutaciones CRUD |
+| `orders-store` | T3.6.5 | Pedidos delivery, filtros, polling |
+| `ui-store` | T3.6.8 | Toasts y feedback global |
+
+**Reglas:**
+
+- Selectores finos: `useStore((s) => s.campo)` para evitar re-renders.
+- Datos remotos: acciones async en el store (`loadX`, `updateY`), no `useEffect` + `setState` en componentes.
+- Persistir solo IDs de sesión; listas se recargan al montar o tras mutación.
+- Nuevas pantallas T3.4+ deben usar Zustand desde el inicio.
 
 Ver reglas Cursor: `.cursor/rules/nextjs-web-admin.mdc`  
 Skill agente: `.cursor/skills/implement-nextjs-feature/SKILL.md`

@@ -93,11 +93,21 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [x] T3.2.3 Polling pedidos
 - [x] T3.3.1 Admin dashboard
 - [x] T3.3.2 KPIs métricas
-- [ ] T3.4.1 Comisiones vista
-- [ ] T3.4.2 Export CSV
-- [ ] T3.5.1 Coupon/Banner domain
-- [ ] T3.5.2 CRUD cupones
-- [ ] T3.5.3 API banners
+- [x] T3.4.1 Comisiones vista
+- [x] T3.4.2 Export CSV
+- [x] T3.5.1 Coupon/Banner domain
+- [x] T3.5.2 CRUD cupones
+- [x] T3.5.3 API banners
+
+## Fase 3 — Zustand (migración estado)
+- [x] T3.6.1 Setup Zustand + lib/stores
+- [x] T3.6.2 merchant-session-store + layout
+- [x] T3.6.3 Migrar products
+- [x] T3.6.4 Migrar inventory + categories
+- [x] T3.6.5 Migrar orders + polling
+- [x] T3.6.6 Migrar service-orders
+- [x] T3.6.7 Migrar admin dashboard
+- [x] T3.6.8 ui-store global + limpieza
 
 ## Fase 4 — Flutter
 - [ ] T4.1.1 Customer setup

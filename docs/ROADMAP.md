@@ -54,6 +54,9 @@ Cada tarea tiene ID único en [TASKS.md](TASKS.md). Formato: `T<fase>.<bloque>.<
 | 3.3 | admin | Métricas globales y KPIs |
 | 3.4 | admin | Gestión pagos y comisiones |
 | 3.5 | marketing | Cupones y banners promocionales |
+| 3.6 | infra | **Migración Zustand** — estado cliente compartido (tienda activa, catálogo, pedidos, admin) |
+
+**Stack estado cliente:** Zustand 5 (`features/*/stores/`). Ver bloque 3.6 en [TASKS.md](TASKS.md).
 
 **Comando:** `/fase-3`
 
@@ -107,9 +110,9 @@ Cada tarea tiene ID único en [TASKS.md](TASKS.md). Formato: `T<fase>.<bloque>.<
 ## Progreso sugerido
 
 ```
-Fase 1 ████████████████████ 100%  ← Empezar aquí
-Fase 2 ░░░░░░░░░░░░░░░░░░░░   0%
-Fase 3 ░░░░░░░░░░░░░░░░░░░░   0%
+Fase 1 ████████████████████ 100%
+Fase 2 ████████████████████ 100%
+Fase 3 ████████████████████ 100%
 Fase 4 ░░░░░░░░░░░░░░░░░░░░   0%
 Fase 5 ░░░░░░░░░░░░░░░░░░░░   0%
 ```

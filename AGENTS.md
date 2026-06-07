@@ -28,7 +28,7 @@
 
 - [DEPLOY_DOCKER.md](docs/DEPLOY_DOCKER.md) — despliegue servidor con Docker (`make install-server`)
 - [PUSH_NOTIFICATIONS.md](docs/PUSH_NOTIFICATIONS.md) — plan push FCM
-- [WEB_ADMIN.md](docs/WEB_ADMIN.md) — arquitectura frontend Next.js
+- [WEB_ADMIN.md](docs/WEB_ADMIN.md) — arquitectura frontend Next.js + Zustand
 
 ## Reglas
 

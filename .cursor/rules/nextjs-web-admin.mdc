@@ -6,7 +6,7 @@ alwaysApply: false
 
 # web-admin — Next.js App Router
 
-Proyecto: `web-admin/` (Next.js 16, React 19, Tailwind v4, TypeScript).
+Proyecto: `web-admin/` (Next.js 16, React 19, Tailwind v4, TypeScript, **Zustand 5**).
 
 ## Principios
 
@@ -26,11 +26,12 @@ web-admin/
 ├── components/ui/         # componentes reutilizables
 ├── features/<modulo>/     # slice por dominio (orders, products…)
 │   ├── components/
-│   ├── hooks/
-│   └── api.ts             # llamadas tipadas al backend
+│   ├── stores/            # Zustand stores del módulo
+│   └── types.ts
 └── lib/
     ├── api/client.ts      # fetch wrapper + JWT
-    └── auth/session.ts
+    ├── auth/session.ts
+    └── stores/            # convenciones Zustand compartidas
 ```
 
 ## App Router
@@ -46,12 +47,16 @@ web-admin/
 - Componentes pequeños, sin lógica de negocio en `components/ui/`
 - Feedback de acciones: loading, error toast, disabled en submit
 
-## Datos y estado
+## Datos y estado (Zustand)
 
+- **Zustand** para todo estado cliente interactivo (listas, filtros, loading, errores, tienda activa)
+- Un store por feature en `features/<modulo>/stores/<nombre>-store.ts`
+- Selectores finos con `useStore((s) => s.campo)`; acciones async dentro del store
+- Persistir solo IDs de sesión (`persist` + `sessionStorage`); no cachear listas completas
 - Fetch en Server Components cuando no hay secretos de cliente
-- Cliente: hooks (`useSWR` o `useQuery` si se añade) o `useEffect` + polling (T3.2.3: 10s)
-- Mutaciones: Server Actions **o** `fetch` PATCH/POST desde cliente — consistente por feature
+- Mutaciones vía BFF (`/api/merchant/…`, `/api/admin/…`) desde acciones del store
 - No duplicar reglas de negocio del backend; validar solo UX
+- Migración legacy: bloque T3.6 en `docs/TASKS.md`
 
 ## Tests (Fase 3)
 
@@ -69,4 +74,4 @@ make web-admin-dev               # desde raíz
 
 ## Tareas
 
-Fase 3 → `docs/TASKS.md` (T3.x). Skill: `implement-nextjs-feature`.
+Fase 3 → `docs/TASKS.md` (T3.x). Migración Zustand → T3.6.x. Skill: `implement-nextjs-feature`.
