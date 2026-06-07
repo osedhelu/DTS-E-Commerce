@@ -44,15 +44,36 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Install GDAL/GEOS (PostGIS)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gdal-bin libgdal-dev libgeos-dev
+
       - name: Install backend deps
         working-directory: backend
         run: uv sync
+
+      - name: Verify GDAL bindings
+        working-directory: backend
+        run: uv run python -c "from django.contrib.gis.gdal import GDAL_VERSION; print('GDAL', GDAL_VERSION)"
+        env:
+          DJANGO_SETTINGS_MODULE: core.settings.test
+          GDAL_LIBRARY_PATH: /usr/lib/x86_64-linux-gnu/libgdal.so
+          GEOS_LIBRARY_PATH: /usr/lib/x86_64-linux-gnu/libgeos_c.so
 
       - name: Backend tests
         working-directory: backend
         run: uv run pytest -v
         env:
           DJANGO_SETTINGS_MODULE: core.settings.test
+          CI: "true"
+          POSTGRES_DB: test_dts
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: "5432"
+          GDAL_LIBRARY_PATH: /usr/lib/x86_64-linux-gnu/libgdal.so
+          GEOS_LIBRARY_PATH: /usr/lib/x86_64-linux-gnu/libgeos_c.so
 
   flutter-customer:
     runs-on: ubuntu-latest
