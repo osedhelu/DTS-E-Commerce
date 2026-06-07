@@ -178,9 +178,9 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [x] T6.7.4 E2E actualizar perfil
 
 ### Bloque 6.8 — Storage imágenes
-- [ ] T6.8.1 StorageBackend abstraction
-- [ ] T6.8.2 S3/Cloudinary prod
-- [ ] T6.8.3 Doc MEDIA_STORAGE
+- [x] T6.8.1 StorageBackend abstraction
+- [x] T6.8.2 S3/Cloudinary prod
+- [x] T6.8.3 Doc MEDIA_STORAGE
 
 ### Bloque 6.9 — UX gaps Fase 3
 - [ ] T6.9.1 Editar/eliminar categorías
