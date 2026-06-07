@@ -125,17 +125,17 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [x] T6.1.9 API resend verification
 
 ### Bloque 6.2 — Frontend landing + wizard
-- [ ] T6.2.1 Landing /vender
-- [ ] T6.2.2 onboarding-store Zustand
-- [ ] T6.2.3 Wizard paso cuenta
-- [ ] T6.2.4 Wizard paso negocio
-- [ ] T6.2.5 Wizard paso resumen
-- [ ] T6.2.6 BFF public register
-- [ ] T6.2.7 Páginas registro + éxito
-- [ ] T6.2.8 Página confirmar-email
-- [ ] T6.2.9 Middleware rutas públicas
-- [ ] T6.2.10 E2E registro público
-- [ ] T6.2.11 E2E confirmación email
+- [x] T6.2.1 Landing /vender
+- [x] T6.2.2 onboarding-store Zustand
+- [x] T6.2.3 Wizard paso cuenta
+- [x] T6.2.4 Wizard paso negocio
+- [x] T6.2.5 Wizard paso resumen
+- [x] T6.2.6 BFF public register
+- [x] T6.2.7 Páginas registro + éxito
+- [x] T6.2.8 Página confirmar-email
+- [x] T6.2.9 Middleware rutas públicas
+- [x] T6.2.10 E2E registro público
+- [x] T6.2.11 E2E confirmación email
 
 ### Bloque 6.3 — Backend catálogo enriquecido
 - [ ] T6.3.1 ProductVariant entity
