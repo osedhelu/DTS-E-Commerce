@@ -138,13 +138,13 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [x] T6.2.11 E2E confirmación email
 
 ### Bloque 6.3 — Backend catálogo enriquecido
-- [ ] T6.3.1 ProductVariant entity
-- [ ] T6.3.2 ProductIngredient entity
-- [ ] T6.3.3 Models variantes/ingredientes/imagen
-- [ ] T6.3.4 UpdateProductUseCase
-- [ ] T6.3.5 API nested + upload imagen
-- [ ] T6.3.6 Validación vertical/tipo
-- [ ] T6.3.7 Plantillas categorías por vertical
+- [x] T6.3.1 ProductVariant entity
+- [x] T6.3.2 ProductIngredient entity
+- [x] T6.3.3 Models variantes/ingredientes/imagen
+- [x] T6.3.4 UpdateProductUseCase
+- [x] T6.3.5 API nested + upload imagen
+- [x] T6.3.6 Validación vertical/tipo
+- [x] T6.3.7 Plantillas categorías por vertical
 
 ### Bloque 6.4 — Frontend catálogo enriquecido
 - [ ] T6.4.1 products-store update/upload
