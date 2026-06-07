@@ -190,10 +190,10 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [x] T6.9.5 Admin editar cupones
 
 ### Bloque 6.10 — Admin moderación
-- [ ] T6.10.1 API list merchants
-- [ ] T6.10.2 API suspender tienda
-- [ ] T6.10.3 UI /admin/merchants
-- [ ] T6.10.4 E2E moderación
+- [x] T6.10.1 API list merchants
+- [x] T6.10.2 API suspender tienda
+- [x] T6.10.3 UI /admin/merchants
+- [x] T6.10.4 E2E moderación
 
 ## Fase 4 — Flutter
 - [ ] T4.1.1 Customer setup
