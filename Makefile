@@ -1,4 +1,4 @@
-.PHONY: help setup up down logs ps doctor restart-api install-server backend-migrate-all backend-check-db \
+.PHONY: help setup up down logs ps doctor restart-api install-server backend-migrate-all backend-makemigrations-all backend-check-db \
 	docker-up docker-down docker-logs docker-up-full docker-down-full docker-logs-full docker-ps \
 	backend-shell backend-createsuperuser backend-migrate-docker \
 	backend-sync backend-test backend-migrate backend-run \
@@ -24,8 +24,9 @@ help:
 	@echo "  make backend-createsuperuser   Crear admin Django"
 	@echo "  make backend-shell      Shell Django en contenedor"
 	@echo "  make doctor             Diagnóstico ALLOWED_HOSTS / API"
-	@echo "  make restart-api        Recrear API tras cambiar .env"
-	@echo "  make backend-migrate-all   Migraciones en contenedor API"
+	@echo "  make restart-api             Rebuild API (código backend o .env)"
+	@echo "  make backend-migrate-all     Migraciones en contenedor API"
+	@echo "  make backend-makemigrations-all  Crear migraciones en contenedor (si hay drift)"
 	@echo "  make backend-check-db      Verificar tablas en PostGIS"
 	@echo "  make install-server        Alias: up + mensaje post-instalación"
 	@echo ""
@@ -89,6 +90,9 @@ backend-shell: $(DOCKER_ENV_FILE)
 
 backend-migrate-docker: $(DOCKER_ENV_FILE)
 	$(DOCKER_COMPOSE_FULL) --profile tools run --rm backend-migrate
+
+backend-makemigrations-all: $(DOCKER_ENV_FILE)
+	docker exec dts-api uv run --no-dev python manage.py makemigrations
 
 backend-migrate-all: $(DOCKER_ENV_FILE)
 	docker exec dts-api uv run --no-dev python manage.py migrate --noinput
@@ -162,6 +166,7 @@ backend-sync:
 backend-test:
 	cd backend && uv run pytest -v
 
+# Requiere GDAL en el host (PostGIS). En servidor o sin GDAL: make backend-migrate-all
 backend-migrate:
 	cd backend && uv run python manage.py migrate
 
