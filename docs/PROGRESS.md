@@ -200,7 +200,7 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [x] T6.11.2 URLs públicas en API (MEDIA_PUBLIC_BASE_URL)
 - [x] T6.11.3 Docker volumen backend_media
 - [x] T6.11.4 resolveMediaUrl en frontend
-- [ ] T6.11.5 E2E foto visible en UI (integración)
+- [x] T6.11.5 E2E foto visible en UI (integración)
 - [x] T6.11.6 Docs MEDIA_STORAGE + WEB_ADMIN
 
 ## Fase 4 — Flutter

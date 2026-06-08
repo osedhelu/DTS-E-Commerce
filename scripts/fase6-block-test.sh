@@ -86,7 +86,8 @@ run_block() {
       ;;
     6.11)
       backend_pytest_kw "media_serving or media_urls or test_media"
-      web_e2e e2e/product_photo_upload_test.spec.ts
+      web_e2e e2e/product_photo_upload_test.spec.ts \
+        e2e/product_photo_visible_test.spec.ts
       ;;
     *)
       echo "Bloque desconocido: $1 (use 6.1–6.11)"
