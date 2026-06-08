@@ -141,12 +141,14 @@ Cada tarea tiene ID único en [TASKS.md](TASKS.md). Formato: `T<fase>.<bloque>.<
 Fase 1 ████████████████████ 100%
 Fase 2 ████████████████████ 100%
 Fase 3 ████████████████████ 100%
-Fase 6 ███████████████████░  98%  ← Falta T6.11.5 E2E foto visible (integración)
+Fase 6 ████████████████████ 100%
+Extras (landing i18n, campos dinámicos, admin UX) — entregado
 Fase 4 ░░░░░░░░░░░░░░░░░░░░   0%  ← Siguiente: apps Flutter
 Fase 5 ░░░░░░░░░░░░░░░░░░░░   0%
 ```
 
-**Siguiente tarea:** `T6.11.5` — E2E `product_photo_visible_test` · Comando: `/bloque-6-11`  
-Tras 6.11: `/fase-4` (Flutter customer/driver).
+**Avance global:** 151/189 tareas (~80 %) · **Visión producto completa:** ~67 % (falta móvil + realtime)
 
-Actualiza este bloque manualmente o pide al agente: `/progreso`
+**Documento cliente:** [ESTADO_PROYECTO_CLIENTE.md](ESTADO_PROYECTO_CLIENTE.md)
+
+**Siguiente fase:** `/fase-4` (Flutter customer + driver)
