@@ -4,7 +4,7 @@ description: Ejecutar un bloque Fase 6 completo (implementar + tests). Uso: /blo
 
 # Bloque Fase 6 — implementar + validar
 
-El usuario indicará el bloque: `6.1`, `6.2`, … `6.10`.
+El usuario indicará el bloque: `6.1`, `6.2`, … `6.11`.
 
 Si no indica bloque, lista bloques pendientes en `docs/PROGRESS.md` y sugiere el primero incompleto.
 
@@ -45,6 +45,9 @@ make fase6-test BLOCK=6.1   # sustituir 6.1 por el bloque actual
 | 6.8 | `/bloque-6-8` | `make fase6-test BLOCK=6.8` |
 | 6.9 | `/bloque-6-9` | `make fase6-test BLOCK=6.9` |
 | 6.10 | `/bloque-6-10` | `make fase6-test BLOCK=6.10` |
+| 6.11 | `/bloque-6-11` | `make fase6-test BLOCK=6.11` |
+
+**6.11** — fotos producto y logos visibles en UI (`SERVE_MEDIA`, `resolveMediaUrl`).
 
 ## Reglas
 

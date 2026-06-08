@@ -342,6 +342,36 @@ CREATED → ACCEPTED_BY_MERCHANT → SCHEDULED → PROVIDER_EN_ROUTE
 | T6.10.3 | Frontend `/admin/merchants` — tabla comercios, estado verificación | — |
 | T6.10.4 | E2E admin ve comercio recién registrado | `admin_merchant_moderation_test` |
 
+### Bloque 6.11 — Medios operativos (fotos producto + logos visibles)
+
+> **Integración E2E** de lo implementado en T6.3.5, T6.4.5, T6.7 y T6.8: subir imagen **y verla** en el panel merchant (galería producto, thumbnail listado, logo tienda).  
+> Prerequisito Docker: `SERVE_MEDIA=True`, volumen `backend_media`, `MEDIA_PUBLIC_BASE_URL`.
+
+| ID | Tarea | Tests |
+|----|-------|-------|
+| T6.11.1 | Backend: `SERVE_MEDIA` + ruta `/media/` en `core/urls.py` | `test_serve_media_when_enabled`, `test_media_not_served_when_disabled` |
+| T6.11.2 | `MEDIA_PUBLIC_BASE_URL` + `build_public_media_url()` en serializers Store/Product | `test_build_public_media_url_*` |
+| T6.11.3 | Docker: volumen `backend_media` + env `SERVE_MEDIA` / `MEDIA_PUBLIC_BASE_URL` en compose | — |
+| T6.11.4 | Frontend: `resolveMediaUrl()` (`lib/media-url.ts`) en galería, listado y logo tienda | — |
+| T6.11.5 | E2E integración: foto subida se muestra en preview (sin mock de URL rota) | `product_photo_visible_test` |
+| T6.11.6 | Documentar checklist dev en `MEDIA_STORAGE.md` + `WEB_ADMIN.md` | — |
+
+**Flujo fotos producto (referencia):**
+
+```
+Merchant UI → POST /api/merchant/stores/{id}/products/{pid}/images (multipart)
+           → BFF → POST /api/v1/stores/{id}/products/{pid}/images/
+           → Django guarda en MEDIA_ROOT/products/...
+           → API devuelve url absoluta (MEDIA_PUBLIC_BASE_URL)
+           → Galería usa resolveMediaUrl() → <img src="http://extreme.local:8000/media/...">
+```
+
+**Validar bloque:**
+
+```bash
+make fase6-test BLOCK=6.11
+```
+
 ---
 
 

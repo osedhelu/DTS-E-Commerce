@@ -30,6 +30,18 @@ MEDIA_PUBLIC_BASE_URL=http://extreme.local:8000   # URL que usa el navegador
 
 En Docker (`docker-infrastructure/.env`), el volumen `backend_media` persiste los archivos entre reinicios del contenedor `api`.
 
+### Checklist — fotos producto visibles en web-admin
+
+| Paso | Acción |
+|------|--------|
+| 1 | `SERVE_MEDIA=True` y `MEDIA_PUBLIC_BASE_URL=http://extreme.local:8000` en `docker-infrastructure/.env` |
+| 2 | `make docker-up-full` (recrea `api` con volumen media) |
+| 3 | Subir foto en `/merchant/products/[id]` |
+| 4 | Verificar en navegador: `http://extreme.local:8000/media/products/...` responde 200 |
+| 5 | Si falla preview en `:3000`, confirmar `NEXT_PUBLIC_API_URL=http://extreme.local:8000/api/v1` en `web-admin/.env` |
+
+**Tareas plan:** T6.11.1–T6.11.6 en [TASKS.md](TASKS.md) · Comando Cursor: `/bloque-6-11`
+
 ## Producción (S3)
 
 ```bash

@@ -9,7 +9,7 @@ ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 BLOCK="${1:-}"
 
 if [[ -z "$BLOCK" ]]; then
-  echo "Uso: $0 <bloque>   ej: 6.1, 6.2, … 6.10, all"
+  echo "Uso: $0 <bloque>   ej: 6.1, 6.2, … 6.11, all"
   exit 1
 fi
 
@@ -84,15 +84,19 @@ run_block() {
       backend_pytest_kw "admin_list_merchants or admin_suspend_store"
       web_e2e e2e/admin_merchant_moderation_test.spec.ts
       ;;
+    6.11)
+      backend_pytest_kw "media_serving or media_urls or test_media"
+      web_e2e e2e/product_photo_upload_test.spec.ts
+      ;;
     *)
-      echo "Bloque desconocido: $1 (use 6.1–6.10)"
+      echo "Bloque desconocido: $1 (use 6.1–6.11)"
       exit 1
       ;;
   esac
 }
 
 if [[ "$BLOCK" == "all" ]]; then
-  for b in 6.1 6.2 6.3 6.4 6.5 6.6 6.7 6.8 6.9 6.10; do
+  for b in 6.1 6.2 6.3 6.4 6.5 6.6 6.7 6.8 6.9 6.10 6.11; do
     echo ""
     echo "══════════════════════════════════════"
     echo " Bloque $b"

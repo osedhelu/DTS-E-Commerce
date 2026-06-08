@@ -49,7 +49,8 @@ Ver [MERCHANT_ONBOARDING.md](MERCHANT_ONBOARDING.md).
 | Ruta | Fase | Descripción |
 |------|------|-------------|
 | `/merchant` | 6.5 | Dashboard KPIs tienda (ventas, ganancias) |
-| `/merchant/products` | 3 + 6.4 | Catálogo; Fase 6 añade editar, fotos, variantes |
+| `/merchant/products` | 3 + 6.4 | Catálogo; editar, variantes, **galería fotos** |
+| `/merchant/products/[id]` | 6.4 | Editar producto + subir fotos (multipart) |
 | `/merchant/inventory` | 3 | Stock productos físicos |
 | `/merchant/categories` | 3 + 6.9 | Árbol categorías; Fase 6 añade editar/eliminar |
 | `/merchant/orders` | 3 | Pedidos delivery |
@@ -100,7 +101,22 @@ Ver bloque T3.6 y stores Fase 6 (`onboarding-store`, `dashboard-store`, `promoti
 | Fase | Alcance |
 |------|---------|
 | **3** | MVP operativo (CRUD básico, pedidos, admin KPIs) — ✅ |
-| **6** | Portal seller completo (registro, catálogo rico, métricas) — pendiente |
+| **6** | Portal seller completo (registro, catálogo rico, métricas) — ✅ |
+| **6.11** | Fotos producto y logos **visibles** en UI — casi listo (falta E2E integración) |
+
+## Fotos de producto y logos
+
+1. **Subir:** en `/merchant/products/[id]` → galería → `POST .../images/` (BFF multipart).
+2. **Ver:** la API devuelve `url` con `MEDIA_PUBLIC_BASE_URL`; el frontend usa `resolveMediaUrl()` (`lib/media-url.ts`).
+3. **Backend debe servir** `/media/` con `SERVE_MEDIA=True` (Docker: volumen `backend_media`).
+
+```env
+# docker-infrastructure/.env
+SERVE_MEDIA=True
+MEDIA_PUBLIC_BASE_URL=http://extreme.local:8000
+```
+
+Ver [MEDIA_STORAGE.md](MEDIA_STORAGE.md) · Comando: `/bloque-6-11`
 
 ## Desarrollo
 

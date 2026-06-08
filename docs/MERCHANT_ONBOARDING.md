@@ -87,7 +87,7 @@ Reutiliza infra de email Fase 2 (`T2.4.7`); plantilla nueva `merchant_welcome`.
 
 - **Ingredientes:** lista editable (texto o entidad `ProductIngredient`)
 - **Variantes / porciones:** S, M, L, XL con precio o delta (`ProductVariant`)
-- **Fotos:** upload multipart; **v1** guardar en `MEDIA_ROOT`/session; **v2** S3/Cloudinary (T6.8)
+- **Fotos:** upload multipart → `MEDIA_ROOT` (local) o S3 (prod T6.8); visualización vía `SERVE_MEDIA` + `resolveMediaUrl` (T6.11)
 - **Categorías:** árbol 2 niveles asignable en formulario producto
 
 ### Servicios (`SERVICES`)
@@ -130,16 +130,19 @@ Descuentos **por tienda** (distinto de cupones globales admin T3.5):
 
 ## Qué ya existe vs qué falta
 
-| Capacidad | Estado actual (Fase 3) | Fase 6 |
-|-----------|------------------------|--------|
-| Registro merchant API básico | ✅ `POST /accounts/register/` | Wizard público + store atómico |
-| Verificación email | ❌ | T6.1.x |
-| Landing /vender | ❌ | T6.2.x |
-| CRUD producto completo | ⚠️ solo crear + desactivar | Editar + fotos + variantes |
-| Ingredientes / porciones | ❌ | T6.3–6.4 |
-| Dashboard merchant KPIs | ❌ placeholder | T6.5 |
-| Descuentos merchant | ❌ | T6.6 |
-| Config tienda (logo, horarios) | ❌ | T6.7 |
+| Capacidad | Estado (Fase 6) |
+|-----------|-----------------|
+| Registro público + verificación email | ✅ T6.1–6.2 |
+| Landing `/vender` + wizard registro | ✅ T6.2 |
+| CRUD producto completo (editar, variantes, ingredientes) | ✅ T6.3–6.4 |
+| **Upload fotos producto** (multipart + galería) | ✅ T6.3.5, T6.4.5 |
+| **Ver fotos en UI** (servir `/media/`, URLs absolutas) | ✅ T6.11.1–6.11.4 |
+| Dashboard merchant KPIs | ✅ T6.5 |
+| Promociones / descuentos tienda | ✅ T6.6 |
+| Config tienda (logo, descripción, abierto/cerrado) | ✅ T6.7 |
+| Storage S3/local abstracto | ✅ T6.8 |
+| Moderación admin comercios | ✅ T6.10 |
+| E2E integración foto visible (sin mock URL) | ⏳ T6.11.5 pendiente |
 
 ---
 
@@ -149,7 +152,9 @@ Descuentos **por tienda** (distinto de cupones globales admin T3.5):
 Fase 1–2 (hecho) → Fase 3 MVP (hecho) → Fase 6 (este doc) → Fase 4 Flutter → Fase 5 Realtime
 ```
 
-Comando: `/fase-6` o `/bloque-6-1` … `/bloque-6-10` · Tests: `make fase6-test BLOCK=6.1` — ver [FASE6_BLOCKS.md](FASE6_BLOCKS.md)
+Comando: `/fase-6` o `/bloque-6-1` … `/bloque-6-11` · Tests: `make fase6-test BLOCK=6.1` — ver [FASE6_BLOCKS.md](FASE6_BLOCKS.md)
+
+**Fotos producto:** si el upload funciona pero la imagen no se ve, ejecutar `/bloque-6-11` y revisar [MEDIA_STORAGE.md](MEDIA_STORAGE.md).
 
 ---
 

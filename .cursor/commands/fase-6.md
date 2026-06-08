@@ -24,6 +24,7 @@ Cada bloque = implementar + tests unificados:
 | 6.8 | `/bloque-6-8` | `make fase6-test BLOCK=6.8` |
 | 6.9 | `/bloque-6-9` | `make fase6-test BLOCK=6.9` |
 | 6.10 | `/bloque-6-10` | `make fase6-test BLOCK=6.10` |
+| 6.11 | `/bloque-6-11` | `make fase6-test BLOCK=6.11` |
 
 Una tarea suelta: `/tarea T6.1.4` → `make fase6-test-task TASK=T6.1.4`
 
@@ -38,8 +39,10 @@ Todos los bloques: `make fase6-test-all`
 ## Orden
 
 ```
-6.1 → 6.2 → 6.3 → 6.4 → 6.5 → 6.6 → 6.7 → 6.8 → 6.9 → 6.10
+6.1 → 6.2 → 6.3 → 6.4 → 6.5 → 6.6 → 6.7 → 6.8 → 6.9 → 6.10 → 6.11
 ```
+
+**6.11** es obligatorio si las fotos de producto o el logo de tienda no se ven tras subirlos.
 
 ## Reglas
 

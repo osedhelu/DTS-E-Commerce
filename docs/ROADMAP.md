@@ -82,10 +82,11 @@ Cada tarea tiene ID único en [TASKS.md](TASKS.md). Formato: `T<fase>.<bloque>.<
 | 6.8 | infra | Storage imágenes local → S3/Cloudinary |
 | 6.9 | web | Completar gaps UX Fase 3 (edit categorías, toasts, banners admin) |
 | 6.10 | admin | Moderación comercios registrados |
+| 6.11 | infra+web | **Fotos producto y logos visibles** (servir `/media/`, URLs absolutas, Docker) |
 
 **Orden recomendado:** Fase 6 **antes** de Fase 4 (Flutter).
 
-**Comando:** `/fase-6`
+**Comando:** `/fase-6` · Fotos E2E: `/bloque-6-11`
 
 ---
 
@@ -139,10 +140,13 @@ Cada tarea tiene ID único en [TASKS.md](TASKS.md). Formato: `T<fase>.<bloque>.<
 ```
 Fase 1 ████████████████████ 100%
 Fase 2 ████████████████████ 100%
-Fase 3 ████████████████████ 100%  (MVP — ver Fase 6 para portal completo)
-Fase 6 ░░░░░░░░░░░░░░░░░░░░   0%  ← Prioridad: onboarding comercio
-Fase 4 ░░░░░░░░░░░░░░░░░░░░   0%
+Fase 3 ████████████████████ 100%
+Fase 6 ███████████████████░  98%  ← Falta T6.11.5 E2E foto visible (integración)
+Fase 4 ░░░░░░░░░░░░░░░░░░░░   0%  ← Siguiente: apps Flutter
 Fase 5 ░░░░░░░░░░░░░░░░░░░░   0%
 ```
+
+**Siguiente tarea:** `T6.11.5` — E2E `product_photo_visible_test` · Comando: `/bloque-6-11`  
+Tras 6.11: `/fase-4` (Flutter customer/driver).
 
 Actualiza este bloque manualmente o pide al agente: `/progreso`

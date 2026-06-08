@@ -149,12 +149,43 @@ make fase6-test BLOCK=6.10
 
 ---
 
+## Bloque 6.11 — Medios operativos (fotos producto + logos)
+
+**Tareas:** T6.11.1 – T6.11.6  
+**Objetivo:** que las fotos subidas en `/merchant/products/[id]` y el logo en `/merchant/settings` **se vean** en el navegador (no solo se guarden en disco).
+
+| Área | Entregable |
+|------|------------|
+| Backend | `SERVE_MEDIA=True`, ruta `/media/`, `MEDIA_PUBLIC_BASE_URL` |
+| Docker | Volumen `backend_media`, vars en `docker-infrastructure/.env` |
+| Frontend | `resolveMediaUrl()` — URLs `http://extreme.local:8000/media/...` |
+| E2E | `product_photo_upload_test` (mock) + `product_photo_visible_test` (integración, pendiente) |
+
+**Checklist local antes de probar fotos:**
+
+```bash
+# docker-infrastructure/.env
+SERVE_MEDIA=True
+MEDIA_PUBLIC_BASE_URL=http://extreme.local:8000
+
+make docker-up-full   # recrea api con volumen media
+```
+
+Probar URL directa: `http://extreme.local:8000/media/products/<id>/...png`
+
+```bash
+make fase6-test BLOCK=6.11
+```
+
+---
+
 ## Workflow recomendado por bloque
 
 1. `/bloque-6.1` — el agente implementa T6.1.1…T6.1.9
 2. `make fase6-test BLOCK=6.1` — valida tests unificados
 3. Marca `[x]` en `PROGRESS.md` bloque 6.1
 4. `/bloque-6.2` — siguiente bloque
+5. Tras 6.10 → `/bloque-6-11` si las fotos no se ven en UI
 
 ## Prerequisitos tests
 

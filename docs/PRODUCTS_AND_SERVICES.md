@@ -54,7 +54,7 @@ Cada categoría pertenece a una **tienda** (`store_id`).
 - `backend/features/products/domain/entities.py` — `Category`, `Product`, `ProductType`
 - Tests: `test_product_price_positive`, `test_category_hierarchy`, `test_service_product_on_site_visit`
 
-**Pendiente Fase 6:** variantes porción (S/M/L/XL), ingredientes, fotos producto — ver [MERCHANT_ONBOARDING.md](MERCHANT_ONBOARDING.md) y T6.3–T6.4 en [TASKS.md](TASKS.md).
+**Fase 6 (implementado):** variantes porción (S/M/L/XL), ingredientes, fotos producto (T6.3–T6.4). Visualización de imágenes en web-admin: T6.11 — ver [MEDIA_STORAGE.md](MEDIA_STORAGE.md).
 
 ---
 
