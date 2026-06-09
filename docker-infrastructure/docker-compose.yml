@@ -31,6 +31,8 @@ x-backend-env: &backend-env
   RUN_MIGRATIONS: "false"
   SERVE_MEDIA: ${SERVE_MEDIA:-True}
   MEDIA_PUBLIC_BASE_URL: ${MEDIA_PUBLIC_BASE_URL:-http://extreme.local:8000}
+  # Valor fijo: no usar ${MEDIA_ROOT} del .env (una línea vacía lo anula).
+  MEDIA_ROOT: /app/backend/media
 
 x-backend-build: &backend-build
   context: ..
@@ -50,10 +52,11 @@ services:
     environment:
       <<: *backend-env
       RUN_MIGRATIONS: "true"
+      MEDIA_ROOT: /app/backend/media
     ports:
       - "${API_PORT:-8000}:8000"
     volumes:
-      - backend_media:/app/media
+      - backend_media:/app/backend/media
       - ${FCM_CREDENTIALS_HOST_PATH:-./volumes/fcm}:/secrets/fcm:ro
     depends_on:
       db:

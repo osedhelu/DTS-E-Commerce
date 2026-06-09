@@ -30,6 +30,11 @@ PY
 
 wait_for_db
 
+MEDIA_DIR="${MEDIA_ROOT:-/app/backend/media}"
+export MEDIA_ROOT="$MEDIA_DIR"
+mkdir -p "$MEDIA_DIR"
+echo "==> MEDIA_ROOT=${MEDIA_DIR}"
+
 if [[ "${RUN_MIGRATIONS:-true}" == "true" ]]; then
   echo "==> Aplicando migraciones..."
   uv run --no-dev python manage.py migrate --noinput

@@ -1,4 +1,4 @@
-.PHONY: help setup up down logs ps doctor restart-api install-server backend-migrate-all backend-makemigrations-all backend-check-db \
+.PHONY: help setup up down logs ps doctor restart-api media-check install-server backend-migrate-all backend-makemigrations-all backend-check-db \
 	docker-up docker-down docker-logs docker-up-full docker-down-full docker-logs-full docker-ps \
 	backend-shell backend-createsuperuser backend-migrate-docker \
 	backend-sync backend-test backend-migrate backend-run \
@@ -25,6 +25,7 @@ help:
 	@echo "  make backend-shell      Shell Django en contenedor"
 	@echo "  make doctor             Diagnóstico ALLOWED_HOSTS / API"
 	@echo "  make restart-api             Rebuild API (código backend o .env)"
+	@echo "  make media-check             Diagnóstico fotos /media/ en Docker"
 	@echo "  make backend-migrate-all     Migraciones en contenedor API"
 	@echo "  make backend-makemigrations-all  Crear migraciones en contenedor (si hay drift)"
 	@echo "  make backend-check-db      Verificar tablas en PostGIS"
@@ -108,6 +109,18 @@ backend-check-db: $(DOCKER_ENV_FILE)
 restart-api: $(DOCKER_ENV_FILE)
 	$(DOCKER_COMPOSE_FULL) up -d --build --force-recreate api celery-worker celery-beat
 
+media-check: $(DOCKER_ENV_FILE)
+	@echo "── Variables en contenedor (printenv) ──"
+	@docker exec dts-api printenv SERVE_MEDIA MEDIA_ROOT MEDIA_PUBLIC_BASE_URL 2>/dev/null || echo "dts-api no está corriendo"
+	@echo ""
+	@echo "── Django settings.MEDIA_ROOT ──"
+	@docker exec dts-api uv run --no-dev python -c "import django; django.setup(); from django.conf import settings; print(settings.MEDIA_ROOT); print('SERVE_MEDIA=', settings.SERVE_MEDIA)" 2>/dev/null || echo "No se pudo consultar Django"
+	@echo ""
+	@echo "── Archivos en media/products/ ──"
+	@docker exec dts-api sh -c 'ls -laR /app/backend/media/products/ 2>/dev/null || echo "(vacío — sube fotos en /merchant/products/[id])"' 2>/dev/null || true
+	@echo ""
+	@echo "Si MEDIA_ROOT sigue vacío en printenv → ejecuta: make restart-api"
+
 backend-admin-check: $(DOCKER_ENV_FILE)
 	@docker exec dts-api uv run --no-dev python -c "\
 from django.contrib import admin; \
@@ -127,6 +140,8 @@ doctor: $(DOCKER_ENV_FILE)
 	@echo ""
 	@echo "── Contenedor dts-api ──"
 	@docker exec dts-api printenv ALLOWED_HOSTS 2>/dev/null || echo "dts-api no está corriendo"
+	@docker exec dts-api printenv SERVE_MEDIA MEDIA_ROOT MEDIA_PUBLIC_BASE_URL 2>/dev/null || true
+	@docker exec dts-api sh -c 'ls -la "$${MEDIA_ROOT:-/app/backend/media}/products/" 2>/dev/null | head -5 || echo "Sin fotos en media/products/"' 2>/dev/null || true
 	@echo ""
 	@echo "── Prueba localhost ──"
 	@curl -s -o /dev/null -w "HTTP %{http_code}\n" http://localhost:8000/api/v1/docs/ || true
