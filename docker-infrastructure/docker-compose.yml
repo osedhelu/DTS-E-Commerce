@@ -1,8 +1,13 @@
 # Stack completo para servidor local: infra + API Django + Celery worker + Celery beat.
 #
-# Uso:
+# Uso local (PostGIS en Docker):
 #   cp docker-infrastructure/.env.example docker-infrastructure/.env
-#   make docker-up-full
+#   make up
+#
+# Uso con BD externa (Railway, etc.):
+#   USE_LOCAL_DB=false
+#   DATABASE_URL=postgresql://USER:PASS@HOST:5432/DB_NAME
+#   make up
 #
 # API:     http://localhost:8000
 # Mailpit: http://localhost:8025
@@ -15,12 +20,14 @@ x-backend-env: &backend-env
   DEBUG: ${DEBUG:-False}
   ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1,api,extreme.local}
   CSRF_TRUSTED_ORIGINS: ${CSRF_TRUSTED_ORIGINS:-http://localhost:8000,http://127.0.0.1:8000,http://extreme.local:8000}
+  # DATABASE_URL tiene prioridad en Django (core/settings/database.py)
+  DATABASE_URL: ${DATABASE_URL:-}
   DB_NAME: ${DB_NAME:-dts_delivery}
   DB_USER: ${DB_USER:-postgres}
   DB_PASSWORD: ${DB_PASSWORD:-postgres}
-  DB_HOST: db
-  DB_PORT: "5432"
-  REDIS_URL: redis://redis:6379/0
+  DB_HOST: ${DB_HOST:-db}
+  DB_PORT: ${DB_PORT:-5432}
+  REDIS_URL: ${REDIS_URL:-redis://redis:6379/0}
   EMAIL_BACKEND: django.core.mail.backends.smtp.EmailBackend
   EMAIL_HOST: mailpit
   EMAIL_PORT: "1025"
@@ -61,6 +68,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
+        required: false
       redis:
         condition: service_healthy
       mailpit:
@@ -89,6 +97,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
+        required: false
       redis:
         condition: service_healthy
       api:
@@ -108,6 +117,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
+        required: false
     networks:
       - dts-backend
 
@@ -126,6 +136,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
+        required: false
       redis:
         condition: service_healthy
       api:

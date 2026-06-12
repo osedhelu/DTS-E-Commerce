@@ -13,11 +13,21 @@ DOCKER_COMPOSE = docker compose -p dts --env-file $(DOCKER_ENV_FILE)
 DOCKER_COMPOSE_INFRA = $(DOCKER_COMPOSE) -f docker-compose.yml
 DOCKER_COMPOSE_FULL = $(DOCKER_COMPOSE) -f docker-infrastructure/docker-compose.yml
 
+# PostGIS local salvo USE_LOCAL_DB=false o DATABASE_URL definida
+_use_external_db := $(shell grep -E '^(USE_LOCAL_DB=(false|0|no)|DATABASE_URL=.+)$$' $(DOCKER_ENV_FILE) 2>/dev/null)
+ifneq ($(_use_external_db),)
+export COMPOSE_PROFILES :=
+else
+export COMPOSE_PROFILES := local-db
+endif
+unset _use_external_db
+
 help:
 	@echo "DTS E-Commerce Monorepo"
 	@echo ""
 	@echo "── 100% Docker (solo necesitas Docker instalado) ──"
 	@echo "  make up                 Levantar TODO: DB + Redis + API + workers"
+	@echo "                          (BD externa: DATABASE_URL en docker-infrastructure/.env)"
 	@echo "  make down               Detener stack completo"
 	@echo "  make logs               Ver logs"
 	@echo "  make ps                 Estado de contenedores"

@@ -23,6 +23,7 @@ backend/db.sqlite3
 # Env
 .env
 .env.local
+docker-infrastructure/.env
 
 # Flutter
 flutter-customer/.dart_tool/

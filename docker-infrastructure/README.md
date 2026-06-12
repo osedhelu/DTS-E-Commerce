@@ -4,12 +4,27 @@
 
 ## Inicio rápido
 
+### PostGIS local (default)
+
 ```bash
 cp docker-infrastructure/.env.example docker-infrastructure/.env
 # Editar SECRET_KEY, ALLOWED_HOSTS, CSRF_TRUSTED_ORIGINS
 make up
 make backend-createsuperuser
 ```
+
+### Base de datos externa (Railway, etc.)
+
+En `docker-infrastructure/.env`:
+
+```env
+USE_LOCAL_DB=false
+DATABASE_URL=postgresql://USER:PASSWORD@HOST:5432/DB_NAME
+```
+
+Luego `make up` — no levanta el contenedor `dts-postgis`; API/Celery usan `DATABASE_URL`.
+
+> **Railway:** `*.railway.internal` solo funciona si Docker corre **en Railway**. Desde tu Mac usa la URL pública TCP del servicio PostGIS.
 
 ## Servicios
 
