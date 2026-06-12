@@ -30,6 +30,7 @@
 - [FASE6_BLOCKS.md](docs/FASE6_BLOCKS.md) — **comandos y tests por bloque 6.1–6.11**
 - [MEDIA_STORAGE.md](docs/MEDIA_STORAGE.md) — **fotos producto, logos, SERVE_MEDIA**
 - [DEPLOY_DOCKER.md](docs/DEPLOY_DOCKER.md) — despliegue servidor con Docker (`make install-server`)
+- [DEPLOY_RAILWAY.md](docs/DEPLOY_RAILWAY.md) — **despliegue backend en Railway (PostGIS + GDAL)**
 - [PUSH_NOTIFICATIONS.md](docs/PUSH_NOTIFICATIONS.md) — plan push FCM
 - [WEB_ADMIN.md](docs/WEB_ADMIN.md) — arquitectura frontend Next.js + Zustand
 

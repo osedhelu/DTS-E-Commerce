@@ -1,6 +1,6 @@
 # Docker — DTS Delivery Platform
 
-> Guía completa de despliegue: [docs/DEPLOY_DOCKER.md](../docs/DEPLOY_DOCKER.md)
+> Guía Docker: [docs/DEPLOY_DOCKER.md](../docs/DEPLOY_DOCKER.md) · Railway: [docs/DEPLOY_RAILWAY.md](../docs/DEPLOY_RAILWAY.md)
 
 ## Inicio rápido
 
