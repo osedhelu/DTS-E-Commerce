@@ -5,14 +5,25 @@ alwaysApply: true
 
 # Monorepo DTS-E-Commerce
 
-Repo: `git@github.com:osedhelu/DTS-E-Commerce.git`
+Repo raíz: `git@github.com:osedhelu/DTS-E-Commerce.git`
+
+## Submodules
+
+| Path | Repo |
+|------|------|
+| `backend/` | `git@github.com:osedhelu/DTS-backend.git` |
+| `web-admin/` | `git@github.com:osedhelu/DTS-web-admin.git` |
+| `flutter-customer/` | `git@github.com:osedhelu/DTS-flutter-customer.git` |
+| `flutter-driver/` | `git@github.com:osedhelu/DTS-flutter-driver.git` |
+
+Clonar: `git clone --recurse-submodules …` · Actualizar: `git submodule update --init --recursive`
 
 ## Estructura
 
-- `backend/` — Django API (uv, no pip)
-- `web-admin/` — Next.js + Tailwind (merchant/admin)
-- `flutter-customer/` — App cliente
-- `flutter-driver/` — App conductor
+- `backend/` — Django API (uv, no pip) — **submodule**
+- `web-admin/` — Next.js + Tailwind (merchant/admin) — **submodule**
+- `flutter-customer/` — App cliente — **submodule**
+- `flutter-driver/` — App conductor — **submodule**
 - Raíz: `Makefile`, `docker-compose.yml`, `scripts/`
 
 ## Comandos raíz

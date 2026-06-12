@@ -6,6 +6,11 @@ cd "$ROOT"
 
 echo "==> DTS E-Commerce — Setup Monorepo"
 
+if [ -f .gitmodules ]; then
+  echo "==> Inicializando submodules..."
+  git submodule update --init --recursive
+fi
+
 command -v docker >/dev/null || { echo "❌ Docker no encontrado"; exit 1; }
 command -v uv >/dev/null || { echo "❌ uv no encontrado. Instala: curl -LsSf https://astral.sh/uv/install.sh | sh"; exit 1; }
 command -v flutter >/dev/null || { echo "❌ Flutter no encontrado"; exit 1; }

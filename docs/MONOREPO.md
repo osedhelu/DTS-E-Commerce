@@ -1,6 +1,30 @@
 # Monorepo — DTS E-Commerce
 
-**Repositorio:** [github.com/osedhelu/DTS-E-Commerce](https://github.com/osedhelu/DTS-E-Commerce)
+**Repositorio raíz:** [github.com/osedhelu/DTS-E-Commerce](https://github.com/osedhelu/DTS-E-Commerce)
+
+## Submodules
+
+Cada app es un repositorio Git independiente enlazado como submodule:
+
+| Carpeta | Repositorio |
+|---------|-------------|
+| `backend/` | [DTS-backend](https://github.com/osedhelu/DTS-backend) |
+| `web-admin/` | [DTS-web-admin](https://github.com/osedhelu/DTS-web-admin) |
+| `flutter-customer/` | [DTS-flutter-customer](https://github.com/osedhelu/DTS-flutter-customer) |
+| `flutter-driver/` | [DTS-flutter-driver](https://github.com/osedhelu/DTS-flutter-driver) |
+
+```bash
+# Clonar todo
+git clone --recurse-submodules git@github.com:osedhelu/DTS-E-Commerce.git
+
+# Actualizar submodules a la versión fijada en el monorepo
+git submodule update --init --recursive
+
+# Tras pull en la raíz, sincronizar submodules
+git pull && git submodule update --init --recursive
+```
+
+Trabajar en un submodule: entrar a la carpeta, crear rama, commit y push al repo del submodule; luego en la raíz hacer commit del nuevo SHA en `.gitmodules` / el puntero del submodule.
 
 ## Estructura
 

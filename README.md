@@ -2,7 +2,16 @@
 
 Monorepo de la plataforma de delivery: backend Django (solo API), frontend web admin y apps Flutter (cliente y conductor).
 
-**Repositorio:** `git@github.com:osedhelu/DTS-E-Commerce.git`
+**Repositorio raíz:** `git@github.com:osedhelu/DTS-E-Commerce.git`
+
+Los cuatro proyectos de aplicación viven en **submodules** (repos independientes):
+
+| Carpeta | Repositorio |
+|---------|-------------|
+| `backend/` | [osedhelu/DTS-backend](https://github.com/osedhelu/DTS-backend) |
+| `web-admin/` | [osedhelu/DTS-web-admin](https://github.com/osedhelu/DTS-web-admin) |
+| `flutter-customer/` | [osedhelu/DTS-flutter-customer](https://github.com/osedhelu/DTS-flutter-customer) |
+| `flutter-driver/` | [osedhelu/DTS-flutter-driver](https://github.com/osedhelu/DTS-flutter-driver) |
 
 ## Estructura del monorepo
 
@@ -20,9 +29,12 @@ Monorepo de la plataforma de delivery: backend Django (solo API), frontend web a
 ## Setup rápido
 
 ```bash
-# Clonar
-git clone git@github.com:osedhelu/DTS-E-Commerce.git
+# Clonar con submodules
+git clone --recurse-submodules git@github.com:osedhelu/DTS-E-Commerce.git
 cd DTS-E-Commerce
+
+# Si ya clonaste sin submodules:
+# git submodule update --init --recursive
 
 # Instalar todo (Docker + uv + Flutter)
 chmod +x scripts/*.sh

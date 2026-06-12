@@ -1,12 +1,16 @@
 [submodule "backend"]
 	path = backend
 	url = git@github.com:osedhelu/DTS-backend.git
+	branch = main
 [submodule "web-admin"]
 	path = web-admin
 	url = git@github.com:osedhelu/DTS-web-admin.git
+	branch = main
 [submodule "flutter-customer"]
 	path = flutter-customer
 	url = git@github.com:osedhelu/DTS-flutter-customer.git
+	branch = main
 [submodule "flutter-driver"]
 	path = flutter-driver
 	url = git@github.com:osedhelu/DTS-flutter-driver.git
+	branch = main
