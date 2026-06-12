@@ -1,8 +1,0 @@
-Hola,
-
-{{ body }}
-
-Pedido #{{ order_id }}
-Estado: {{ order_status }}
-
-— DTS Delivery
