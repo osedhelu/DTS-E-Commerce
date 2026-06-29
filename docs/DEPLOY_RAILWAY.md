@@ -142,28 +142,18 @@ railway run uv run python manage.py createsuperuser
 
 ---
 
-## 6. Servicios adicionales (opcional)
+## 6. Celery worker + beat (mismo repo backend)
 
-### Celery worker (mismo Dockerfile, otro servicio)
+Guía completa en **[backend/DEPLOY_RAILWAY.md](../backend/DEPLOY_RAILWAY.md)** (secciones 2 y 3).
 
-Duplica el servicio **DTS-backend** o crea **DTS-celery-worker**:
+| Servicio | Config file en repo |
+|----------|---------------------|
+| **DTS-celery-worker** | `railway.worker.toml` |
+| **DTS-celery-beat** | `railway.beat.toml` |
 
-| Campo | Valor |
-|-------|--------|
-| Dockerfile | mismo |
-| Start command | `uv run celery -A core worker --loglevel=info --concurrency=2` |
-| Variables | mismas que API (`DATABASE_URL`, `REDIS_URL`, …) |
-| Public networking | **off** |
+En Railway → Settings → **Config file path** apunta a `/railway.worker.toml` o `/railway.beat.toml`.
 
-### Celery beat
-
-Start command:
-
-```bash
-uv run celery -A core beat --loglevel=info --schedule /tmp/celerybeat-schedule
-```
-
-Monta volumen en `/tmp` si quieres persistir el schedule.
+Variables clave en worker/beat: `RUN_MIGRATIONS=false`, `${{Redis.REDIS_URL}}`, `${{postgis.DATABASE_URL}}`. Sin dominio público ni healthcheck HTTP.
 
 ---
 
