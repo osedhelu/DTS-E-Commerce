@@ -4,7 +4,8 @@
 	backend-sync backend-test backend-migrate backend-run \
 	web-admin-sync web-admin-dev web-admin-build web-admin-lint \
 	flutter-sync flutter-test test lint \
-	fase6-test fase6-test-task fase6-test-all
+	fase6-test fase6-test-task fase6-test-all \
+	fase4-test fase4-test-task fase4-test-all
 
 export COMPOSE_PROJECT_NAME := dts
 
@@ -53,6 +54,9 @@ help:
 	@echo "  make fase6-test BLOCK=6.1   Tests unificados bloque 6.1"
 	@echo "  make fase6-test BLOCK=all   Todos los bloques 6.1–6.10"
 	@echo "  make fase6-test-task TASK=T6.1.4   Test de una tarea"
+	@echo "  make fase4-test BLOCK=4.1   Tests Flutter bloque 4.1"
+	@echo "  make fase4-test BLOCK=all   Todos los bloques 4.0–4.9"
+	@echo "  make fase4-test-task TASK=T4.2.1   Test tarea Fase 4"
 	@echo "  Ver docs/FASE6_BLOCKS.md · Cursor: /bloque-6-1"
 
 # ── Flujo Docker (recomendado en servidor) ────────────────────────────────────
@@ -238,6 +242,20 @@ fase6-test-all:
 fase6-test-task:
 	@chmod +x scripts/fase6-task-test.sh
 	@./scripts/fase6-task-test.sh $(TASK)
+
+# ── Fase 4 — tests Flutter por bloque ───────────────────────────────────────
+
+fase4-test:
+	@chmod +x scripts/fase4-block-test.sh
+	@./scripts/fase4-block-test.sh $(or $(BLOCK),4.1)
+
+fase4-test-all:
+	@chmod +x scripts/fase4-block-test.sh
+	@./scripts/fase4-block-test.sh all
+
+fase4-test-task:
+	@chmod +x scripts/fase4-task-test.sh
+	@./scripts/fase4-task-test.sh $(TASK)
 
 lint: web-admin-lint
 	cd backend && uv run ruff check .

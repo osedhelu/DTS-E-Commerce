@@ -204,38 +204,39 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [x] T6.11.6 Docs MEDIA_STORAGE + WEB_ADMIN
 
 ## Fase 4 — Flutter
-- [ ] T4.1.1 Customer setup
-- [ ] T4.1.2 ApiClient
-- [ ] T4.1.3 LoginUseCase
-- [ ] T4.1.4 LoginScreen
-- [ ] T4.1.5 Firebase setup cliente
-- [ ] T4.2.1 GetStoresUseCase
-- [ ] T4.2.2 StoresRepository
-- [ ] T4.2.3 StoreListScreen
-- [ ] T4.3.1 GetProductsUseCase
-- [ ] T4.3.2 Catalog + cart
-- [ ] T4.3.3 Filtros categoría/tipo catálogo
-- [ ] T4.3.4 ServiceDetailScreen
-- [ ] T4.4.1 Cart domain
-- [ ] T4.4.2 CreateOrderUseCase
-- [ ] T4.4.3 CheckoutScreen
-- [ ] T4.4.4 Checkout servicio (dirección + notas)
-- [ ] T4.4.5 Seguimiento pedido servicio
-- [ ] T4.5.1 GetTrackingUseCase
-- [ ] T4.5.2 TrackingMapScreen
-- [ ] T4.5.3 Registrar token FCM
-- [ ] T4.5.4 Push handler
-- [ ] T4.5.5 Deep link push → tracking
-- [ ] T4.6.1 Driver setup
-- [ ] T4.6.2 Driver login
-- [ ] T4.7.1 ToggleOnlineUseCase
-- [ ] T4.7.2 Availability switch
-- [ ] T4.8.1 Order use cases
-- [ ] T4.8.2 FCM handler
-- [ ] T4.8.3 Driver order flow
-- [ ] T4.9.1 SendLocationUseCase
-- [ ] T4.9.2 Background location
-- [ ] T4.9.3 Location permissions
+- [x] T4.0.1 Backend API driver availability (PATCH)
+- [x] T4.1.1 Customer setup
+- [x] T4.1.2 ApiClient
+- [x] T4.1.3 LoginUseCase
+- [x] T4.1.4 LoginScreen
+- [x] T4.1.5 Firebase setup cliente
+- [x] T4.2.1 GetStoresUseCase
+- [x] T4.2.2 StoresRepository
+- [x] T4.2.3 StoreListScreen
+- [x] T4.3.1 GetProductsUseCase
+- [x] T4.3.2 Catalog + cart
+- [x] T4.3.3 Filtros categoría/tipo catálogo
+- [x] T4.3.4 ServiceDetailScreen
+- [x] T4.4.1 Cart domain
+- [x] T4.4.2 CreateOrderUseCase
+- [x] T4.4.3 CheckoutScreen
+- [x] T4.4.4 Checkout servicio (dirección + notas)
+- [x] T4.4.5 Seguimiento pedido servicio
+- [x] T4.5.1 GetTrackingUseCase
+- [x] T4.5.2 TrackingMapScreen
+- [x] T4.5.3 Registrar token FCM
+- [x] T4.5.4 Push handler
+- [x] T4.5.5 Deep link push → tracking
+- [x] T4.6.1 Driver setup
+- [x] T4.6.2 Driver login
+- [x] T4.7.1 ToggleOnlineUseCase
+- [x] T4.7.2 Availability switch
+- [x] T4.8.1 Order use cases
+- [x] T4.8.2 FCM handler
+- [x] T4.8.3 Driver order flow
+- [x] T4.9.1 SendLocationUseCase
+- [x] T4.9.2 Background location
+- [x] T4.9.3 Location permissions
 
 ## Fase 5 — Tiempo Real
 - [ ] T5.1.1 Channels setup

@@ -375,6 +375,12 @@ make fase6-test BLOCK=6.11
 ---
 
 
+### Bloque 4.0 — Backend gap conductor
+
+| ID | Tarea | Tests |
+|----|-------|-------|
+| T4.0.1 | `PATCH /accounts/driver/availability/` (is_online + lat/lng) | `test_driver_toggle_online`, `test_driver_updates_location` |
+
 ### Bloque 4.1 — Cliente: core + auth
 
 | ID | Tarea | Tests |

@@ -4,47 +4,47 @@ description: Ejecutar Fase 4 — Apps Flutter Cliente y Conductor
 
 # Fase 4 — Desarrollo Móvil Flutter
 
+**Guía bloques:** [docs/FASE4_BLOCKS.md](../../docs/FASE4_BLOCKS.md)  
+**API móvil:** [docs/FLUTTER_API.md](../../docs/FLUTTER_API.md)  
+**Progreso:** [docs/PROGRESS.md](../../docs/PROGRESS.md)
+
 ## Prerequisito
 
-Fase 1 completa (API disponible). Idealmente Fase 2 también.
+Fases 1–2 backend ✅ · API Railway staging configurada en `lib/core/config/env.dart`.
 
 ## Proyectos
 
-- `flutter-customer/` — bloques 4.1 a 4.5
-- `flutter-driver/` — bloques 4.6 a 4.9
+- `flutter-customer/` — bloques **4.1–4.5**
+- `flutter-driver/` — bloques **4.6–4.9**
+- `backend/` — bloque **4.0** (API driver availability)
 
-## Arquitectura obligatoria
+## Comandos por bloque
+
+| Bloque | Cursor | Tests |
+|--------|--------|-------|
+| 4.0 backend | `/bloque-4-0` | `make fase4-test BLOCK=4.0` |
+| 4.1 auth cliente | `/bloque-4-1` | `make fase4-test BLOCK=4.1` |
+| 4.2 stores | `/bloque-4-2` | `make fase4-test BLOCK=4.2` |
+| 4.3 catalog | `/bloque-4-3` | `make fase4-test BLOCK=4.3` |
+| 4.4 checkout | `/bloque-4-4` | `make fase4-test BLOCK=4.4` |
+| 4.5 tracking+push | `/bloque-4-5` | `make fase4-test BLOCK=4.5` |
+| 4.6 auth conductor | `/bloque-4-6` | `make fase4-test BLOCK=4.6` |
+| 4.7 availability | `/bloque-4-7` | `make fase4-test BLOCK=4.7` |
+| 4.8 orders | `/bloque-4-8` | `make fase4-test BLOCK=4.8` |
+| 4.9 location | `/bloque-4-9` | `make fase4-test BLOCK=4.9` |
+
+## Por tarea
 
 ```
-lib/features/<modulo>/
-├── domain/
-├── application/
-├── infrastructure/
-└── presentation/
+/tarea T4.2.1
+make fase4-test-task TASK=T4.2.1
 ```
 
-Riverpod para estado. Ver `.cursor/rules/flutter-clean-architecture.mdc`.
+## Arquitectura
 
-## Por cada tarea T4.x.x
+Riverpod + Clean Architecture por feature. Ver `.cursor/skills/implement-flutter-feature/SKILL.md`.
 
-1. Implementa capa domain primero + tests
-2. Infrastructure (API con dio) + tests
-3. Application (providers) + presentation
-4. `flutter test test/features/<modulo>/`
-5. Actualiza `docs/PROGRESS.md`
+## Orden recomendado
 
-## Orden cliente
-
-auth → stores → catalog → cart/checkout → tracking → **push (T4.1.5, T4.5.3–4.5.5)**
-
-Consulta `docs/PUSH_NOTIFICATIONS.md` para integrar FCM sin romper el flujo.
-
-## Push notifications (cliente)
-
-- T4.1.5: Firebase init
-- T4.5.3: Registrar token en backend (`T1.2.8` debe existir)
-- T4.5.4–4.5.5: Recibir push "pedido en camino" → abrir tracking
-
-## Orden conductor
-
-auth → availability → orders (+ T4.8.2 FCM alerta) → location
+1. `/bloque-4-1` → `/bloque-4-2` → `/bloque-4-3` → `/bloque-4-4` → `/bloque-4-5`
+2. En paralelo: `/bloque-4-0` + `/bloque-4-6` → `/bloque-4-7` → `/bloque-4-8` → `/bloque-4-9`
