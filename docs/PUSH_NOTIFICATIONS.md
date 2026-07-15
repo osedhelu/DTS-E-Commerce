@@ -99,13 +99,14 @@ sequenceDiagram
 ## Variables de entorno (producción)
 
 ```env
-# backend/.env — Fase 2
-FCM_CREDENTIALS_PATH=/path/to/firebase-service-account.json
-# o
-FCM_PROJECT_ID=tu-proyecto-firebase
+# backend/.env — Multi Firebase (customer=discorp, driver=dtsdrop)
+FIREBASE_CUSTOMER_CREDENTIALS_PATH=/path/to/firebase-customer.json
+FIREBASE_DRIVER_CREDENTIALS_PATH=/path/to/firebase-driver.json
+# Compat legacy:
+# FCM_CREDENTIALS_PATH=/path/to/firebase-service-account.json
 ```
 
-Firebase Console → Project Settings → Service accounts → Generate key.
+Firebase Console → Project Settings → Service accounts → Generate key **por proyecto** (discorp + dtsdrop). Detalle Railway: `backend/DEPLOY_RAILWAY.md`.
 
 ---
 

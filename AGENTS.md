@@ -32,6 +32,7 @@
 - [DEPLOY_DOCKER.md](docs/DEPLOY_DOCKER.md) — despliegue servidor con Docker (`make install-server`)
 - [DEPLOY_RAILWAY.md](docs/DEPLOY_RAILWAY.md) — **despliegue backend en Railway (PostGIS + GDAL)**
 - [PUSH_NOTIFICATIONS.md](docs/PUSH_NOTIFICATIONS.md) — plan push FCM
+- [FIREBASE_TRACKING.md](docs/FIREBASE_TRACKING.md) — alternativa Firestore vs Channels (Fase 5)
 - [WEB_ADMIN.md](docs/WEB_ADMIN.md) — arquitectura frontend Next.js + Zustand
 
 ## Orden de fases recomendado

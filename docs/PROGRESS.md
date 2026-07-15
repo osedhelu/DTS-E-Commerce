@@ -19,6 +19,7 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [x] T1.2.6 Auth API JWT
 - [x] T1.2.7 Permisos por rol
 - [x] T1.2.8 DeviceToken FCM (antes de Fase 2 push)
+- [x] Multi-Firebase social auth: JWT claims en Google/Apple, verifier por role, Apple sin email, push conductores `ready_for_pickup`
 
 ### Bloque 1.3 Stores
 - [x] T1.3.1 Store entity
@@ -237,11 +238,12 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [x] T4.9.1 SendLocationUseCase
 - [x] T4.9.2 Background location
 - [x] T4.9.3 Location permissions
+- [x] Driver pro: onboarding KYC, ofertas accept/reject, shell UI, chat pedido, mapa activo, tracking cliente enriquecido
 
 ## Fase 5 — Tiempo Real
-- [ ] T5.1.1 Channels setup
-- [ ] T5.1.2 TrackingConsumer
-- [ ] T5.2.1 WS broadcast
-- [ ] T5.3.1 Customer WS datasource
-- [ ] T5.4.1 Driver WS emit
-- [ ] T5.5.1 Firebase doc alternativa
+- [x] T5.1.1 Channels setup
+- [x] T5.1.2 TrackingConsumer
+- [x] T5.2.1 WS broadcast
+- [x] T5.3.1 Customer WS datasource
+- [x] T5.4.1 Driver WS emit
+- [x] T5.5.1 Firebase doc alternativa
