@@ -17,19 +17,19 @@ DTS Delivery Platform es una plataforma de **comercio local, delivery y servicio
 | Panel comercio (web) | Next.js + Tailwind | ✅ Operativo |
 | Panel super admin (web) | Next.js + Tailwind | ✅ Operativo |
 | Portal público / marketing | Next.js (ES + EN) | ✅ Operativo |
-| App cliente (móvil) | Flutter | ⬜ Pendiente |
-| App conductor (móvil) | Flutter | ⬜ Pendiente |
-| Tracking tiempo real (WebSocket) | Django Channels | ⬜ Pendiente |
+| App cliente (móvil) | Flutter | ✅ Pro (shell, carrito, pagos, tracking, Apple) |
+| App conductor (móvil) | Flutter | ✅ Pro (KYC, proof, payouts, chat) |
+| Tracking tiempo real (WebSocket) | Django Channels | ✅ Operativo |
 
 ### Avance global estimado
 
 | Métrica | Valor | Notas |
 |---------|-------|-------|
-| **Tareas planificadas completadas** | **151 / 189 (~80 %)** | Según plan oficial en `docs/PROGRESS.md` |
-| **Visión producto completa (4 apps + realtime)** | **~67 %** | Las apps móvil y el mapa en vivo representan ~30 % del producto final y aún no están desarrolladas |
+| **Tareas planificadas completadas** | **~165 / 189 (~87 %)** | Incluye post-MVP S0–S5 |
+| **Visión producto completa (4 apps + realtime)** | **~85 %** | Apps móvil + WS operativos; falta hardening stores |
 | **Plataforma web + API (operable hoy)** | **~100 %** | Un comercio puede registrarse, publicar catálogo y gestionar pedidos vía web |
 
-**Conclusión para el cliente:** la **base tecnológica y los portales web** (comercio, administración y landing pública) están listos para demostración y uso piloto. Falta el **ecosistema móvil** (cliente final y conductor) y el **seguimiento en mapa en tiempo real** para cerrar el ciclo completo usuario → pedido → entrega.
+**Conclusión para el cliente:** las **apps móvil cliente y conductor** están en nivel **piloto profesional** con pagos flexibles, horarios/zonas, KYC conductor y marketplace básico (reviews, favoritos). Falta despliegue Railway con migraciones nuevas y publicación en stores.
 
 ---
 
@@ -41,8 +41,9 @@ Fase 2 — Celery + notificaciones      █████████████�
 Fase 3 — Web merchant + admin MVP     ████████████████████  100 %
 Fase 6 — Onboarding y portal seller   ████████████████████  100 %
 Extras — Landing i18n + mejoras UX    ████████████████████  100 %
-Fase 4 — Apps Flutter                   ░░░░░░░░░░░░░░░░░░░░    0 %
-Fase 5 — Tiempo real (WebSocket)        ░░░░░░░░░░░░░░░░░░░░    0 %
+Fase 4 — Apps Flutter                   ██████████████████░░   ~90 %
+Fase 5 — Tiempo real (WebSocket)        ████████████████████  100 %
+Post-MVP — Pagos, horarios, KYC         ████████████████████  100 %
 ```
 
 | Fase | Descripción | Tareas | Estado |
@@ -51,8 +52,9 @@ Fase 5 — Tiempo real (WebSocket)        ░░░░░░░░░░░░�
 | **2** | Celery, signals, asignación conductor, push FCM, email, reportes | 21/21 | ✅ Completa |
 | **3** | Panel merchant y super admin (catálogo, pedidos, KPIs, cupones) | 23/23 | ✅ Completa |
 | **6** | Registro público comercio, catálogo enriquecido, fotos, promociones | 68/68 | ✅ Completa |
-| **4** | App Flutter cliente + app conductor | 0/33 | ⬜ No iniciada |
-| **5** | WebSocket tracking en vivo | 0/9 | ⬜ No iniciada |
+| **4** | App Flutter cliente + app conductor | ~30/33 | ✅ ~90 % |
+| **5** | WebSocket tracking en vivo | 9/9 | ✅ Completa |
+| **Post-MVP** | Pagos, horarios/zonas, KYC, marketplace | — | ✅ Implementado (ver `POST_MVP_PROGRESS.md`) |
 
 ---
 

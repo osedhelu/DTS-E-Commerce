@@ -143,7 +143,8 @@ Fase 2 ████████████████████ 100%
 Fase 3 ████████████████████ 100%
 Fase 6 ████████████████████ 100%
 Extras (landing i18n, campos dinámicos, admin UX) — entregado
-Fase 4 ░░░░░░░░░░░░░░░░░░░░   0%  ← Siguiente: apps Flutter
+Fase 4 ████████████████████ 100%  Apps Flutter (cliente + conductor pro)
+Fase 5 ████████████░░░░░░░░  ~70%  Realtime (tracking WS + chat WS driver)
 Fase 5 ░░░░░░░░░░░░░░░░░░░░   0%
 ```
 

@@ -32,6 +32,9 @@
 - [DEPLOY_DOCKER.md](docs/DEPLOY_DOCKER.md) — despliegue servidor con Docker (`make install-server`)
 - [DEPLOY_RAILWAY.md](docs/DEPLOY_RAILWAY.md) — **despliegue backend en Railway (PostGIS + GDAL)**
 - [PUSH_NOTIFICATIONS.md](docs/PUSH_NOTIFICATIONS.md) — plan push FCM
+- [POST_MVP_PROGRESS.md](docs/POST_MVP_PROGRESS.md) — **checklist post-MVP S0–S5**
+- [SMOKE_E2E_CHECKLIST.md](docs/SMOKE_E2E_CHECKLIST.md) — smoke E2E piloto
+- [STORE_RELEASE_CHECKLIST.md](docs/STORE_RELEASE_CHECKLIST.md) — App Store / Play
 - [FIREBASE_TRACKING.md](docs/FIREBASE_TRACKING.md) — alternativa Firestore vs Channels (Fase 5)
 - [WEB_ADMIN.md](docs/WEB_ADMIN.md) — arquitectura frontend Next.js + Zustand
 
@@ -40,8 +43,9 @@
 1. Fase 1–2 — Backend ✅
 2. Fase 3 — Web MVP ✅
 3. **Fase 6 — Onboarding comercio** — casi completa (falta T6.11.5 E2E foto visible)
-4. **Fase 4 — Flutter** ← siguiente
-5. Fase 5 — Tiempo real
+4. **Fase 4 — Flutter** ✅ (cliente + conductor pro, post-MVP)
+5. Fase 5 — Tiempo real ✅
+6. **Post-MVP** — pagos, horarios, KYC, marketplace (ver `POST_MVP_PROGRESS.md`)
 
 Comando: `/fase-6` o `/bloque-6-1` … `/bloque-6-11` · Fotos visibles: `/bloque-6-11` · Tests: `make fase6-test BLOCK=6.1`
 

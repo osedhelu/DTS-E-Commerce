@@ -239,6 +239,7 @@ Actualiza marcando `[x]` al completar cada tarea. Usa `/tarea T1.x.x` para imple
 - [x] T4.9.2 Background location
 - [x] T4.9.3 Location permissions
 - [x] Driver pro: onboarding KYC, ofertas accept/reject, shell UI, chat pedido, mapa activo, tracking cliente enriquecido
+- [x] Customer pro: design system DTS, shell tabs, home+banners, carrito, checkout con dirección, historial, chat WS, perfil/direcciones, settings, forgot password
 
 ## Fase 5 — Tiempo Real
 - [x] T5.1.1 Channels setup

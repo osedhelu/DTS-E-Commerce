@@ -54,6 +54,7 @@ Ver [MERCHANT_ONBOARDING.md](MERCHANT_ONBOARDING.md).
 | `/merchant/inventory` | 3 | Stock productos físicos |
 | `/merchant/categories` | 3 + 6.9 | Árbol categorías; Fase 6 añade editar/eliminar |
 | `/merchant/orders` | 3 | Pedidos delivery |
+| `/merchant/map` | — | Mapa en vivo: tiendas del comercio + conductores en ruta (polling 10s) |
 | `/merchant/service-orders` | 3 | Pedidos servicio |
 | `/merchant/promotions` | 6.6 | Descuentos por tienda |
 | `/merchant/settings` | 6.7 | Perfil tienda, logo, horario |
