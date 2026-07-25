@@ -48,12 +48,20 @@ sequenceDiagram
 |------------------|------------------|--------------|------------------------|
 | `ACCEPTED_BY_MERCHANT` | Comercio | Cliente | "Tu pedido fue aceptado" |
 | `IN_PREPARATION` | Comercio | Cliente | "Estamos preparando tu pedido" |
-| `READY_FOR_PICKUP` | Comercio | Conductores online | "Nuevo pedido listo para recoger" |
+| `READY_FOR_PICKUP` | Comercio | Conductores online cuya **zona de trabajo** cubre la tienda | "Nuevo pedido listo para recoger" |
+| `SEARCHING_DRIVER` | Comercio («Buscar conductor») / AssignDriver sync | Conductores online en zona | Misma plantilla (reintento / path manual) |
 | `DRIVER_ASSIGNED` | Sistema (Celery) | Cliente | "Conductor asignado a tu pedido" |
 | `PICKED_UP` | Conductor | Cliente | "El conductor recogió tu pedido" |
 | `ON_THE_WAY` | Conductor / Comercio | Cliente | "¡Tu pedido ya salió! Va en camino" |
 | `DELIVERED` | Conductor | Cliente | "Pedido entregado. ¡Buen provecho!" |
 | `CANCELLED` | Comercio / Sistema | Cliente | "Tu pedido fue cancelado" |
+| Chat (`type=chat_message`) | Cliente, conductor o **comercio** | Los **otros** participantes del pedido | Preview del mensaje → abre `/orders/{id}/chat` |
+
+> Ofertas listadas al conductor y push `READY_FOR_PICKUP` usan la **zona de trabajo** del conductor (`work_center_*` + `work_radius_km`, presets 1–500 km; default 5). Si no hay centro configurado, fallback = GPS (`last_*`) + radio default 5 km. Si no hay drivers en zona, no se spamea; el Beat de auto-assign sigue como red de seguridad.
+>
+> El radio de descubrimiento de tiendas del cliente (`search_center_*` + `search_radius_km` en `GET /stores/?latitude=&longitude=&radius_km=`) es independiente y no afecta push de ofertas.
+
+> Firebase apps: customer y driver usan el proyecto **dtsdrop**. En Railway, `FIREBASE_CUSTOMER_*` y `FIREBASE_DRIVER_*` deben apuntar a las service accounts correctas (no al proyecto legacy `discorp` si ya migraste).
 
 ---
 
@@ -99,14 +107,81 @@ sequenceDiagram
 ## Variables de entorno (producción)
 
 ```env
-# backend/.env — Multi Firebase (customer=discorp, driver=dtsdrop)
+# backend/.env — Multi Firebase (customer + driver = dtsdrop-85330; legacy discorp deprecado)
 FIREBASE_CUSTOMER_CREDENTIALS_PATH=/path/to/firebase-customer.json
 FIREBASE_DRIVER_CREDENTIALS_PATH=/path/to/firebase-driver.json
 # Compat legacy:
 # FCM_CREDENTIALS_PATH=/path/to/firebase-service-account.json
 ```
 
-Firebase Console → Project Settings → Service accounts → Generate key **por proyecto** (discorp + dtsdrop). Detalle Railway: `backend/DEPLOY_RAILWAY.md`.
+Firebase Console → Project Settings → Service accounts → Generate key. Detalle Railway: `backend/DEPLOY_RAILWAY.md`.
+
+---
+
+## Checklist operativo Railway (push por estado)
+
+Si el merchant acepta / prepara / marca listo y **no llega push**, revisar en este orden:
+
+### 1. Infra
+
+- [ ] Servicio **DTS-celery-worker** up (no solo la API).
+- [ ] Redis reachable desde API y worker; cola sin backlog enorme.
+- [ ] API y worker tienen las **mismas** vars `FIREBASE_CUSTOMER_*` y `FIREBASE_DRIVER_*`.
+
+### 2. Firebase = dtsdrop (no discorp)
+
+Ambas apps Flutter usan el proyecto **`dtsdrop-85330`**. Las service accounts en Railway deben ser de **dtsdrop**, no del legacy `discorp-4a37b`.
+
+- [ ] `FIREBASE_CUSTOMER_SERVICE_ACCOUNT_JSON` / path → admin SDK **dtsdrop**
+- [ ] `FIREBASE_DRIVER_SERVICE_ACCOUNT_JSON` / path → admin SDK **dtsdrop**
+- [ ] Redeploy API **y** worker tras cambiar secrets
+
+### 3. DeviceToken en DB
+
+Tras login (o cold start autenticado) en cada app:
+
+```python
+# railway ssh / manage.py shell
+from features.accounts.infrastructure.models import DeviceToken
+DeviceToken.objects.filter(user_id=<id>, is_active=True).values("token", "platform", "updated_at")
+```
+
+- [ ] Cliente tiene fila activa
+- [ ] Conductor tiene fila activa
+- Si `tokens_found=0` / log `push_no_device_token` → la app no registró o el token es de otro proyecto
+
+### 4. Conductor: online + zona de trabajo cubre la tienda
+
+Para `ready_for_pickup` el resolver exige:
+
+- `is_online=true`
+- `last_latitude` / `last_longitude` no null (tracking / fallback)
+- Distancia Haversine tienda → **centro de zona** (`work_center_*`) ≤ `work_radius_km`
+- Sin `work_center_*`: fallback GPS + radio default **5 km**
+- Si la tienda no tiene `location` → **0** drivers (`no_store_location`)
+
+Logs útiles en worker: `push_skipped … reason=…`, `push_dispatch`, `push_finished`, `push_no_device_token`, `push_sent`.
+
+### 5. Flujo feliz manual (aceptado → preparación → listo)
+
+| # | Acción | Verificar |
+|---|--------|-----------|
+| 1 | Cliente crea pedido delivery | Pedido `created` |
+| 2 | Merchant **Aceptar** (`accepted_by_merchant`) | Push cliente; log `sent:…` con message_ids > 0 |
+| 3 | Merchant **En preparación** (`in_preparation`) | Push cliente |
+| 4 | Merchant **Preparado** (`ready_for_pickup`) | Conductor online con zona que cubre la tienda recibe oferta; fuera de zona **no** |
+| 4b | Merchant **Buscar conductor** si hace falta | También encola push `SEARCHING_DRIVER` |
+| 5 | Conductor acepta | Push “Conductor asignado” al cliente (si aplica) |
+| 6 | Cliente ve status en vivo (lista/poll + mapa) sin pull manual | ☐ |
+| 7 | Chat 3 roles (cliente ↔ conductor ↔ comercio en Detalle web) | ☐ |
+| 8 | Conductor `on_the_way` ve dropoff del cliente (GPS checkout) | ☐ |
+
+Debug forzado (solo ops):
+
+```python
+from features.notifications.infrastructure.tasks import dispatch_order_push_task
+dispatch_order_push_task.delay(<order_id>, "accepted_by_merchant")
+```
 
 ---
 

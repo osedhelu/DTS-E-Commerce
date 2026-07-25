@@ -40,8 +40,10 @@ DTS-E-Commerce/
 ├── docker-compose.yml           # Infra dev (PostGIS + Redis + Mailpit)
 ├── docker-infrastructure/       # Stack completo Docker (API + workers)
 ├── Makefile              # Comandos unificados
-└── .github/workflows/    # CI
+└── .github/workflows/    # CI monorepo (también CI en cada submodule)
 ```
+
+CI por repo y variables: [CI_GITHUB_ACTIONS.md](CI_GITHUB_ACTIONS.md).
 
 ## Requisitos
 

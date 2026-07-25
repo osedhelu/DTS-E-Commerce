@@ -6,8 +6,13 @@ on:
   pull_request:
     branches: [main, develop]
 
+concurrency:
+  group: monorepo-ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   backend:
+    name: backend pytest
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -63,7 +68,28 @@ jobs:
           GDAL_LIBRARY_PATH: /usr/lib/x86_64-linux-gnu/libgdal.so
           GEOS_LIBRARY_PATH: /usr/lib/x86_64-linux-gnu/libgeos_c.so
 
-      - name: Backend tests
+      - name: Realtime smoke (push, chat, tracking, WS Origin)
+        working-directory: backend
+        run: >
+          uv run pytest -v
+          features/orders/tests/infrastructure/test_order_signals.py
+          features/notifications/tests/
+          features/chat/tests/
+          features/delivery/tests/infrastructure/test_ws_origin.py
+          features/delivery/tests/application/test_get_order_tracking_destination.py
+          features/delivery/tests/domain/test_radius_and_work_zone.py
+        env:
+          DJANGO_SETTINGS_MODULE: core.settings.test
+          CI: "true"
+          POSTGRES_DB: test_dts
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: "5432"
+          GDAL_LIBRARY_PATH: /usr/lib/x86_64-linux-gnu/libgdal.so
+          GEOS_LIBRARY_PATH: /usr/lib/x86_64-linux-gnu/libgeos_c.so
+
+      - name: Backend full suite
         working-directory: backend
         run: uv run pytest -v
         env:
@@ -78,6 +104,7 @@ jobs:
           GEOS_LIBRARY_PATH: /usr/lib/x86_64-linux-gnu/libgeos_c.so
 
   flutter-customer:
+    name: flutter-customer
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -86,14 +113,19 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
+          cache: true
       - run: flutter pub get
         working-directory: flutter-customer
       - run: flutter analyze
         working-directory: flutter-customer
+      - name: Realtime smoke (WS URI)
+        working-directory: flutter-customer
+        run: flutter test test/core/config/env_ws_uri_test.dart
       - run: flutter test
         working-directory: flutter-customer
 
   flutter-driver:
+    name: flutter-driver
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -102,15 +134,25 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
+          cache: true
       - run: flutter pub get
         working-directory: flutter-driver
       - run: flutter analyze
         working-directory: flutter-driver
+      - name: Realtime smoke (WS URI + offers)
+        working-directory: flutter-driver
+        run: >
+          flutter test
+          test/core/config/env_ws_uri_test.dart
+          test/features/offers/
       - run: flutter test
         working-directory: flutter-driver
 
   web-admin:
+    name: web-admin
     runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_API_URL: http://localhost:8000/api/v1
     steps:
       - uses: actions/checkout@v4
         with:
@@ -124,5 +166,8 @@ jobs:
         working-directory: web-admin
       - run: npm run lint
         working-directory: web-admin
+      - name: Unit (order-chat-store)
+        working-directory: web-admin
+        run: npm run test:unit
       - run: npm run build
         working-directory: web-admin

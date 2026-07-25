@@ -6,7 +6,8 @@
 
 - [ ] Version code/name incrementado en `pubspec.yaml`
 - [ ] Iconos y splash actualizados
-- [ ] Política de privacidad URL accesible
+- [x] Política de privacidad URL accesible (`https://dtsdrop.com/es/privacy` — ver `docs/APP_STORE_CONNECT_REVIEW.md`)
+- [x] Términos y eliminación de cuenta públicos (`/es/terms`, `/es/delete-account`)
 - [ ] Permisos justificados (ubicación, cámara, notificaciones)
 - [ ] Crash-free rate > 99% en TestFlight/Internal testing (mín. 3 días)
 - [ ] Sin logs de tokens/credenciales en release build
@@ -22,10 +23,15 @@
 ## Android
 
 - [ ] `google-services.json` producción
-- [ ] SHA-1/256 en Firebase Console
+- [ ] SHA-1/256 en **Firebase** (debug + upload + **Play App Signing**)
+- [ ] SHA-1 en **Google Cloud API key** (Apps para Android) — ver guía abajo
 - [ ] Target SDK según Play requirements
 - [ ] Data safety form completado
 - [ ] Play App Signing activo
+- [ ] Google Sign-In probado con install desde Play Internal (no solo `flutter run`)
+
+> **Guía completa (evitar “Android client … are blocked”):**  
+> [`docs/PLAY_STORE_GOOGLE_SIGNIN.md`](PLAY_STORE_GOOGLE_SIGNIN.md)
 
 ## Post-launch
 

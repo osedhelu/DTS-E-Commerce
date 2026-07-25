@@ -31,10 +31,12 @@
 - [MEDIA_STORAGE.md](docs/MEDIA_STORAGE.md) — **fotos producto, logos, SERVE_MEDIA**
 - [DEPLOY_DOCKER.md](docs/DEPLOY_DOCKER.md) — despliegue servidor con Docker (`make install-server`)
 - [DEPLOY_RAILWAY.md](docs/DEPLOY_RAILWAY.md) — **despliegue backend en Railway (PostGIS + GDAL)**
+- [CI_GITHUB_ACTIONS.md](docs/CI_GITHUB_ACTIONS.md) — **CI por repo + secrets/variables**
 - [PUSH_NOTIFICATIONS.md](docs/PUSH_NOTIFICATIONS.md) — plan push FCM
 - [POST_MVP_PROGRESS.md](docs/POST_MVP_PROGRESS.md) — **checklist post-MVP S0–S5**
 - [SMOKE_E2E_CHECKLIST.md](docs/SMOKE_E2E_CHECKLIST.md) — smoke E2E piloto
 - [STORE_RELEASE_CHECKLIST.md](docs/STORE_RELEASE_CHECKLIST.md) — App Store / Play
+- [APP_STORE_CONNECT_REVIEW.md](docs/APP_STORE_CONNECT_REVIEW.md) — campos Review + URLs legales
 - [FIREBASE_TRACKING.md](docs/FIREBASE_TRACKING.md) — alternativa Firestore vs Channels (Fase 5)
 - [WEB_ADMIN.md](docs/WEB_ADMIN.md) — arquitectura frontend Next.js + Zustand
 

@@ -1,10 +1,12 @@
 # API móvil — Flutter Cliente y Conductor
 
-**Base URL staging (Railway):**
+**Base URL producción:**
 
 ```
-https://dts-backend-production-c84e.up.railway.app/api/v1
+https://api.dtsdrop.com/api/v1
 ```
+
+(Legacy Railway: `https://dts-backend-production-c84e.up.railway.app/api/v1`)
 
 Configurar en `lib/core/config/env.dart` de cada app.
 
@@ -19,7 +21,7 @@ Configurar en `lib/core/config/env.dart` de cada app.
 | POST | `/accounts/auth/apple/` | `{ "id_token", "role"?, "email"?, "full_name"? }` — mismo patrón; `email`/`full_name` solo en el primer Sign in with Apple | `{ "access", "refresh" }` + claims JWT (`role`, `email`, `user_id`) |
 | POST | `/accounts/device-token/` | `{ "token", "platform" }` | `201` |
 
-Firebase: cliente = `discorp-4a37b`, conductor = `dtsdrop-85330`. El backend verifica el ID token **solo** con la app Admin del proyecto correspondiente al `role` (sin fallback cruzado). Apple sin email: usuario existente por `apple_uid`; alta nueva usa `email` del body o placeholder `{uid}@privaterelay.appleid.local`.
+Firebase: cliente y conductor usan **`dtsdrop-85330`**. El backend verifica el ID token con la app Admin del rol (`customer` / `driver`); ambas deben apuntar a service accounts de dtsdrop (no al legacy `discorp`). Apple sin email: usuario existente por `apple_uid`; alta nueva usa `email` del body o placeholder `{uid}@privaterelay.appleid.local`.
 
 Header autenticado: `Authorization: Bearer <access>`
 
