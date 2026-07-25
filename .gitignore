@@ -23,6 +23,9 @@ backend/db.sqlite3
 # Env
 .env
 .env.local
+env-worker
+env-backend
+env-django
 docker-infrastructure/.env
 
 # Flutter
