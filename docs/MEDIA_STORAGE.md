@@ -8,6 +8,9 @@ Imágenes de catálogo (`ProductImage`) y logos de tienda (`Store.logo`) usan el
 |---------|----------|-----|
 | **local** | `MEDIA_STORAGE_BACKEND=local` (default) | Desarrollo y tests. Archivos en `MEDIA_ROOT`. |
 | **s3** | `MEDIA_STORAGE_BACKEND=s3` | Producción con Amazon S3. |
+| **cloudinary** | `MEDIA_STORAGE_BACKEND=cloudinary` | Producción con Cloudinary. |
+
+Para cambiar de local → S3 o Cloudinary: actualiza solo las variables de entorno y redespliega. Los `ImageField` siguen guardando la clave relativa; las URLs públicas las arma el backend activo.
 
 ## Desarrollo (local)
 
@@ -64,20 +67,31 @@ Las URLs públicas devueltas por la API serán:
 - Política de bucket que permita `s3:PutObject`, `s3:GetObject`, `s3:DeleteObject` al usuario IAM de la app.
 - Para acceso público de lectura, configurar bucket policy o servir vía CloudFront (`AWS_S3_CUSTOM_DOMAIN`).
 
-## Cloudinary (alternativa)
+## Cloudinary
 
-No implementado en código; se puede añadir un tercer backend en `build_storage_backend()` siguiendo el protocolo `StorageBackend`. Hasta entonces, usar S3 o local.
+```bash
+MEDIA_STORAGE_BACKEND=cloudinary
+CLOUDINARY_CLOUD_NAME=tu-cloud
+CLOUDINARY_API_KEY=...
+CLOUDINARY_API_SECRET=...
+CLOUDINARY_FOLDER=dts   # opcional, prefijo de public_id
+```
+
+URLs públicas: `https://res.cloudinary.com/{cloud}/image/upload/{folder}/{key_sin_ext}`
+
+Dependencia: paquete `cloudinary` (incluido en el backend). Solo se importa cuando el backend activo es cloudinary.
 
 ## Arquitectura
 
 ```
-ImageField (ProductImage, Store.logo)
+ImageField (ProductImage, Store.logo, ProofOfDelivery, chat image)
         ↓
 DjangoMediaStorage (django STORAGES["default"])
         ↓
 StorageBackend protocol
    ├── LocalStorageBackend
-   └── S3StorageBackend (boto3)
+   ├── S3StorageBackend (boto3)
+   └── CloudinaryStorageBackend
 ```
 
 ## Tests
@@ -90,9 +104,10 @@ make fase6-test BLOCK=6.8
 
 - `test_local_storage_save` — guardado en disco
 - `test_s3_storage_upload_mock` — upload S3 con cliente mockeado
+- `test_cloudinary_storage_upload_mock` — upload Cloudinary con uploader mockeado
 
 ## Migración desde filesystem local
 
-1. Subir contenido de `media/` al bucket S3 manteniendo las rutas (`products/...`, `stores/...`).
-2. Configurar variables `AWS_*` y `MEDIA_STORAGE_BACKEND=s3`.
+1. Subir contenido de `media/` al bucket S3 (o Cloudinary) manteniendo las rutas (`products/...`, `stores/...`, `delivery/proof/...`).
+2. Configurar variables `AWS_*` o `CLOUDINARY_*` y `MEDIA_STORAGE_BACKEND=s3|cloudinary`.
 3. Reiniciar la aplicación. No se requieren migraciones de base de datos: los campos siguen almacenando la clave relativa del objeto.
