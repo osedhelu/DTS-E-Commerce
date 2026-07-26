@@ -76,6 +76,9 @@ DEFAULT_FROM_EMAIL=noreply@dts.local
 Si `RAILWAY_PRIVATE_DOMAIN` no funciona para SMTP, usa el hostname interno del servicio Mailpit  
 (ej. `mailpit.railway.internal`) visible en Networking del servicio Mailpit.
 
+> **Verificación de comercio / reset password:** la API los envía **en el mismo request** (SMTP → Mailpit).  
+> No dependen del Celery worker. Sí necesitan `EMAIL_*` correctas en **DTS-backend**.
+
 ### Medios (fotos producto)
 
 **Opción A — volumen Railway (staging):**
