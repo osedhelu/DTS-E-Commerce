@@ -111,13 +111,20 @@ make docker-up
 # Abre http://localhost:8025 para ver los correos capturados
 ```
 
-En `backend/.env`:
+En `backend/.env` (API en el host):
 
 ```
 EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
 EMAIL_HOST=localhost
 EMAIL_PORT=1025
 ```
+
+Registro comercio / reset password envían el correo **en el mismo request** (SMTP → Mailpit).  
+No hace falta `celery-worker` para verlos en http://localhost:8025. Si el correo no aparece:
+
+1. Mailpit up (`docker ps` → `dts-mailpit`)
+2. `EMAIL_HOST` / `EMAIL_PORT` correctos según dónde corre la API (`localhost` en host, `mailpit` en Docker)
+3. Logs de la API al registrar (errores SMTP)
 
 Alternativas equivalentes: **Mailhog** (menos mantenido) o **Maildev**.
 
