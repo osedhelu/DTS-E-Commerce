@@ -1,0 +1,1061 @@
+{
+  "nodes": [
+    {
+      "id": "media_storage_backends",
+      "label": "Media Storage Backends",
+      "kind": "infrastructure_pattern",
+      "description": "Three configurable storage backends for product images and store logos: local (development), S3 (production), and Cloudinary (production). Switched via MEDIA_STORAGE_BACKEND environment variable.",
+      "source_file": "MEDIA_STORAGE.md",
+      "source_location": "lines 5-12",
+      "confidence": 0.95
+    },
+    {
+      "id": "local_storage_backend",
+      "label": "Local Storage Backend",
+      "kind": "infrastructure_component",
+      "description": "Default backend for development and tests. Files stored in MEDIA_ROOT directory. Configured via MEDIA_STORAGE_BACKEND=local",
+      "source_file": "MEDIA_STORAGE.md",
+      "source_location": "lines 15-23",
+      "confidence": 0.9
+    },
+    {
+      "id": "s3_storage_backend",
+      "label": "S3 Storage Backend",
+      "kind": "infrastructure_component",
+      "description": "Production storage backend using Amazon S3. Configured with AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_STORAGE_BUCKET_NAME, AWS_S3_REGION_NAME. Supports optional custom domain via AWS_S3_CUSTOM_DOMAIN for CDN.",
+      "source_file": "MEDIA_STORAGE.md",
+      "source_location": "lines 48-68",
+      "confidence": 0.95
+    },
+    {
+      "id": "cloudinary_storage_backend",
+      "label": "Cloudinary Storage Backend",
+      "kind": "infrastructure_component",
+      "description": "Production storage backend using Cloudinary. Configured with CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, and optional CLOUDINARY_FOLDER prefix.",
+      "source_file": "MEDIA_STORAGE.md",
+      "source_location": "lines 70-82",
+      "confidence": 0.95
+    },
+    {
+      "id": "serve_media_flag",
+      "label": "SERVE_MEDIA Configuration",
+      "kind": "configuration_option",
+      "description": "Flag to enable serving media files in development via Gunicorn/Docker. Requires MEDIA_PUBLIC_BASE_URL for browser URLs. Stored in docker-infrastructure/.env",
+      "source_file": "MEDIA_STORAGE.md",
+      "source_location": "lines 25-34",
+      "confidence": 0.9
+    },
+    {
+      "id": "docker_compose_setup",
+      "label": "Docker Compose Setup",
+      "kind": "infrastructure_pattern",
+      "description": "Full-stack Docker deployment with PostGIS (5432), Redis (6379), Mailpit (8025), and Gunicorn API. Orchestrated via docker-compose.yml at project root.",
+      "source_file": "DEPLOY_DOCKER.md",
+      "source_location": "lines 1-56",
+      "confidence": 0.95
+    },
+    {
+      "id": "make_commands_root",
+      "label": "Make Commands - Root",
+      "kind": "developer_workflow",
+      "description": "Unified make commands for orchestrating all services: make up (all), make down, make docker-up (infrastructure only), make docker-down, make setup (full install), make backend-createsuperuser",
+      "source_file": "DEPLOY_DOCKER.md",
+      "source_location": "lines 39-62, 106-114",
+      "confidence": 0.95
+    },
+    {
+      "id": "entrypoint_migration_flow",
+      "label": "Entrypoint Migration Flow",
+      "kind": "deployment_pattern",
+      "description": "Automated setup on container start: wait for PostgreSQL, create PostGIS extension, run migrate --noinput, repair_migration_tables.py (for analytics/delivery), collectstatic, then start Gunicorn/Celery",
+      "source_file": "DEPLOY_DOCKER.md",
+      "source_location": "lines 129-147",
+      "confidence": 0.95
+    },
+    {
+      "id": "allowed_hosts_csrf_config",
+      "label": "ALLOWED_HOSTS and CSRF Configuration",
+      "kind": "configuration_pattern",
+      "description": "Django security settings: ALLOWED_HOSTS must include server domain/IP, CSRF_TRUSTED_ORIGINS for form submissions. Set in docker-infrastructure/.env. Common issues: 400 Bad Request if host missing.",
+      "source_file": "DEPLOY_DOCKER.md",
+      "source_location": "lines 28-37, 163-167",
+      "confidence": 0.95
+    },
+    {
+      "id": "railway_deployment_arch",
+      "label": "Railway Deployment Architecture",
+      "kind": "deployment_pattern",
+      "description": "Railway-based deployment with 4 services: PostGIS database, Redis broker, Mailpit SMTP, and DTS-backend API. Uses railway.toml config file and environment variable references (${{postgis.DATABASE_URL}})",
+      "source_file": "DEPLOY_RAILWAY.md",
+      "source_location": "lines 1-19",
+      "confidence": 0.95
+    },
+    {
+      "id": "railway_backend_config",
+      "label": "Railway Backend Configuration",
+      "kind": "deployment_component",
+      "description": "DTS-backend service on Railway using Dockerfile (not Nixpacks). Root directory '/', references DATABASE_URL and REDIS_URL from other services. Generate domain for public access.",
+      "source_file": "DEPLOY_RAILWAY.md",
+      "source_location": "lines 22-34",
+      "confidence": 0.95
+    },
+    {
+      "id": "railway_environment_variables",
+      "label": "Railway Environment Variables",
+      "kind": "configuration_pattern",
+      "description": "Mandatory vars for Railway deployment: SECRET_KEY, DEBUG=False, ALLOWED_HOSTS, CSRF_TRUSTED_ORIGINS, DATABASE_URL=${{postgis.DATABASE_URL}}, REDIS_URL=${{Redis.REDIS_URL}}, RUN_MIGRATIONS=true, LOG_LEVEL, GUNICORN_WORKERS, GUNICORN_TIMEOUT",
+      "source_file": "DEPLOY_RAILWAY.md",
+      "source_location": "lines 42-60",
+      "confidence": 0.95
+    },
+    {
+      "id": "railway_internal_networking",
+      "label": "Railway Internal Networking",
+      "kind": "infrastructure_pattern",
+      "description": "Railway uses *.railway.internal hostnames for inter-service communication within the platform. DATABASE_URL and REDIS_URL from other services use internal endpoints, not public TCP URLs.",
+      "source_file": "DEPLOY_RAILWAY.md",
+      "source_location": "lines 61-63",
+      "confidence": 0.9
+    },
+    {
+      "id": "railway_media_storage_options",
+      "label": "Railway Media Storage Options",
+      "kind": "configuration_pattern",
+      "description": "Two approaches: Option A - volume-based (staging): mount /app/backend/media volume, set SERVE_MEDIA=True. Option B - S3 (production): configure AWS_* vars, set MEDIA_STORAGE_BACKEND=s3",
+      "source_file": "DEPLOY_RAILWAY.md",
+      "source_location": "lines 79-103",
+      "confidence": 0.95
+    },
+    {
+      "id": "railway_pre_deploy_commands",
+      "label": "Railway Pre-deploy Commands",
+      "kind": "deployment_workflow",
+      "description": "Entrypoint automatically handles migrations. Optional: configure Settings > Deploy > Pre-deploy command (redundant if RUN_MIGRATIONS=true). Creates PostGIS extension, runs migrate, repair_migration_tables.py, collectstatic",
+      "source_file": "DEPLOY_RAILWAY.md",
+      "source_location": "lines 113-127",
+      "confidence": 0.9
+    },
+    {
+      "id": "railway_celery_workers",
+      "label": "Railway Celery Workers and Beat",
+      "kind": "deployment_component",
+      "description": "Two additional Railway services for async tasks: DTS-celery-worker (uses railway.worker.toml) and DTS-celery-beat (uses railway.beat.toml). No public domain, no HTTP healthcheck required.",
+      "source_file": "DEPLOY_RAILWAY.md",
+      "source_location": "lines 145-156",
+      "confidence": 0.95
+    },
+    {
+      "id": "github_actions_ci_matrix",
+      "label": "GitHub Actions CI Matrix",
+      "kind": "ci_cd_pattern",
+      "description": "5 independent GitHub Actions workflows: DTS-E-Commerce monorepo root (all 4 projects), DTS-backend (PostGIS smoke), DTS-web-admin (lint + test + build), DTS-flutter-customer (analyze + ws smoke + flutter test), DTS-flutter-driver (analyze + ws/offers smoke + flutter test)",
+      "source_file": "CI_GITHUB_ACTIONS.md",
+      "source_location": "lines 1-12",
+      "confidence": 0.95
+    },
+    {
+      "id": "github_actions_branches",
+      "label": "GitHub Actions Branch Triggers",
+      "kind": "ci_cd_pattern",
+      "description": "CI runs on main, develop, and master (for submodule compatibility). Each repo has independent branch protection and merge workflows.",
+      "source_file": "CI_GITHUB_ACTIONS.md",
+      "source_location": "line 13",
+      "confidence": 0.85
+    },
+    {
+      "id": "github_actions_unit_tests",
+      "label": "GitHub Actions Unit Tests (No Secrets Required)",
+      "kind": "ci_cd_pattern",
+      "description": "Current CI setup requires no GitHub Secrets or Variables for tests: tests mock FCM, use services (PostGIS/Redis), Channel layer in-memory. No Firebase/Railway/Google credentials needed.",
+      "source_file": "CI_GITHUB_ACTIONS.md",
+      "source_location": "lines 19-34",
+      "confidence": 0.95
+    },
+    {
+      "id": "github_actions_e2e_optional",
+      "label": "GitHub Actions E2E (Optional)",
+      "kind": "ci_cd_pattern",
+      "description": "E2E Playwright tests currently commented out. If enabled, requires GitHub Secrets: E2E_BASE_URL, E2E_MERCHANT_EMAIL, E2E_MERCHANT_PASSWORD. Needs stable deployed environment.",
+      "source_file": "CI_GITHUB_ACTIONS.md",
+      "source_location": "lines 35-53",
+      "confidence": 0.9
+    },
+    {
+      "id": "github_actions_activation_checklist",
+      "label": "GitHub Actions Activation Checklist",
+      "kind": "ci_cd_pattern",
+      "description": "Per-repo setup: Settings > Actions > General > Allow all actions, Workflow permissions read/write. Each submodule needs .github/workflows/ci.yml committed and pushed to its own repo.",
+      "source_file": "CI_GITHUB_ACTIONS.md",
+      "source_location": "lines 68-96",
+      "confidence": 0.95
+    },
+    {
+      "id": "ci_smoke_tests_realtime",
+      "label": "CI Smoke Tests - Realtime",
+      "kind": "testing_pattern",
+      "description": "Realtime-specific smoke tests in CI: backend signals (order push READY/searching_driver), notifications mapper/observability, chat ACL, WS origin validation, tracking destination, work zone radius. Flutter: WS URI env test, offers refresh. web-admin: order-chat-store unit test",
+      "source_file": "CI_GITHUB_ACTIONS.md",
+      "source_location": "lines 99-118",
+      "confidence": 0.9
+    },
+    {
+      "id": "vertical_slice_architecture",
+      "label": "Vertical Slice + Clean Architecture",
+      "kind": "architecture_pattern",
+      "description": "Mandatory pattern per module: domain (no framework), application (use cases), infrastructure (ORM/API/UI). Dependencies point toward domain. Implemented in backend features/, Flutter features/, web-admin features/",
+      "source_file": "ARCHITECTURE.md",
+      "source_location": "lines 1-50",
+      "confidence": 0.95
+    },
+    {
+      "id": "backend_feature_structure",
+      "label": "Backend Feature Structure",
+      "kind": "code_organization",
+      "description": "Backend modules in features/<modulo>: domain/ (entities, value_objects, repositories abstract, services), application/ (use_cases, dto), infrastructure/ (models ORM, repositories impl, serializers DRF, views, signals, tasks, admin). Tests mirror this structure.",
+      "source_file": "ARCHITECTURE.md",
+      "source_location": "lines 22-50",
+      "confidence": 0.95
+    },
+    {
+      "id": "django_clean_architecture_mapping",
+      "label": "Django to Clean Architecture Mapping",
+      "kind": "architecture_pattern",
+      "description": "domain = pure rules (no Django imports), application = use cases (calls domain + repos), infrastructure = persistence/HTTP/tasks (Models, DRF, Celery)",
+      "source_file": "ARCHITECTURE.md",
+      "source_location": "lines 52-58",
+      "confidence": 0.95
+    },
+    {
+      "id": "flutter_feature_structure",
+      "label": "Flutter Feature Structure",
+      "kind": "code_organization",
+      "description": "Flutter modules in lib/features/<modulo>: domain/ (entities, repositories interfaces, usecases), application/ (Riverpod providers, state), infrastructure/ (datasources, models/DTOs, repository implementations), presentation/ (screens, widgets). Rule: presentation → application → domain ← infrastructure",
+      "source_file": "ARCHITECTURE.md",
+      "source_location": "lines 81-109",
+      "confidence": 0.95
+    },
+    {
+      "id": "product_type_domain_model",
+      "label": "ProductType Domain Model",
+      "kind": "domain_model",
+      "description": "Two product types: PHYSICAL (comida, artículos; stock-tracked), SERVICE (limpieza, reparaciones; requires_on_site_visit, no stock). Implemented in backend/features/products/domain/entities.py",
+      "source_file": "PRODUCTS_AND_SERVICES.md",
+      "source_location": "lines 35-40, 53-55",
+      "confidence": 0.95
+    },
+    {
+      "id": "category_hierarchy_2_levels",
+      "label": "Category Hierarchy (2 Levels)",
+      "kind": "domain_model",
+      "description": "Categories with optional parent_id (null = root, non-null = subcategory). Per-store hierarchy. Examples: Comida > Hamburguesas, Servicios del hogar > Limpieza",
+      "source_file": "PRODUCTS_AND_SERVICES.md",
+      "source_location": "lines 26-33",
+      "confidence": 0.95
+    },
+    {
+      "id": "stock_validator_rule",
+      "label": "StockValidator Business Rule",
+      "kind": "business_rule",
+      "description": "Only validates stock for ProductType.PHYSICAL. Services never fail due to insufficient stock. Implemented in T1.4.2",
+      "source_file": "PRODUCTS_AND_SERVICES.md",
+      "source_location": "lines 63-65",
+      "confidence": 0.9
+    },
+    {
+      "id": "order_states_physical",
+      "label": "Order States - Physical Products",
+      "kind": "state_machine",
+      "description": "Delivery flow: CREATED → ACCEPTED_BY_MERCHANT → IN_PREPARATION → READY_FOR_PICKUP → SEARCHING_DRIVER → DRIVER_ASSIGNED → PICKED_UP → ON_THE_WAY → DELIVERED",
+      "source_file": "PRODUCTS_AND_SERVICES.md",
+      "source_location": "lines 81-86",
+      "confidence": 0.95
+    },
+    {
+      "id": "order_states_service",
+      "label": "Order States - Services",
+      "kind": "state_machine",
+      "description": "Service order flow (no driver): CREATED → ACCEPTED_BY_MERCHANT → SCHEDULED → PROVIDER_EN_ROUTE → IN_PROGRESS → COMPLETED → PAID. Can be CANCELLED before IN_PROGRESS.",
+      "source_file": "PRODUCTS_AND_SERVICES.md",
+      "source_location": "lines 89-96",
+      "confidence": 0.95
+    },
+    {
+      "id": "service_order_details_model",
+      "label": "ServiceOrderDetails Model",
+      "kind": "domain_model",
+      "description": "Additional fields for service orders (T1.5.8): service_address (GeoLocation/text), scheduled_at (date/time), customer_notes (instructions), duration_minutes (copied from Product)",
+      "source_file": "PRODUCTS_AND_SERVICES.md",
+      "source_location": "lines 98-102",
+      "confidence": 0.95
+    },
+    {
+      "id": "uv_package_manager",
+      "label": "UV Package Manager",
+      "kind": "tool",
+      "description": "Python package manager for backend (not pip). Commands: uv add, uv sync, uv run python. Required for GDAL/PostGIS dependencies.",
+      "source_file": "AGENTS.md",
+      "source_location": "line 18",
+      "confidence": 0.9
+    },
+    {
+      "id": "docker_postgis_redis_requirement",
+      "label": "Docker PostGIS + Redis Requirement",
+      "kind": "infrastructure_constraint",
+      "description": "Backend dev requires Docker for PostGIS (5432) and Redis (6379). Backend cannot run on host without GDAL. Run 'make docker-up' first.",
+      "source_file": "AGENTS.md",
+      "source_location": "line 20",
+      "confidence": 0.95
+    },
+    {
+      "id": "pytest_django_db_marker",
+      "label": "Pytest Django DB Marker",
+      "kind": "testing_pattern",
+      "description": "Backend tests use @pytest.mark.django_db decorator for database access. Always run 'make backend-test' locally before pushing.",
+      "source_file": "AGENTS.md",
+      "source_location": "line 24",
+      "confidence": 0.9
+    },
+    {
+      "id": "make_setup_command",
+      "label": "make setup",
+      "kind": "developer_workflow",
+      "description": "Complete setup command: installs all infrastructure (Docker), dependencies (uv for backend, npm for web-admin, Flutter), and creates initial configuration.",
+      "source_file": "AGENTS.md",
+      "source_location": "line 30",
+      "confidence": 0.95
+    },
+    {
+      "id": "make_docker_up",
+      "label": "make docker-up",
+      "kind": "developer_workflow",
+      "description": "Start only infrastructure containers: PostGIS (5432) and Redis (6379). Needed before backend dev.",
+      "source_file": "AGENTS.md",
+      "source_location": "line 31",
+      "confidence": 0.95
+    },
+    {
+      "id": "make_up_full_stack",
+      "label": "make up",
+      "kind": "developer_workflow",
+      "description": "Start full Docker stack: PostGIS, Redis, Mailpit, and API (Gunicorn + Celery). Resets containers on each run.",
+      "source_file": "AGENTS.md",
+      "source_location": "line 32",
+      "confidence": 0.95
+    },
+    {
+      "id": "make_backend_test",
+      "label": "make backend-test",
+      "kind": "developer_workflow",
+      "description": "Run pytest for backend. Alternative: cd backend && uv run pytest -v",
+      "source_file": "AGENTS.md",
+      "source_location": "line 33",
+      "confidence": 0.9
+    },
+    {
+      "id": "make_backend_run",
+      "label": "make backend-run",
+      "kind": "developer_workflow",
+      "description": "Run API locally on http://localhost:8000. Requires GDAL installed on host.",
+      "source_file": "AGENTS.md",
+      "source_location": "line 34",
+      "confidence": 0.9
+    },
+    {
+      "id": "make_web_admin_dev",
+      "label": "make web-admin-dev",
+      "kind": "developer_workflow",
+      "description": "Start Next.js dev server for web-admin at http://localhost:3000 with hot reload.",
+      "source_file": "AGENTS.md",
+      "source_location": "line 35",
+      "confidence": 0.9
+    },
+    {
+      "id": "make_flutter_test",
+      "label": "make flutter-test",
+      "kind": "developer_workflow",
+      "description": "Run flutter test for both flutter-customer and flutter-driver apps.",
+      "source_file": "AGENTS.md",
+      "source_location": "line 36",
+      "confidence": 0.9
+    },
+    {
+      "id": "make_test_all",
+      "label": "make test",
+      "kind": "developer_workflow",
+      "description": "Run all tests: backend pytest, web-admin unit, Flutter tests.",
+      "source_file": "AGENTS.md",
+      "source_location": "line 37",
+      "confidence": 0.9
+    },
+    {
+      "id": "make_web_admin_lint",
+      "label": "make web-admin-lint",
+      "kind": "developer_workflow",
+      "description": "Lint web-admin code (ESLint, Prettier).",
+      "source_file": "AGENTS.md",
+      "source_location": "line 38",
+      "confidence": 0.85
+    },
+    {
+      "id": "make_backend_createsuperuser",
+      "label": "make backend-createsuperuser",
+      "kind": "developer_workflow",
+      "description": "Create Django superuser interactively. Runs in Docker container.",
+      "source_file": "AGENTS.md",
+      "source_location": "line 39",
+      "confidence": 0.9
+    },
+    {
+      "id": "make_backend_shell",
+      "label": "make backend-shell",
+      "kind": "developer_workflow",
+      "description": "Enter Django interactive shell in Docker container.",
+      "source_file": "AGENTS.md",
+      "source_location": "line 40",
+      "confidence": 0.85
+    },
+    {
+      "id": "make_backend_check_db",
+      "label": "make backend-check-db",
+      "kind": "developer_workflow",
+      "description": "List database tables and verify schema integrity. Useful for diagnosing migration issues.",
+      "source_file": "AGENTS.md",
+      "source_location": "line 41",
+      "confidence": 0.9
+    },
+    {
+      "id": "make_doctor",
+      "label": "make doctor",
+      "kind": "developer_workflow",
+      "description": "Diagnose common issues: ALLOWED_HOSTS, Django container health, HTTP 200 on API.",
+      "source_file": "AGENTS.md",
+      "source_location": "line 42",
+      "confidence": 0.9
+    },
+    {
+      "id": "make_backend_migrate_all",
+      "label": "make backend-migrate-all",
+      "kind": "developer_workflow",
+      "description": "Run Django migrate in Docker container for all apps.",
+      "source_file": "AGENTS.md",
+      "source_location": "line 43",
+      "confidence": 0.85
+    },
+    {
+      "id": "make_restart_api",
+      "label": "make restart-api",
+      "kind": "developer_workflow",
+      "description": "Rebuild and restart API container. Use after code or .env changes.",
+      "source_file": "AGENTS.md",
+      "source_location": "line 44",
+      "confidence": 0.9
+    },
+    {
+      "id": "task_workflow_process",
+      "label": "Task Workflow Process",
+      "kind": "developer_workflow",
+      "description": "Steps: 1. Read docs/PROGRESS.md for incomplete tasks, 2. Find task ID in docs/TASKS.md, 3. Read related docs (e.g., MERCHANT_ONBOARDING.md for Fase 6), 4. Implement with Vertical Slice + Clean Architecture, 5. Run specified tests, 6. Mark [x] in PROGRESS.md, 7. Commit with 'feat/fix(scope): description'",
+      "source_file": "AGENTS.md",
+      "source_location": "lines 46-55",
+      "confidence": 0.95
+    },
+    {
+      "id": "scoped_permission_pattern",
+      "label": "ScopedPermission Pattern",
+      "kind": "authorization_pattern",
+      "description": "Backend authorization via ScopedPermission + user_role field in CustomUser. DRF serializers check permissions in infrastructure/",
+      "source_file": "AGENTS.md",
+      "source_location": "line 68",
+      "confidence": 0.9
+    },
+    {
+      "id": "web_admin_component_patterns",
+      "label": "Web-admin Component Patterns",
+      "kind": "code_organization",
+      "description": "Server Components by default, 'use client' only for interactivity. Zustand stores per feature in features/*/stores/. Consume /api/v1/ exclusively (no BFF paths).",
+      "source_file": "AGENTS.md",
+      "source_location": "line 70",
+      "confidence": 0.95
+    },
+    {
+      "id": "flutter_riverpod_testing",
+      "label": "Flutter Riverpod Testing",
+      "kind": "testing_pattern",
+      "description": "Use case tests mock repositories with mocktail. Widget tests use testWidgets + pumpWidget.",
+      "source_file": "AGENTS.md",
+      "source_location": "line 72",
+      "confidence": 0.9
+    },
+    {
+      "id": "fase6_priority",
+      "label": "Fase 6 - Merchant Onboarding Priority",
+      "kind": "project_phase",
+      "description": "Current development priority: Merchant onboarding + seller portal (T6.x tasks). Fase 1-3 (backend + web MVP) complete. Fase 4-5 (Flutter + realtime) pending.",
+      "source_file": "AGENTS.md",
+      "source_location": "line 108",
+      "confidence": 0.95
+    },
+    {
+      "id": "submodule_git_workflow",
+      "label": "Submodule Git Workflow",
+      "kind": "version_control_pattern",
+      "description": "Each project is separate Git repo with own CI/branch rules. Commit changes in submodule folder, then commit root .gitmodules pointer. Don't force-push submodule branches without coordination.",
+      "source_file": "AGENTS.md",
+      "source_location": "lines 112-114",
+      "confidence": 0.95
+    },
+    {
+      "id": "debugging_workflow_api_not_responding",
+      "label": "Debugging: API Not Responding",
+      "kind": "debugging_pattern",
+      "description": "Run 'make doctor' - checks ALLOWED_HOSTS, Django container, and HTTP 200",
+      "source_file": "AGENTS.md",
+      "source_location": "line 118",
+      "confidence": 0.85
+    },
+    {
+      "id": "debugging_workflow_photos_not_visible",
+      "label": "Debugging: Photos Not Visible",
+      "kind": "debugging_pattern",
+      "description": "Run 'make media-check' - inspects SERVE_MEDIA, MEDIA_ROOT, and files on disk",
+      "source_file": "AGENTS.md",
+      "source_location": "line 119",
+      "confidence": 0.85
+    },
+    {
+      "id": "debugging_workflow_migrations_stuck",
+      "label": "Debugging: Migrations Stuck",
+      "kind": "debugging_pattern",
+      "description": "'make backend-check-db' to list tables; 'make backend-makemigrations-all' if schema drift",
+      "source_file": "AGENTS.md",
+      "source_location": "line 120",
+      "confidence": 0.85
+    },
+    {
+      "id": "debugging_workflow_container_crash",
+      "label": "Debugging: Container Crash",
+      "kind": "debugging_pattern",
+      "description": "'make logs' (all) or 'docker logs dts-api' (single container)",
+      "source_file": "AGENTS.md",
+      "source_location": "line 121",
+      "confidence": 0.85
+    },
+    {
+      "id": "debugging_workflow_stale_state",
+      "label": "Debugging: Stale Container State",
+      "kind": "debugging_pattern",
+      "description": "'make restart-api' rebuilds API + workers",
+      "source_file": "AGENTS.md",
+      "source_location": "line 122",
+      "confidence": 0.85
+    },
+    {
+      "id": "docker_server_requirements",
+      "label": "Docker Server Requirements",
+      "kind": "infrastructure_constraint",
+      "description": "Minimum Docker 24+, Docker Compose v2+, Git, open ports 8000 (API), optional 8025 (Mailpit). Python, GDAL, PostgreSQL, Redis not installed on host - all in Docker.",
+      "source_file": "DEPLOY_DOCKER.md",
+      "source_location": "lines 5-12, 203-209",
+      "confidence": 0.95
+    },
+    {
+      "id": "docker_server_install_steps",
+      "label": "Docker Server Installation Steps",
+      "kind": "deployment_workflow",
+      "description": "Three steps: 1. Clone + configure docker-infrastructure/.env (SECRET_KEY, ALLOWED_HOSTS, CSRF_TRUSTED_ORIGINS, DEBUG=False), 2. 'make up' (builds image, creates services, runs migrations, collectstatic), 3. 'make backend-createsuperuser'",
+      "source_file": "DEPLOY_DOCKER.md",
+      "source_location": "lines 16-62",
+      "confidence": 0.95
+    },
+    {
+      "id": "docker_server_urls",
+      "label": "Docker Server Service URLs",
+      "kind": "infrastructure_reference",
+      "description": "API: http://SERVIDOR:8000, Swagger: http://SERVIDOR:8000/api/v1/docs/, Django Admin: http://SERVIDOR:8000/admin/, Mailpit: http://SERVIDOR:8025",
+      "source_file": "DEPLOY_DOCKER.md",
+      "source_location": "lines 67-76",
+      "confidence": 0.9
+    },
+    {
+      "id": "docker_firewall_and_dns",
+      "label": "Docker: Firewall and DNS Setup",
+      "kind": "infrastructure_pattern",
+      "description": "Ubuntu/Debian firewall: 'sudo ufw allow 8000/tcp 8025/tcp'. DNS local: edit /etc/hosts to map IP to extreme.local",
+      "source_file": "DEPLOY_DOCKER.md",
+      "source_location": "lines 79-94",
+      "confidence": 0.9
+    },
+    {
+      "id": "docker_daily_commands",
+      "label": "Docker Daily Commands",
+      "kind": "developer_workflow",
+      "description": "'make up' (start/update), 'make down' (stop), 'make logs' (view errors), 'make ps' (status), 'make restart-api' (after .env change)",
+      "source_file": "DEPLOY_DOCKER.md",
+      "source_location": "lines 106-114",
+      "confidence": 0.95
+    },
+    {
+      "id": "docker_git_pull_update",
+      "label": "Docker: Git Pull Update",
+      "kind": "deployment_workflow",
+      "description": "'git pull' then 'make up' - no manual migration needed, entrypoint handles it automatically",
+      "source_file": "DEPLOY_DOCKER.md",
+      "source_location": "lines 118-125",
+      "confidence": 0.95
+    },
+    {
+      "id": "django_admin_interface",
+      "label": "Django Admin Interface",
+      "kind": "developer_tool",
+      "description": "All project models registered in /admin/: users, profiles, FCM tokens, stores, products, orders, tracking GPS, analytics. Geographic fields shown as text coordinates (no OpenLayers in Docker).",
+      "source_file": "DEPLOY_DOCKER.md",
+      "source_location": "lines 151-159",
+      "confidence": 0.9
+    },
+    {
+      "id": "docker_production_security_checklist",
+      "label": "Docker: Production Security Checklist",
+      "kind": "deployment_pattern",
+      "description": "Checklist: unique SECRET_KEY, DEBUG=False, real ALLOWED_HOSTS, strong DB_PASSWORD, HTTPS reverse proxy (Nginx/Caddy), backup dts_postgis_data volume, FCM JSON in docker-infrastructure/volumes/fcm/",
+      "source_file": "DEPLOY_DOCKER.md",
+      "source_location": "lines 191-199",
+      "confidence": 0.95
+    },
+    {
+      "id": "railway_cli_superuser_creation",
+      "label": "Railway: CLI Superuser Creation",
+      "kind": "deployment_workflow",
+      "description": "Using Railway CLI from local Mac: npm i -g @railway/cli, railway login, railway link, railway service DTS-backend, railway run uv run python manage.py createsuperuser",
+      "source_file": "DEPLOY_RAILWAY.md",
+      "source_location": "lines 131-141",
+      "confidence": 0.9
+    },
+    {
+      "id": "railway_health_check",
+      "label": "Railway: Health Check",
+      "kind": "deployment_workflow",
+      "description": "Verify deployment: curl -sS https://TU-DOMINIO.up.railway.app/api/v1/docs/ -o /dev/null -w '%{http_code}\\n' or view Swagger in browser. Check logs: railway logs --service DTS-backend",
+      "source_file": "DEPLOY_RAILWAY.md",
+      "source_location": "lines 160-174",
+      "confidence": 0.9
+    },
+    {
+      "id": "railway_local_dev_remote_db",
+      "label": "Railway: Local Dev with Remote DB",
+      "kind": "deployment_pattern",
+      "description": "Develop locally pointing to Railway PostGIS: Use public TCP URL (not *.railway.internal) in docker-infrastructure/.env for DATABASE_URL and REDIS_URL. Run 'make up' locally with remote DB.",
+      "source_file": "DEPLOY_RAILWAY.md",
+      "source_location": "lines 177-194",
+      "confidence": 0.9
+    },
+    {
+      "id": "monorepo_structure_definition",
+      "label": "Monorepo Structure Definition",
+      "kind": "code_organization",
+      "description": "Root repo orchestrates 4 submodules: backend/ (Django API), web-admin/ (Next.js), flutter-customer/, flutter-driver/. Root contains Makefile, docker-compose.yml, scripts/, docs/",
+      "source_file": "README.md",
+      "source_location": "lines 16-27",
+      "confidence": 0.95
+    },
+    {
+      "id": "monorepo_clone_with_submodules",
+      "label": "Monorepo Clone with Submodules",
+      "kind": "setup_pattern",
+      "description": "Clone: git clone --recurse-submodules. If already cloned: git submodule update --init --recursive",
+      "source_file": "README.md",
+      "source_location": "lines 32-37",
+      "confidence": 0.95
+    },
+    {
+      "id": "backend_stack_definition",
+      "label": "Backend Stack Definition",
+      "kind": "technology_stack",
+      "description": "Django + DRF + Celery + Channels + PostGIS. API only, no templates. Uses uv package manager.",
+      "source_file": "README.md",
+      "source_location": "lines 56-63",
+      "confidence": 0.95
+    },
+    {
+      "id": "web_admin_stack_definition",
+      "label": "Web-admin Stack Definition",
+      "kind": "technology_stack",
+      "description": "Next.js + React + Tailwind. Merchant and super admin portals.",
+      "source_file": "README.md",
+      "source_location": "lines 56-63",
+      "confidence": 0.9
+    },
+    {
+      "id": "flutter_apps_stack_definition",
+      "label": "Flutter Apps Stack Definition",
+      "kind": "technology_stack",
+      "description": "Flutter + Riverpod. Two apps: flutter-customer (client), flutter-driver (delivery driver). Clean Architecture per module.",
+      "source_file": "README.md",
+      "source_location": "lines 56-63",
+      "confidence": 0.95
+    },
+    {
+      "id": "cursor_ai_shortcuts",
+      "label": "Cursor AI Shortcuts",
+      "kind": "developer_tool",
+      "description": "Cursor commands: /fase-1, /fase-3, /tarea T1.2.3, /progreso. Defined in .cursor/rules/ and .cursor/commands/",
+      "source_file": "README.md",
+      "source_location": "lines 80-87",
+      "confidence": 0.85
+    }
+  ],
+  "edges": [
+    {
+      "source": "media_storage_backends",
+      "target": "local_storage_backend",
+      "label": "includes",
+      "description": "Media storage backends include local backend as default for development",
+      "confidence": 0.95
+    },
+    {
+      "source": "media_storage_backends",
+      "target": "s3_storage_backend",
+      "label": "includes",
+      "description": "Media storage backends include S3 as production option",
+      "confidence": 0.95
+    },
+    {
+      "source": "media_storage_backends",
+      "target": "cloudinary_storage_backend",
+      "label": "includes",
+      "description": "Media storage backends include Cloudinary as production option",
+      "confidence": 0.95
+    },
+    {
+      "source": "serve_media_flag",
+      "target": "local_storage_backend",
+      "label": "enables_in",
+      "description": "SERVE_MEDIA flag enables serving local files via Gunicorn in Docker",
+      "confidence": 0.9
+    },
+    {
+      "source": "docker_compose_setup",
+      "target": "local_storage_backend",
+      "label": "stores_media_via",
+      "description": "Docker setup mounts backend_media volume for persistent local media storage",
+      "confidence": 0.9
+    },
+    {
+      "source": "docker_compose_setup",
+      "target": "serve_media_flag",
+      "label": "configured_by",
+      "description": "Docker infrastructure configured by docker-infrastructure/.env including SERVE_MEDIA",
+      "confidence": 0.9
+    },
+    {
+      "source": "make_commands_root",
+      "target": "docker_compose_setup",
+      "label": "orchestrates",
+      "description": "Make commands orchestrate Docker Compose services",
+      "confidence": 0.95
+    },
+    {
+      "source": "make_docker_up",
+      "target": "docker_compose_setup",
+      "label": "starts",
+      "description": "make docker-up starts PostGIS and Redis infrastructure",
+      "confidence": 0.95
+    },
+    {
+      "source": "make_up_full_stack",
+      "target": "docker_compose_setup",
+      "label": "starts_full",
+      "description": "make up starts full Docker stack including API",
+      "confidence": 0.95
+    },
+    {
+      "source": "make_up_full_stack",
+      "target": "entrypoint_migration_flow",
+      "label": "triggers",
+      "description": "make up triggers entrypoint migration flow on container start",
+      "confidence": 0.95
+    },
+    {
+      "source": "entrypoint_migration_flow",
+      "target": "allowed_hosts_csrf_config",
+      "label": "verifies",
+      "description": "Entrypoint runs migrations but doesn't verify ALLOWED_HOSTS (Django handles at startup)",
+      "confidence": 0.85
+    },
+    {
+      "source": "railway_deployment_arch",
+      "target": "railway_backend_config",
+      "label": "contains",
+      "description": "Railway architecture includes DTS-backend service configured via railway.toml",
+      "confidence": 0.95
+    },
+    {
+      "source": "railway_backend_config",
+      "target": "railway_internal_networking",
+      "label": "uses",
+      "description": "Railway backend uses internal networking for database and cache connections",
+      "confidence": 0.9
+    },
+    {
+      "source": "railway_environment_variables",
+      "target": "railway_internal_networking",
+      "label": "references_via",
+      "description": "Railway environment variables reference other services via internal URLs",
+      "confidence": 0.95
+    },
+    {
+      "source": "railway_media_storage_options",
+      "target": "s3_storage_backend",
+      "label": "can_use",
+      "description": "Railway media storage Option B uses S3 backend for production",
+      "confidence": 0.95
+    },
+    {
+      "source": "railway_pre_deploy_commands",
+      "target": "entrypoint_migration_flow",
+      "label": "implements",
+      "description": "Railway pre-deploy commands implement same migration flow as entrypoint.sh",
+      "confidence": 0.9
+    },
+    {
+      "source": "railway_celery_workers",
+      "target": "railway_deployment_arch",
+      "label": "extends",
+      "description": "Railway Celery workers extend base architecture with async task processing",
+      "confidence": 0.9
+    },
+    {
+      "source": "github_actions_ci_matrix",
+      "target": "github_actions_branches",
+      "label": "triggers_on",
+      "description": "CI workflows trigger on main, develop, master branches",
+      "confidence": 0.95
+    },
+    {
+      "source": "github_actions_unit_tests",
+      "target": "ci_smoke_tests_realtime",
+      "label": "includes",
+      "description": "Unit test CI includes realtime smoke tests",
+      "confidence": 0.9
+    },
+    {
+      "source": "github_actions_e2e_optional",
+      "target": "github_actions_activation_checklist",
+      "label": "requires",
+      "description": "E2E tests require additional activation and secrets setup",
+      "confidence": 0.9
+    },
+    {
+      "source": "vertical_slice_architecture",
+      "target": "backend_feature_structure",
+      "label": "implemented_in",
+      "description": "Vertical slice architecture implemented in backend features/",
+      "confidence": 0.95
+    },
+    {
+      "source": "vertical_slice_architecture",
+      "target": "flutter_feature_structure",
+      "label": "implemented_in",
+      "description": "Vertical slice architecture implemented in Flutter features/",
+      "confidence": 0.95
+    },
+    {
+      "source": "django_clean_architecture_mapping",
+      "target": "backend_feature_structure",
+      "label": "defines",
+      "description": "Django mapping defines how feature structure layers interact",
+      "confidence": 0.95
+    },
+    {
+      "source": "backend_feature_structure",
+      "target": "django_clean_architecture_mapping",
+      "label": "follows",
+      "description": "Backend features follow clean architecture domain/application/infrastructure separation",
+      "confidence": 0.95
+    },
+    {
+      "source": "flutter_feature_structure",
+      "target": "flutter_riverpod_testing",
+      "label": "uses",
+      "description": "Flutter features use Riverpod for state management and testing",
+      "confidence": 0.95
+    },
+    {
+      "source": "product_type_domain_model",
+      "target": "stock_validator_rule",
+      "label": "enforces",
+      "description": "ProductType model enforces StockValidator rule: only PHYSICAL has stock",
+      "confidence": 0.95
+    },
+    {
+      "source": "product_type_domain_model",
+      "target": "order_states_physical",
+      "label": "triggers",
+      "description": "PHYSICAL product type triggers delivery order state machine",
+      "confidence": 0.95
+    },
+    {
+      "source": "product_type_domain_model",
+      "target": "order_states_service",
+      "label": "triggers",
+      "description": "SERVICE product type triggers service order state machine",
+      "confidence": 0.95
+    },
+    {
+      "source": "category_hierarchy_2_levels",
+      "target": "product_type_domain_model",
+      "label": "organizes",
+      "description": "Category hierarchy organizes both PHYSICAL and SERVICE product types",
+      "confidence": 0.95
+    },
+    {
+      "source": "service_order_details_model",
+      "target": "order_states_service",
+      "label": "contains",
+      "description": "ServiceOrderDetails model provides data for service order state transitions",
+      "confidence": 0.9
+    },
+    {
+      "source": "uv_package_manager",
+      "target": "backend_stack_definition",
+      "label": "manages_dependencies",
+      "description": "UV package manager manages backend Python dependencies including GDAL",
+      "confidence": 0.95
+    },
+    {
+      "source": "docker_postgis_redis_requirement",
+      "target": "make_docker_up",
+      "label": "satisfied_by",
+      "description": "Docker requirement for PostGIS/Redis satisfied by make docker-up",
+      "confidence": 0.95
+    },
+    {
+      "source": "pytest_django_db_marker",
+      "target": "make_backend_test",
+      "label": "used_in",
+      "description": "Pytest Django DB marker used in backend tests executed by make backend-test",
+      "confidence": 0.9
+    },
+    {
+      "source": "make_setup_command",
+      "target": "make_docker_up",
+      "label": "includes",
+      "description": "make setup includes Docker initialization from make docker-up",
+      "confidence": 0.9
+    },
+    {
+      "source": "make_backend_createsuperuser",
+      "target": "docker_server_install_steps",
+      "label": "final_step_of",
+      "description": "Superuser creation is final step of Docker server installation",
+      "confidence": 0.95
+    },
+    {
+      "source": "task_workflow_process",
+      "target": "vertical_slice_architecture",
+      "label": "requires",
+      "description": "Task workflow requires implementing with Vertical Slice architecture",
+      "confidence": 0.95
+    },
+    {
+      "source": "scoped_permission_pattern",
+      "target": "backend_feature_structure",
+      "label": "used_in",
+      "description": "ScopedPermission pattern used in backend infrastructure layer",
+      "confidence": 0.9
+    },
+    {
+      "source": "web_admin_component_patterns",
+      "target": "web_admin_stack_definition",
+      "label": "defines_conventions",
+      "description": "Component patterns define Next.js conventions for web-admin",
+      "confidence": 0.95
+    },
+    {
+      "source": "fase6_priority",
+      "target": "task_workflow_process",
+      "label": "current_focus",
+      "description": "Fase 6 is current priority for task workflow focus",
+      "confidence": 0.95
+    },
+    {
+      "source": "submodule_git_workflow",
+      "target": "monorepo_structure_definition",
+      "label": "manages",
+      "description": "Submodule workflow manages commits and pushes across monorepo structure",
+      "confidence": 0.95
+    },
+    {
+      "source": "docker_server_requirements",
+      "target": "docker_compose_setup",
+      "label": "prerequisites",
+      "description": "Docker server requirements are prerequisites for Docker Compose setup",
+      "confidence": 0.95
+    },
+    {
+      "source": "docker_server_install_steps",
+      "target": "entrypoint_migration_flow",
+      "label": "triggers",
+      "description": "'make up' command in installation triggers entrypoint migration flow",
+      "confidence": 0.95
+    },
+    {
+      "source": "allowed_hosts_csrf_config",
+      "target": "docker_server_urls",
+      "label": "configures_access",
+      "description": "ALLOWED_HOSTS configuration determines which server URLs are accessible",
+      "confidence": 0.95
+    },
+    {
+      "source": "docker_daily_commands",
+      "target": "docker_compose_setup",
+      "label": "manage",
+      "description": "Daily commands manage Docker Compose infrastructure lifecycle",
+      "confidence": 0.95
+    },
+    {
+      "source": "docker_git_pull_update",
+      "target": "entrypoint_migration_flow",
+      "label": "leverages",
+      "description": "Git pull workflow leverages entrypoint to handle migrations automatically",
+      "confidence": 0.9
+    },
+    {
+      "source": "django_admin_interface",
+      "target": "backend_feature_structure",
+      "label": "exposes",
+      "description": "Django admin exposes all models from backend features",
+      "confidence": 0.9
+    },
+    {
+      "source": "railway_cli_superuser_creation",
+      "target": "railway_health_check",
+      "label": "precedes",
+      "description": "Superuser creation precedes health checks in Railway deployment",
+      "confidence": 0.85
+    },
+    {
+      "source": "railway_local_dev_remote_db",
+      "target": "railway_deployment_arch",
+      "label": "connects_to",
+      "description": "Local development can connect to Railway backend using public network URLs",
+      "confidence": 0.9
+    },
+    {
+      "source": "monorepo_clone_with_submodules",
+      "target": "monorepo_structure_definition",
+      "label": "initializes",
+      "description": "Submodule cloning initializes monorepo structure with all projects",
+      "confidence": 0.95
+    },
+    {
+      "source": "backend_stack_definition",
+      "target": "uv_package_manager",
+      "label": "uses",
+      "description": "Backend uses UV package manager for dependency management",
+      "confidence": 0.95
+    }
+  ],
+  "hyperedges": [],
+  "input_tokens": 0,
+  "output_tokens": 0
+}
