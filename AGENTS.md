@@ -15,13 +15,15 @@ Monorepo con 4 proyectos en **submodules Git** independientes (raíz = orchestra
 
 **Submodules required:** `git clone --recurse-submodules …` or `git submodule update --init --recursive` after clone. Agents often miss this.
 
-**Backend Python:** Uses **uv**, not pip. `uv add`, `uv sync`, `uv run python …`.
+**Backend Python:** Uses **uv**, not pip. `uv add`, `uv sync`, `uv run python …`. Requires Python ≥ 3.12. Backend lint: `uv run ruff check .` (config in `backend/pyproject.toml`).
 
-**Docker always needed for backend dev:** PostGIS (5432) + Redis (6379) + Mailpit (8025). Run `make docker-up` first. Backend cannot run on host without GDAL.
+**Docker always needed for backend dev:** PostGIS (5432) + Redis (6379) + Mailpit (8025). Run `make docker-up` first. Backend cannot run on host without GDAL (in Docker: `make up`). Local DB: container `dts-postgis`, DB `dts_delivery`, user `postgres`.
 
-**Media files in Docker:** Set `SERVE_MEDIA=true` in `docker-infrastructure/.env` to serve product photos. Run `make media-check` to verify. Images stored at `/app/backend/media/products/`.
+**web-admin package manager:** Makefile + root CI use **npm** (`npm ci`), but a `pnpm-lock.yaml` + `pnpm-workspace.yaml` coexist and Fase 7 docs (`docs/FASE7_BLOCKS.md`) use `pnpm` commands. Prefer `npm` for anything wired via `make`; `pnpm` only for Fase 7 manual steps.
 
-**Database:** Schema by `docs/TASKS.md` task IDs. Tests use pytest markers `@pytest.mark.django_db`. Always run `make backend-test` locally before pushing.
+**Media files in Docker:** Set `SERVE_MEDIA=true` in `docker-infrastructure/.env` to serve product photos (`docker-infrastructure/.env.example` already ships it). Run `make media-check` to verify. Images stored at `/app/backend/media/products/`.
+
+**Database:** Schema by `docs/TASKS.md` task IDs. Tests use pytest markers `@pytest.mark.django_db`. Always run `make backend-test` locally before pushing. Backend tests need PostGIS+Redis up (CI spins both as services).
 
 ## Developer Commands
 
@@ -33,9 +35,12 @@ Monorepo con 4 proyectos en **submodules Git** independientes (raíz = orchestra
 | **Backend tests** | `cd backend && uv run pytest -v` or `make backend-test` |
 | **Backend local** (requires GDAL) | `make backend-run` → http://localhost:8000 |
 | **Web-admin dev** | `make web-admin-dev` → http://localhost:3000 |
+| **Web-admin lint** | `make web-admin-lint` (`npm run lint` = ESLint flat config) |
+| **Web-admin unit tests** | `cd web-admin && npm run test:unit` (node test + tsx; store/order-chat only currently) |
+| **Web-admin E2E** | `cd web-admin && npm run test:e2e` (Playwright; scoped per e2e script) |
 | **Flutter tests** | `make flutter-test` (both apps) |
-| **All tests** | `make test` |
-| **Lint web-admin** | `make web-admin-lint` |
+| **All tests** | `make test` (backend + both Flutter) |
+| **Lint all** | `make lint` (web-admin ESLint + backend `ruff`) |
 | **Create Django superuser** | `make backend-createsuperuser` (in container) |
 | **Django shell** | `make backend-shell` (in container) |
 | **View DB tables** | `make backend-check-db` (in container) |
@@ -49,6 +54,7 @@ Monorepo con 4 proyectos en **submodules Git** independientes (raíz = orchestra
 2. For specific task ID (e.g., T6.1.2):
    - `docs/TASKS.md` → exact scope, acceptance criteria, test names
    - For Fase 6 (merchant onboarding): `docs/MERCHANT_ONBOARDING.md` + `docs/FASE6_BLOCKS.md`
+   - For Fase 7 (admin maturity): `docs/FASE7_BLOCKS.md` + `docs/ADMIN_MATURITY.md` (tasks are **not** in `docs/TASKS.md`)
    - For products/services: `docs/PRODUCTS_AND_SERVICES.md`
 3. Implement using Vertical Slice + Clean Architecture (see `.cursor/rules/`).
 4. Run tests listed in task definition.
@@ -76,14 +82,20 @@ features/<module>/
 - `docs/ROADMAP.md` — Fase 1–6 priorities + timelines
 - `docs/TASKS.md` — Full task catalog (T1.x, T2.x … T6.x) with test names
 - `docs/PROGRESS.md` — Mark `[x]` to track completion
+- `docs/FASE7_BLOCKS.md` + `docs/ADMIN_MATURITY.md` — Fase 7 admin maturity (blocks 7.1–7.7; tasks not in TASKS.md)
+- `docs/FASE4_BLOCKS.md` — Flutter customer/driver blocks
 - `docs/MERCHANT_ONBOARDING.md` — Fase 6 registration flow + portal architecture
+- `docs/PRODUCTS_AND_SERVICES.md` — Dual product/service model
 - `docs/MEDIA_STORAGE.md` — Product photo upload + `SERVE_MEDIA` flag
+- `docs/SMOKE_E2E_CHECKLIST.md` — Production smoke (api.dtsdrop.com) before release
+- `docs/STORE_RELEASE_CHECKLIST.md` + `docs/PLAY_STORE_GOOGLE_SIGNIN.md` + `docs/APP_STORE_CONNECT_REVIEW.md` — App Store/Play publishing + Google Sign-In Android SHA gotchas
 - `docs/DEPLOY_DOCKER.md` — Full-stack Docker for servers
 - `docs/DEPLOY_RAILWAY.md` — Railway backend deploy (PostGIS + GDAL)
 - `docs/CI_GITHUB_ACTIONS.md` — GitHub Actions per submodule + secrets setup
 - `docs/PUSH_NOTIFICATIONS.md` — FCM device tokens + event-driven push
 - `docs/WEB_ADMIN.md` — Next.js + Zustand conventions
 - `docs/FLUTTER_API.md` — REST client patterns for apps
+- `docs/MONOREPO.md` — Submodule sync commands + workflow
 
 ## Test Shortcuts
 
@@ -100,18 +112,22 @@ make fase6-test-task TASK=T6.1.4
 
 # Flutter
 make fase4-test BLOCK=4.1
+
+# web-admin — single e2e spec
+cd web-admin && npm run test:e2e -- e2e/merchant_orders_list_test.spec.ts
 ```
 
 ## Phase Priority (Current)
 
-✅ Fase 1–3 — Backend + web MVP done.  
-⬜ **Fase 6 (NOW)** — Merchant onboarding + seller portal (T6.x).  
-⬜ Fase 4–5 — Flutter features + real-time.  
-⬜ Post-MVP — Payments, schedules, KYC, marketplace.
+✅ Fase 1–5 done (backend + web MVP + Flutter features + real-time Channels).
+✅ **Fase 6 done** — Merchant onboarding + seller portal (all T6.x `[x]` in `docs/PROGRESS.md`).
+⬜ **Fase 7 (NEW)** — Admin maturity (`docs/FASE7_BLOCKS.md`, blocks 7.1–7.7).
+⬜ **Store release** — App Store + Play (`docs/STORE_RELEASE_CHECKLIST.md`, `docs/APP_STORE_CONNECT_REVIEW.md`, `docs/PLAY_STORE_GOOGLE_SIGNIN.md`).
+⬜ Post-MVP — Payments, schedules, KYC, marketplace (`docs/POST_MVP_PROGRESS.md`).
 
 ## Submodule Note
 
-Each project is a separate Git repo with its own CI, branch rules, and merge workflows. Always commit changes in the submodule folder, then commit the root `.gitmodules` pointer. Do NOT force-push submodule branches without coordination.
+Each project is a separate Git repo with its own CI, branch rules, and merge workflows. Always commit changes in the submodule folder, then commit the root submodule pointer (the gitlink, not `.gitmodules` — that only holds URLs). Do NOT force-push submodule branches without coordination. After a root `git pull`, run `git submodule update --init --recursive`.
 
 ## Debugging
 

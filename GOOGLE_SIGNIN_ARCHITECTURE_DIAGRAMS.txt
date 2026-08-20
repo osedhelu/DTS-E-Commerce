@@ -1,0 +1,386 @@
+================================================================================
+                        ARQUITECTURA GOOGLE SIGN-IN
+                         DIAGRAMA DE FLUJOS
+================================================================================
+
+1. FLUJO GENERAL DE CAPAS (Clean Architecture)
+================================================================================
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│                         PRESENTATION LAYER                             │
+│  ┌──────────────────────────────────────────────────────────────────┐  │
+│  │              LoginScreen (StatefulWidget)                        │  │
+│  │  - _signInWithGoogle() método                                    │  │
+│  │  - _GoogleSignInButton widget personalizado                      │  │
+│  │  - Error handling y UI state                                     │  │
+│  └──────────────────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────────────────┘
+                                    ↓
+┌─────────────────────────────────────────────────────────────────────────┐
+│                      APPLICATION LAYER (Riverpod)                      │
+│  ┌──────────────────────────────────────────────────────────────────┐  │
+│  │  googleSignInUseCaseProvider                                      │  │
+│  │  ├─ Proveedor: GoogleSignInUseCase instance                      │  │
+│  │  └─ Dependencia: authRepositoryProvider                          │  │
+│  └──────────────────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────────────────┘
+                                    ↓
+┌─────────────────────────────────────────────────────────────────────────┐
+│                       DOMAIN LAYER (Use Cases)                          │
+│  ┌──────────────────────────────────────────────────────────────────┐  │
+│  │            GoogleSignInUseCase.call()                            │  │
+│  │                                                                   │  │
+│  │  1. _clearPreviousGoogleSession()                                │  │
+│  │     ├─ FirebaseAuth.signOut()                                    │  │
+│  │     ├─ GoogleSignIn.signOut()                                    │  │
+│  │     └─ GoogleSignIn.disconnect() (Android: force choose account)│  │
+│  │                                                                   │  │
+│  │  2. GoogleSignIn.signIn()                                        │  │
+│  │     └─ Retorna: GoogleSignInAccount                              │  │
+│  │                                                                   │  │
+│  │  3. Obtiene tokens de Google                                     │  │
+│  │     ├─ account.authentication.accessToken                        │  │
+│  │     └─ account.authentication.idToken ✓ (validar no vacío)      │  │
+│  │                                                                   │  │
+│  │  4. Crea credencial de Firebase                                  │  │
+│  │     └─ GoogleAuthProvider.credential(accessToken, idToken)      │  │
+│  │                                                                   │  │
+│  │  5. Autentica en Firebase                                        │  │
+│  │     └─ FirebaseAuth.signInWithCredential(credential)             │  │
+│  │                                                                   │  │
+│  │  6. Obtiene token de Firebase                                    │  │
+│  │     └─ FirebaseAuth.currentUser?.getIdToken() ✓                │  │
+│  │                                                                   │  │
+│  │  7. Retorna sesión autenticada                                   │  │
+│  │     └─ return _repository.signInWithGoogle(idToken)              │  │
+│  └──────────────────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────────────────┘
+                                    ↓
+┌─────────────────────────────────────────────────────────────────────────┐
+│                    INFRASTRUCTURE LAYER (Repository)                    │
+│  ┌──────────────────────────────────────────────────────────────────┐  │
+│  │         AuthRepositoryImpl.signInWithGoogle()                     │  │
+│  │                                                                   │  │
+│  │  1. Llama a datasource remoto                                    │  │
+│  │     └─ _remoteDataSource.signInWithGoogle(idToken)               │  │
+│  │                                                                   │  │
+│  │  2. Persiste tokens localmente                                   │  │
+│  │     └─ _tokenStorage.saveTokens(access, refresh)                 │  │
+│  │        └─ Flutter Secure Storage (KeyChain en iOS, KeyStore en A)│  │
+│  │                                                                   │  │
+│  │  3. Retorna AuthSession                                          │  │
+│  └──────────────────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────────────────┘
+                                    ↓
+┌─────────────────────────────────────────────────────────────────────────┐
+│                    INFRASTRUCTURE LAYER (DataSource)                    │
+│  ┌──────────────────────────────────────────────────────────────────┐  │
+│  │      AuthRemoteDataSource.signInWithGoogle()                     │  │
+│  │                                                                   │  │
+│  │  POST /accounts/auth/google/                                    │  │
+│  │                                                                   │  │
+│  │  Request:                                                         │  │
+│  │  ┌────────────────────────────────────────┐                      │  │
+│  │  │ {                                      │                      │  │
+│  │  │   "id_token": "eyJhbGci...",          │                      │  │
+│  │  │   "role": "driver"                     │                      │  │
+│  │  │ }                                      │                      │  │
+│  │  └────────────────────────────────────────┘                      │  │
+│  │                                                                   │  │
+│  │  Response:                                                        │  │
+│  │  ┌────────────────────────────────────────┐                      │  │
+│  │  │ {                                      │                      │  │
+│  │  │   "access_token": "...",               │                      │  │
+│  │  │   "refresh_token": "...",              │                      │  │
+│  │  │   "user": { ... }                      │                      │  │
+│  │  │ }                                      │                      │  │
+│  │  └────────────────────────────────────────┘                      │  │
+│  └──────────────────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────────────────┘
+                                    ↓
+                        ┌──────────────────────┐
+                        │   DTS Backend        │
+                        │  (Django + DRF)      │
+                        │                      │
+                        │ /accounts/auth/      │
+                        │  google/             │
+                        │                      │
+                        │ - Verifica idToken   │
+                        │   contra Firebase    │
+                        │ - Validar rol driver │
+                        │ - Crear o actualizar │
+                        │   usuario DTS        │
+                        │ - Generar JWT tokens │
+                        └──────────────────────┘
+
+
+2. CONFIGURACIÓN FIREBASE (Múltiples Clientes OAuth)
+================================================================================
+
+Google Cloud Console Project: dtsdrop-85330
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│                      Credentials (OAuth 2.0 Clients)                    │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                          │
+│  TYPE 1: Android (Native)                                               │
+│  ├─ Client ID: 1015036938407-o1lurko8t3vchrta3qa6kbkg9i85usuf.apps...  │
+│  ├─ Package: com.osedhelu.dtsdriver                                     │
+│  └─ SHA-1: 69f247b9d146aa5268ac8c6e863bcf14a853ffa4                    │
+│                                                                          │
+│  TYPE 1: iOS (Native)                                                   │
+│  ├─ Client ID: 1015036938407-8fvoe01ns93vce534lgseo9knquiqq68.apps...  │
+│  ├─ Bundle ID: com.osedhelu.dtsdriver                                   │
+│  └─ URL Schemes: com.googleusercontent.apps.1015036938407-...          │
+│                                                                          │
+│  TYPE 3: Web (CRÍTICO para obtener idToken en móvil)                    │
+│  ├─ Client ID: 1015036938407-3b42tv87mauud225f3vfett7c5rtogof.apps...  │
+│  ├─ Redirect URI: urn:ietf:wg:oauth:2.0:oob                            │
+│  └─ USO: serverClientId en GoogleSignInUseCase                          │
+│                                                                          │
+└─────────────────────────────────────────────────────────────────────────┘
+
+
+3. FIREBASE MOBILE SDK CONFIGURATION
+================================================================================
+
+ARCHIVO: google-services.json (Android)
+UBICACIÓN: android/app/
+
+  ├─ project_info
+  │  ├─ project_id: dtsdrop-85330
+  │  ├─ project_number: 1015036938407
+  │  └─ storage_bucket: dtsdrop-85330.firebasestorage.app
+  │
+  └─ client[0]
+     ├─ mobilesdk_app_id: 1:1015036938407:android:041cc4084dd2a93008b382
+     ├─ oauth_client (type 1) - Native Android
+     ├─ oauth_client (type 3) - Web (usado via serverClientId)
+     └─ api_key: AIzaSyBj-DmYwHfG6kvSKoCF-kqC4tvt3v9pQBI
+
+
+ARCHIVO: GoogleService-Info.plist (iOS)
+UBICACIÓN: ios/Runner/
+
+  ├─ CLIENT_ID: 1015036938407-8fvoe01ns93vce534lgseo9knquiqq68.apps...
+  ├─ BUNDLE_ID: com.osedhelu.dtsdriver
+  ├─ REVERSED_CLIENT_ID: com.googleusercontent.apps.1015036938407-...
+  ├─ IS_SIGNIN_ENABLED: true
+  ├─ PROJECT_ID: dtsdrop-85330
+  └─ API_KEY: AIzaSyAy9TvSRYhYg83Gx9aBaafGNZaTzGTe1Z4
+
+
+ARCHIVO: firebase_options.dart (Dart - Auto-generado)
+UBICACIÓN: lib/
+
+  androidFirebaseOptions
+  ├─ apiKey: AIzaSyBj-...
+  ├─ appId: 1:1015036938407:android:041cc4084dd2a93008b382
+  └─ projectId: dtsdrop-85330
+
+  iosFirebaseOptions
+  ├─ apiKey: AIzaSyAy9...
+  ├─ appId: 1:1015036938407:ios:659a99afcda1b3cf08b382
+  ├─ iosBundleId: com.osedhelu.dtsdriver
+  ├─ iosClientId: 1015036938407-8fvoe01ns93vce534lgseo9knquiqq68.apps...
+  └─ projectId: dtsdrop-85330
+
+  googleServerClientId: 1015036938407-3b42tv87mauud225f3vfett7c5rtogof.apps...
+
+
+4. CONFIGURACIÓN ANDROID BUILD SYSTEM
+================================================================================
+
+├─ settings.gradle.kts (Root)
+│  └─ com.google.gms.google-services version "4.4.2"
+│     (Plugin que procesa google-services.json)
+│
+├─ build.gradle.kts (App Module)
+│  ├─ plugins {
+│  │  ├─ id("com.android.application")
+│  │  ├─ id("kotlin-android")
+│  │  ├─ id("com.google.gms.google-services") ← ACTIVA PROCESAMIENTO
+│  │  └─ id("dev.flutter.flutter-gradle-plugin")
+│  │
+│  └─ android {
+│     ├─ namespace = "com.osedhelu.dtsdriver"
+│     ├─ compileSdk
+│     ├─ buildTypes {
+│     │  ├─ debug { signingConfig = debug }
+│     │  └─ release { signingConfig = debug } ⚠️ TODO: usar release keystore
+│     │
+│     └─ dependencies {
+│        └─ coreLibraryDesugaring (Java desugaring para API 17+)
+│
+└─ gradle.properties
+   └─ android.useAndroidX=true
+
+
+5. CONFIGURACIÓN iOS BUILD SYSTEM
+================================================================================
+
+Xcode Project Configuration (No .gradle)
+
+ios/Runner.xcodeproj
+├─ Bundle Identifier: com.osedhelu.dtsdriver
+├─ Signing: Development/Distribution provisioning profiles
+│
+└─ Info.plist (ios/Runner/Info.plist)
+   ├─ GIDClientID: 1015036938407-8fvoe01ns93vce534lgseo9knquiqq68.apps...
+   ├─ GMSApiKey: AIzaSyAy9TvSRYhYg83Gx9aBaafGNZaTzGTe1Z4
+   │
+   └─ CFBundleURLTypes
+      └─ URL Schemes: com.googleusercontent.apps.1015036938407-...
+         (Requerido para retorno desde Google Sign-In)
+
+
+6. PERMISSIONING & MANIFESTS
+================================================================================
+
+ANDROID: android/app/src/main/AndroidManifest.xml
+
+┌────────────────────────────────────┐
+│ <uses-permission ... /> (opcional) │
+│                                    │
+│ Google Sign-In maneja permisos     │
+│ automáticamente via plugin         │
+│                                    │
+│ Otros permisos del app:            │
+│ - ACCESS_FINE_LOCATION             │
+│ - FOREGROUND_SERVICE               │
+│ - POST_NOTIFICATIONS               │
+└────────────────────────────────────┘
+
+iOS: ios/Runner/Info.plist
+
+┌────────────────────────────────────┐
+│ NSLocationWhenInUseUsageDescription│
+│ NSPhotoLibraryUsageDescription     │
+│                                    │
+│ URL Schemes registrados en         │
+│ CFBundleURLTypes para Google OAuth │
+└────────────────────────────────────┘
+
+
+7. FLUJO COMPLETO DE TOKENS
+================================================================================
+
+Paso 1: Usuario Selecciona Cuenta Google
+┌─────────────────────┐
+│ GoogleSignIn.signIn │ ← Abre selector de cuentas (UI del OS)
+└─────────────────────┘
+         ↓
+    Usuario confirma
+
+Paso 2: Obtiene Tokens de Google
+┌────────────────────────┐
+│ GoogleSignInAccount    │
+├────────────────────────┤
+│ .authentication        │
+│  ├─ accessToken        │ (para Google APIs)
+│  └─ idToken ✓          │ (signed JWT con claims del usuario)
+└────────────────────────┘
+
+Paso 3: Intercambia con Firebase
+┌──────────────────────────────┐
+│ GoogleAuthProvider.credential│
+│ (accessToken, idToken)       │
+└──────────────────────────────┘
+         ↓
+┌────────────────────────────────────┐
+│ FirebaseAuth.signInWithCredential()│ ← Valida contra Google
+└────────────────────────────────────┘
+         ↓
+┌────────────────────────────┐
+│ FirebaseAuth.currentUser   │ ← Usuario autenticado en Firebase
+│  .getIdToken()             │ ← Firebase JWT token (app-specific)
+└────────────────────────────┘
+
+Paso 4: Envía a Backend DTS
+┌──────────────────────────────────────┐
+│ POST /accounts/auth/google/          │
+│ {                                    │
+│   "id_token": firebaseIdToken,       │
+│   "role": "driver"                   │
+│ }                                    │
+└──────────────────────────────────────┘
+         ↓
+┌────────────────────────────────────────┐
+│ Backend:                               │
+│ 1. Verifica idToken contra Firebase    │
+│ 2. Extrae claims: sub (user ID)        │
+│ 3. Valida que usuario sea conductor    │
+│ 4. Crea/Actualiza usuario en DTS       │
+│ 5. Genera JWT tokens (access+refresh)  │
+└────────────────────────────────────────┘
+         ↓
+┌──────────────────────────┐
+│ Response                 │
+│ {                        │
+│   access_token: "...",   │
+│   refresh_token: "...",  │
+│   user: { ... }          │
+│ }                        │
+└──────────────────────────┘
+         ↓
+┌────────────────────────────┐
+│ Flutter Secure Storage     │
+│ (KeyChain iOS/KeyStore A)  │
+└────────────────────────────┘
+
+
+8. ERROR HANDLING CHAIN
+================================================================================
+
+Login Screen
+└─ _signInWithGoogle()
+   └─ try { ... }
+      ├─ GoogleSignInUseCase.call()
+      │  ├─ GoogleSignIn.signIn() == null
+      │  │  └─ throw StateError('cancelado')
+      │  │
+      │  ├─ googleAuth.idToken == null
+      │  │  └─ throw StateError('revisa serverClientId')
+      │  │
+      │  └─ FirebaseAuth no retorna token
+      │     └─ throw StateError('no se pudo obtener token')
+      │
+      ├─ AuthRemoteDataSource.signInWithGoogle()
+      │  ├─ DioException.response?.data['detail']
+      │  │  └─ throw StateError(detail)
+      │  │
+      │  └─ rethrow DioException
+      │
+      └─ catch (NotADriverException)
+         └─ "Esta cuenta no es de conductor"
+      
+      └─ catch (other)
+         └─ _friendlyAuthError(e)
+            └─ Muestra mensaje amigable en UI
+
+
+9. DIFERENCIAS DEBUG vs RELEASE
+================================================================================
+
+                    DEBUG          RELEASE
+                    ─────          ──────
+SHA-1 Android       69f247b9... ← TODO: diferente
+
+Signing Config      debug       ← TODO: release.jks
+
+Keystore            ~/.android/  /path/to/release.jks
+
+Google Client ID    MISMO        ⚠️ Falla si SHA diferente
+
+FirebaseOptions     MISMO        MISMO
+
+APIKeys             MISMO        MISMO
+
+Bundle ID iOS       MISMO        MISMO
+
+Provisioning        Dev          Distribution
+
+URL Scheme iOS      MISMO        MISMO
+
+
+================================================================================

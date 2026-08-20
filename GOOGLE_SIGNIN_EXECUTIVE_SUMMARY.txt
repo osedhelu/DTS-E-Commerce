@@ -1,0 +1,359 @@
+================================================================================
+                    GOOGLE SIGN-IN EN FLUTTER-DRIVER
+                         RESUMEN EJECUTIVO
+================================================================================
+
+PROYECTO: dtsdrop-85330 (Firebase)
+APP: DTS Driver (com.osedhelu.dtsdriver)
+ESTADO: Implementado con Google Sign-In + Firebase Auth + Backend DTS
+
+================================================================================
+1. UBICACIONES CLAVE DE ARCHIVOS
+================================================================================
+
+LOGIN SCREEN (UI):
+  /flutter-driver/lib/features/auth/presentation/screens/login_screen.dart
+    └─ _signInWithGoogle() @ línea 78
+    └─ _GoogleSignInButton widget @ línea 329-372
+
+USE CASE (Lógica):
+  /flutter-driver/lib/features/auth/domain/usecases/google_sign_in_usecase.dart
+    └─ GoogleSignInUseCase.call() @ línea 29
+
+REPOSITORY (Persistencia):
+  /flutter-driver/lib/features/auth/infrastructure/repositories/auth_repository_impl.dart
+    └─ signInWithGoogle() @ línea 45
+
+DATASOURCE (API):
+  /flutter-driver/lib/features/auth/infrastructure/datasources/auth_remote_datasource.dart
+    └─ POST /accounts/auth/google/ @ línea 40
+
+DI (Riverpod):
+  /flutter-driver/lib/core/di/providers.dart
+    └─ googleSignInUseCaseProvider @ línea 93
+
+INICIALIZACIÓN:
+  /flutter-driver/lib/main.dart
+    └─ Firebase.initializeApp() @ línea 34
+
+================================================================================
+2. PAQUETES Y DEPENDENCIAS
+================================================================================
+
+pubspec.yaml:
+  ✓ firebase_core: ^3.15.2
+  ✓ firebase_auth: ^5.7.0
+  ✓ google_sign_in: ^6.2.2          <- Google Sign-In
+  ✓ sign_in_with_apple: ^7.0.1      <- Apple Sign-In (iOS)
+  ✓ crypto: ^3.0.7                   <- Hash SHA-256 para Apple nonce
+  ✓ flutter_riverpod: ^2.5.1
+  ✓ dio: ^5.7.0
+
+================================================================================
+3. CONFIGURACIÓN FIREBASE (Android)
+================================================================================
+
+Archivo: /flutter-driver/android/app/google-services.json
+
+Project Info:
+  - project_id: dtsdrop-85330
+  - project_number: 1015036938407
+  - storage_bucket: dtsdrop-85330.firebasestorage.app
+
+Android Client:
+  - package_name: com.osedhelu.dtsdriver
+  - mobilesdk_app_id: 1:1015036938407:android:041cc4084dd2a93008b382
+  - client_id (type 1): 1015036938407-o1lurko8t3vchrta3qa6kbkg9i85usuf.apps.googleusercontent.com
+  - certificate_hash (SHA-1): 69f247b9d146aa5268ac8c6e863bcf14a853ffa4
+
+Web Client (type 3 - IMPORTANTE):
+  - client_id: 1015036938407-3b42tv87mauud225f3vfett7c5rtogof.apps.googleusercontent.com
+  - USO: serverClientId en GoogleSignInUseCase (REQUERIDO para idToken)
+
+API Key:
+  - AIzaSyBj-DmYwHfG6kvSKoCF-kqC4tvt3v9pQBI
+
+================================================================================
+4. CONFIGURACIÓN FIREBASE (iOS)
+================================================================================
+
+Archivo: /flutter-driver/ios/Runner/GoogleService-Info.plist
+
+Información iOS:
+  - BUNDLE_ID: com.osedhelu.dtsdriver
+  - CLIENT_ID: 1015036938407-8fvoe01ns93vce534lgseo9knquiqq68.apps.googleusercontent.com
+  - API_KEY: AIzaSyAy9TvSRYhYg83Gx9aBaafGNZaTzGTe1Z4
+  - GOOGLE_APP_ID: 1:1015036938407:ios:659a99afcda1b3cf08b382
+  - REVERSED_CLIENT_ID: com.googleusercontent.apps.1015036938407-8fvoe01ns93vce534lgseo9knquiqq68
+  - IS_SIGNIN_ENABLED: true
+
+Archivo: /flutter-driver/ios/Runner/Info.plist
+
+URL Scheme (IMPORTANTE para retorno desde Google):
+  - CFBundleURLSchemes: com.googleusercontent.apps.1015036938407-8fvoe01ns93vce534lgseo9knquiqq68
+
+GID Client ID:
+  - GIDClientID: 1015036938407-8fvoe01ns93vce534lgseo9knquiqq68.apps.googleusercontent.com
+
+Google Maps API Key:
+  - GMSApiKey: AIzaSyAy9TvSRYhYg83Gx9aBaafGNZaTzGTe1Z4
+
+================================================================================
+5. CONFIGURACIÓN ANDROID BUILD
+================================================================================
+
+Archivo: /flutter-driver/android/app/build.gradle.kts
+
+Plugins:
+  ✓ id("com.android.application")
+  ✓ id("kotlin-android")
+  ✓ id("com.google.gms.google-services")  <- Procesa google-services.json
+  ✓ id("dev.flutter.flutter-gradle-plugin")
+
+Android Config:
+  - namespace: com.osedhelu.dtsdriver
+  - compileSdk: flutter.compileSdkVersion
+  - Kotlin Version: 2.2.20
+  - Java Version: 17
+  - minSdk: flutter.minSdkVersion
+  - targetSdk: flutter.targetSdkVersion
+
+Build Types:
+  - debug: signingConfig = debug
+  - release: signingConfig = debug (TODO: cambiar a release keystore)
+
+Archivo: /flutter-driver/android/build.gradle.kts
+
+Plugins Root:
+  ✓ com.google.gms.google-services version "4.4.2"
+  ✓ com.android.application version "8.11.1"
+  ✓ org.jetbrains.kotlin.android version "2.2.20"
+
+================================================================================
+6. CONFIGURACIÓN iOS Build
+================================================================================
+
+No requiere .gradle (usa Xcode)
+Dependencias manejadas por CocoaPods:
+  ✓ google_sign_in_ios (plugin Flutter)
+  ✓ firebase_auth (pod)
+  ✓ FirebaseCore (pod)
+
+Bundle Identifier (en Xcode):
+  - com.osedhelu.dtsdriver
+
+URL Schemes (en Info.plist):
+  - com.googleusercontent.apps.1015036938407-8fvoe01ns93vce534lgseo9knquiqq68
+
+================================================================================
+7. FIREBASE OPTIONS (Dart)
+================================================================================
+
+Archivo: /flutter-driver/lib/firebase_options.dart
+
+Android:
+  - apiKey: AIzaSyBj-DmYwHfG6kvSKoCF-kqC4tvt3v9pQBI
+  - appId: 1:1015036938407:android:041cc4084dd2a93008b382
+  - messagingSenderId: 1015036938407
+  - projectId: dtsdrop-85330
+  - storageBucket: dtsdrop-85330.firebasestorage.app
+
+iOS:
+  - apiKey: AIzaSyAy9TvSRYhYg83Gx9aBaafGNZaTzGTe1Z4
+  - appId: 1:1015036938407:ios:659a99afcda1b3cf08b382
+  - messagingSenderId: 1015036938407
+  - projectId: dtsdrop-85330
+  - storageBucket: dtsdrop-85330.firebasestorage.app
+  - iosBundleId: com.osedhelu.dtsdriver
+  - iosClientId: 1015036938407-8fvoe01ns93vce534lgseo9knquiqq68.apps.googleusercontent.com
+
+GOOGLE SERVER CLIENT ID (CRÍTICO):
+  - Value: 1015036938407-3b42tv87mauud225f3vfett7c5rtogof.apps.googleusercontent.com
+  - Used: En GoogleSignInUseCase constructor para serverClientId
+  - Tipo: Web OAuth Client (type 3)
+
+================================================================================
+8. FLUJO DE EJECUCIÓN
+================================================================================
+
+1. Usuario toca botón "Continuar con Google"
+   └─ LoginScreen._signInWithGoogle()
+
+2. Se ejecuta GoogleSignInUseCase.call()
+   ├─ Limpia sesiones previas (signOut, disconnect)
+   ├─ GoogleSignIn.signIn() <- Abre selector de cuentas
+   ├─ Obtiene tokens: accessToken + idToken
+   └─ Verifica idToken no esté vacío
+
+3. Crea credencial de Firebase
+   └─ GoogleAuthProvider.credential(accessToken, idToken)
+
+4. Autentica en Firebase
+   └─ FirebaseAuth.signInWithCredential()
+
+5. Obtiene token de Firebase
+   └─ FirebaseAuth.currentUser.getIdToken()
+
+6. Envía al backend DTS
+   ├─ POST /accounts/auth/google/
+   ├─ Body: { "id_token": firebaseIdToken, "role": "driver" }
+   └─ Respuesta: { access_token, refresh_token, user }
+
+7. Guarda tokens localmente
+   └─ TokenStorage.saveTokens() -> Flutter Secure Storage
+
+8. Navega a home
+   └─ PostAuthService.complete()
+
+================================================================================
+9. SHA CERTIFICATES
+================================================================================
+
+ANDROID DEBUG:
+  ✓ Registrado en google-services.json
+  ✓ Value: 69f247b9d146aa5268ac8c6e863bcf14a853ffa4
+  ✓ Obtenido del debug keystore
+
+ANDROID RELEASE:
+  ⚠️ TODO: Generar keystore de release
+  ⚠️ TODO: Obtener SHA-1 del release keystore
+  ⚠️ TODO: Registrar en Google Cloud Console
+  ⚠️ TODO: Actualizar build.gradle.kts con release signing config
+
+iOS:
+  ✓ No usa SHA-1 (usa Bundle ID + URL Scheme)
+  ✓ Bundle ID: com.osedhelu.dtsdriver
+  ✓ URL Scheme: com.googleusercontent.apps.1015036938407-...
+
+================================================================================
+10. PERMISOS ANDROID (AndroidManifest.xml)
+================================================================================
+
+Archivo: /flutter-driver/android/app/src/main/AndroidManifest.xml
+
+Permisos Google Sign-In:
+  ✓ Manejados automáticamente por plugin google_sign_in
+  ✓ No requieren declaración explícita
+
+Otros permisos del app:
+  - ACCESS_FINE_LOCATION
+  - ACCESS_COARSE_LOCATION
+  - ACCESS_BACKGROUND_LOCATION
+  - FOREGROUND_SERVICE
+  - FOREGROUND_SERVICE_LOCATION
+  - POST_NOTIFICATIONS
+
+Meta-data:
+  - com.google.android.geo.API_KEY: AIzaSyBj-DmYwHfG6kvSKoCF-kqC4tvt3v9pQBI
+
+================================================================================
+11. DEBUG vs RELEASE
+================================================================================
+
+ANDROID DEBUG:
+  ✓ SHA-1: 69f247b9d146aa5268ac8c6e863bcf14a853ffa4
+  ✓ Signing: debug keystore (automático)
+  ✓ Firebase Config: google-services.json (mismo)
+  ✓ Google Client ID: mismo
+  ✓ ESTADO: Funciona completo
+
+ANDROID RELEASE:
+  ✗ SHA-1: Diferente (no configurado)
+  ✗ Signing: Debug keystore (TODO cambiar)
+  ✗ Google Client ID: No funciona con release SHA-1
+  ✗ ESTADO: Google Sign-In fallará
+
+iOS DEBUG:
+  ✓ ESTADO: Funciona completo
+
+iOS RELEASE:
+  ✓ URL Scheme: Mismo (en Info.plist)
+  ✓ Bundle ID: Mismo
+  ✓ ESTADO: Debe funcionar (provisioning profile diferente)
+
+================================================================================
+12. ERRORES COMUNES Y SOLUCIONES
+================================================================================
+
+ERROR 1: "Google no devolvió idToken"
+  CAUSA: serverClientId mal configurado
+  SOLUCIÓN: Verificar DefaultFirebaseOptions.googleServerClientId
+            Debe ser el Web OAuth Client (type 3) de google-services.json
+
+ERROR 2: "Esta cuenta no es de conductor"
+  CAUSA: Usuario existe en Firebase pero sin rol driver
+  SOLUCIÓN: Backend validando en /accounts/auth/google/
+            Asegurar que usuario está marcado como driver
+
+ERROR 3: Google Sign-In no aparece en release
+  CAUSA: SHA-1 de release no registrado en Google Cloud
+  SOLUCIÓN: 1. Generar keystore de release
+            2. Obtener SHA-1: keytool -list -v -keystore release.jks
+            3. Registrar en Google Cloud Console
+            4. Actualizar build.gradle.kts
+
+ERROR 4: iOS URL Scheme no funciona
+  CAUSA: URL Scheme en Info.plist incorrecto o no registrado
+  SOLUCIÓN: Verificar que Info.plist tenga:
+            CFBundleURLSchemes = com.googleusercontent.apps.1015036938407-...
+
+ERROR 5: Firebase no inicia
+  CAUSA: Firebase.initializeApp() no ejecutado
+  SOLUCIÓN: Verificar main.dart antes de runApp()
+
+================================================================================
+13. VALIDACIÓN DE CONFIGURACIÓN
+================================================================================
+
+Checklist: todos deben estar marcados (✓)
+
+[✓] google-services.json en android/app/
+[✓] GoogleService-Info.plist en ios/Runner/
+[✓] firebase_options.dart generado correctamente
+[✓] google_sign_in en pubspec.yaml (^6.2.2)
+[✓] firebase_auth en pubspec.yaml (^5.7.0)
+[✓] serverClientId en GoogleSignInUseCase (Web OAuth Client)
+[✓] iosClientId en firebase_options.dart iOS
+[✓] GIDClientID en ios/Runner/Info.plist
+[✓] URL Scheme en ios/Runner/Info.plist (com.googleusercontent.apps...)
+[✓] com.google.gms.google-services plugin en build.gradle.kts
+[✓] Firebase.initializeApp() en main.dart
+[✓] Rol "driver" enviado a /accounts/auth/google/
+[✓] API Keys configuradas en Info.plist (iOS) y AndroidManifest (Android)
+[⚠️] SHA-1 de release actualizado en Google Cloud (TODO para release)
+
+================================================================================
+14. RUTAS DE ARCHIVOS COMPLETAS
+================================================================================
+
+FLUTTER DRIVER:
+  /Volumes/Datos/dts-app-ecommerce/flutter-driver/
+
+CÓDIGO DART:
+  lib/features/auth/
+    ├─ presentation/screens/login_screen.dart
+    ├─ domain/usecases/google_sign_in_usecase.dart
+    ├─ domain/usecases/apple_sign_in_usecase.dart
+    ├─ infrastructure/repositories/auth_repository_impl.dart
+    └─ infrastructure/datasources/auth_remote_datasource.dart
+  
+  lib/firebase_options.dart
+  lib/core/di/providers.dart
+  lib/main.dart
+
+ANDROID:
+  android/app/google-services.json
+  android/app/build.gradle.kts
+  android/build.gradle.kts
+  android/app/src/main/AndroidManifest.xml
+  android/gradle.properties
+
+iOS:
+  ios/Runner/GoogleService-Info.plist
+  ios/Runner/Info.plist
+
+CONFIGURACIÓN:
+  firebase.json
+  pubspec.yaml
+
+================================================================================
