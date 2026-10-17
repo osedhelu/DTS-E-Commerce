@@ -45,6 +45,8 @@ flutter-driver/.packages
 flutter-driver/.idea/
 flutter-driver/*.iml
 
+graphify-out/cache/
+
 # IDE
 .idea/
 .vscode/
